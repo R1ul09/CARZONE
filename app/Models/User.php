@@ -51,7 +51,8 @@ class User extends Authenticatable
 
     public function rol()
     {
-        return $this->belongsTo(Rol::class);
+        // Un usuario pertenece a un Rol
+        return $this->belongsTo(Rol::class, 'role_id');
     }
 
     public function citas()
