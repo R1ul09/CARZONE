@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Marca;
+use App\Models\Coche;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,9 +19,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            ServicioSeeder::class,
+            RolSeeder::class
+        ]);
+
+        $marca = Marca::create(['nombre' => 'Tesla']);
+        
+        Coche::create([
+            'modelo' => 'Model 3',
+            'anio' => 2024,
+            'precio' => 45000,
+            'marca_id' => $marca->id
         ]);
     }
 }
