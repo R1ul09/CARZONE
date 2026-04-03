@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\MarcaController;
 use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\ServicioController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ChatbotController;
 use Illuminate\Support\Facades\Route;
 
 // RUTAS PROTEGIDAS (Requieren Token/Estar logueado)
@@ -22,6 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/citas/{id}', [CitaController::class, 'update']);
     Route::delete('/citas/{id}', [CitaController::class, 'destroy']);
     // El update y delete los dejamos para cuando definamos quién puede cancelar
+
+    Route::post('/chatbot', [ChatbotController::class, 'procesarMensaje']);
 
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::post('/coches', [CocheController::class, 'store']);
