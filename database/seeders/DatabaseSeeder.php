@@ -21,16 +21,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ServicioSeeder::class,
-            RolSeeder::class
+            RolSeeder::class,
+            MarcaSeeder::class,
+            CocheSeeder::class,
         ]);
 
-        $marca = Marca::create(['nombre' => 'Tesla']);
-        
-        Coche::create([
-            'modelo' => 'Model 3',
-            'anio' => 2024,
-            'precio' => 45000,
-            'marca_id' => $marca->id
-        ]);
     }
 }

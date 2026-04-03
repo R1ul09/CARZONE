@@ -107,6 +107,24 @@ class CitaController extends Controller
             return response()->json(['message' => 'No tienes permiso para editar esta cita'], 403);
         }
 
+        $hora = $request->hora;
+        if ($hora < '09:00' || $hora > '20:00') {
+            return response()->json(['message' => 'El concesionario está cerrado a esa hora. El horario es de 09:00 a 20:00.'], 422);
+        }
+
+        // validamos solapamiento (¿Está el coche ocupado?)
+        if ($request->coche_id) {
+            $existeCita = Cita::where('coche_id', $request->coche_id)
+                ->where('fecha', $request->fecha)
+                ->where('hora', $request->hora)
+                ->where('estado', '!=', 'cancelada')
+                ->exists();
+
+            if ($existeCita) {
+                return response()->json(['message' => 'Este coche ya tiene una cita programada para esa hora.'], 422);
+            }
+        }
+
         // Validación
         $validator = Validator::make($request->all(), [
             'servicio_id' => 'exists:servicios,id',
