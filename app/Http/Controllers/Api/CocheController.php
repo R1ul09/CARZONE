@@ -9,9 +9,32 @@ use Illuminate\Support\Facades\Validator;
 
 class CocheController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Coche::with('marca')->get(), 200);
+        // vamos a hacer que se pueda filtrar por cualquier campo del modelo coche, para eso vamos a usar
+        $cochesFiltrados = Coche::with('marca')
+            // el metodo when sirve para filtro si el campo existe en la request, si no existe pues nada
+            // es mucho mejor que muchos if para cada campo
+            ->when($request->input('modelo'), function ($query, $modelo) {
+                $query->where('modelo', 'like', '%' . $modelo . '%');
+            })
+            ->when($request->input('precio_max'), function ($query, $precioMax) {
+                $query->where('precio', '<=', $precioMax);
+            })
+            ->when($request->input('anio'), function ($query, $anio) {
+                $query->where('anio', $anio);
+            })
+            ->when($request->input('marca'), function ($query, $marca) {
+                $query->whereHas('marca', function($q) use ($marca) {
+                    $q->where('nombre', 'like', '%' . $marca . '%');
+                });
+            })
+            ->get();
+
+        // Finalmente, obtenemos los resultados
+        $coches = $cochesFiltrados;
+
+        return response()->json($coches, 200);
     }
 
     public function store(Request $request)
