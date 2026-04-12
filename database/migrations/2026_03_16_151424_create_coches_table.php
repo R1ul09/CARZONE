@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('anio');
             $table->decimal('precio', 10, 2);
             $table->text('descripcion')->nullable();
-            $table->string('imagen')->nullable();
 
             $table->foreignId('marca_id')->constrained('marcas')->onDelete('cascade');
 

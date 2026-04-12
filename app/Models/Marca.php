@@ -19,4 +19,15 @@ class Marca extends Model
     {
         return $this->hasMany(Coche::class);
     }
+
+    public function getLogoAttribute($value)
+    {
+        // Si no hay logo, evitamos errores
+        if (!$value) {
+            return null;
+        }
+
+        // Construimos la URL completa automáticamente
+        return asset('storage/' . $value);
+    }
 }
