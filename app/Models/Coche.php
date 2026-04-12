@@ -14,7 +14,6 @@ class Coche extends Model
         'anio',
         'precio',
         'descripcion',
-        'imagen',
         'marca_id'
     ];
 
@@ -34,5 +33,17 @@ class Coche extends Model
     public function citas()
     {
         return $this->hasMany(Cita::class);
+    }
+
+    // Un coche puede tener muchas imágenes
+    public function imagenes()
+    {
+        return $this->hasMany(ImagenVehiculo::class, 'coche_id');
+    }
+
+    // Para obtener la imagen principal de un coche
+    public function imagenPrincipal()
+    {
+        return $this->hasOne(ImagenVehiculo::class, 'coche_id')->where('es_principal', true);
     }
 }

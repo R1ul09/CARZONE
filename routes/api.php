@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\ServicioController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ChatbotController;
+use App\Http\Controllers\Api\ImagenVehiculoController;
 use Illuminate\Support\Facades\Route;
 
 // RUTAS PROTEGIDAS (Requieren Token/Estar logueado)
@@ -46,5 +47,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Rutas para Users
     Route::apiResource('users', UserController::class);
+
+    // Rutas para Imagenes de Vehiculos
+    Route::get('imagenes-vehiculos', [ImagenVehiculoController::class, 'index']);
+    Route::post('imagenes-vehiculos', [ImagenVehiculoController::class, 'store']);
 
 });

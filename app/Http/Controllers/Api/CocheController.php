@@ -12,11 +12,14 @@ class CocheController extends Controller
     public function index(Request $request)
     {
         // vamos a hacer que se pueda filtrar por cualquier campo del modelo coche, para eso vamos a usar
-        $cochesFiltrados = Coche::with('marca')
+        $cochesFiltrados = Coche::with(['marca', 'imagenPrincipal'])
             // el metodo when sirve para filtro si el campo existe en la request, si no existe pues nada
             // es mucho mejor que muchos if para cada campo
             ->when($request->input('modelo'), function ($query, $modelo) {
                 $query->where('modelo', 'like', '%' . $modelo . '%');
+            })
+            ->when($request->input('precio_min'), function ($query, $precioMin) {
+                $query->where('precio', '>=', $precioMin);
             })
             ->when($request->input('precio_max'), function ($query, $precioMax) {
                 $query->where('precio', '<=', $precioMax);
@@ -56,8 +59,10 @@ class CocheController extends Controller
 
     public function show($id)
     {
-        $coche = Coche::with('marca')->find($id);
+        $coche = Coche::with(['marca', 'imagenes'])->find($id);
+
         if (!$coche) return response()->json(['message' => 'No encontrado'], 404);
+
         return response()->json($coche, 200);
     }
 
@@ -70,8 +75,6 @@ class CocheController extends Controller
             return response()->json(['message' => 'No encontrado'], 404);
         }
         
-        // Al usar $coche->fill() o update(), asegúrate de que el modelo Coche
-        // tenga los campos en el array $fillable
         $coche->update($request->all());
 
         return response()->json($coche, 200);
