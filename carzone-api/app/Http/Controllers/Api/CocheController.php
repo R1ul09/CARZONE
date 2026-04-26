@@ -32,6 +32,10 @@ class CocheController extends Controller
                     $q->where('nombre', 'like', '%' . $marca . '%');
                 });
             })
+            ->when($request->input('ids'), function ($query, $ids) {
+                $idsArray = explode(',', $ids);
+                $query->whereIn('id', $idsArray);
+            })
             ->get();
 
         // Finalmente, obtenemos los resultados

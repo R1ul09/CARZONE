@@ -1,0 +1,213 @@
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mixins;
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    height: vars.$navbar-height;
+    background: transparent;
+    transition: background 0.5s ease;
+
+    &.scrolled {
+        background: #0a0a0a;
+        border-bottom: 1px solid vars.$accent-color;
+        box-shadow: 0 2px 8px rgba(vars.$accent-color, 0.5);
+    }
+
+    .navbar-container {
+        max-width: vars.$navbar-max-width;
+        margin: 0 auto;
+        height: 100%;
+        padding: vars.$navbar-padding;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-btn {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        img {
+            height: vars.$logo-height;
+            width: auto;
+            object-fit: contain;
+        }
+    }
+
+    .nav-links {
+        display: none;
+        flex: 0;
+        gap: vars.$nav-link-gap;
+
+        @media (min-width: vars.$screen-md) {
+            display: flex;
+        }
+
+        a {
+            color: vars.$text-muted;
+            text-decoration: none;
+            font-size: vars.$navbar-link-font-size;
+            letter-spacing: vars.$navbar-link-letter-spacing;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+
+            &:hover {
+                color: vars.$text-color;
+            }
+        }
+
+        .dropdown {
+            position: relative;
+
+            .dropdown-toggle {
+                background: none;
+                border: none;
+                color: vars.$text-muted;
+                font-size: vars.$navbar-link-font-size;
+                letter-spacing: vars.$navbar-link-letter-spacing;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: color 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                &:hover {
+                    color: vars.$text-color;
+                }
+
+                .dropdown-arrow {
+                    font-size: 12px;
+                    transition: transform 0.3s ease;
+
+                    &.rotated {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                border-radius: 8px;
+                padding: 16px 0;
+                min-width: 180px;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+                z-index: 100;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 24px;
+                    color: vars.$text-muted;
+                    text-decoration: none;
+                    font-size: 14px;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        color: vars.$accent-color;
+                        background: rgba(255, 255, 255, 0.05);
+                    }
+
+                    .marca-logo {
+                        width: 24px;
+                        height: 24px;
+                        object-fit: contain;
+                        flex-shrink: 0;
+                    }
+
+                    span {
+                        flex: 1;
+                    }
+                }
+
+                .no-marcas {
+                    padding: 12px 24px;
+                    color: vars.$text-muted;
+                    font-size: 14px;
+                    text-align: center;
+                }
+            }
+
+            &.active .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    .auth-buttons {
+        flex: 1;
+        display: none;
+        justify-content: flex-end;
+        gap: 16px;
+
+        @media (min-width: vars.$screen-md) {
+            display: flex;
+        }
+
+        .login-btn,
+        .signup-btn {
+            background: none;
+            border: 1px solid vars.$white;
+            color: vars.$white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: vars.$navbar-link-font-size;
+            letter-spacing: vars.$navbar-link-letter-spacing;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background-color: vars.$white;
+                color: vars.$background-color;
+            }
+        }
+    }
+
+    .menu-toggle {
+        flex: 1;
+        justify-content: flex-end;
+        align-items: flex-end;
+        background: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+        padding: 8px;
+
+        @media (min-width: vars.$screen-md) {
+            display: none;
+        }
+
+        .line {
+            display: block;
+            width: 28px;
+            height: 2px;
+            background-color: vars.$white;
+            transition: all 0.3s ease;
+        }
+
+        &:hover .line {
+            background-color: vars.$accent-color;
+        }
+    }
+}

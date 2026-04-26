@@ -1,0 +1,55 @@
+<footer>
+    <div class="footer-description">
+        <button class="footer-logo-btn">
+            <img src="assets/logos/logo-carzone.svg" alt="Carzone Logo" />
+        </button>
+        <p class="footer-text">El concesionario de lujo más exclusivo. 
+            Donde los sueños se convierten en realidad sobre cuatro ruedas.</p>
+        <div class="footer-social">
+            <a href="#"><img src="assets/logos/instagram-icon.svg" alt="Instagram"></a>
+            <a href="#"><img src="assets/logos/youtube-icon.svg" alt="YouTube"></a>
+            <a href="#"><img src="assets/logos/twitter-x-icon.svg" alt="Twitter X"></a>
+            <a href="#"><img src="assets/logos/tiktok-icon.svg" alt="TikTok"></a>
+        </div>
+    </div>
+
+    <div class="footer-brands">
+        <h3 class="footer-section-title">COLABORADORES</h3>
+        <div class="footer-marcas">
+            @for (marca of marcas; track marca.id) {
+                <a [href]="'/marcas/' + marca.id" class="marca-item">
+                    <span>{{ marca.nombre }}</span>
+                </a>
+            } @empty {
+                <div class="no-marcas">No hay marcas disponibles</div>
+            }
+        </div>
+    </div>
+
+    <div class="footer-services">
+        <h3 class="footer-section-title">SERVICIOS</h3>
+        @for (servicio of servicios; track servicio.id) {
+            <div class="footer-service">
+                <span>{{ servicio.nombre }}</span>
+            </div>
+        } @empty {
+            <div class="no-servicios">No hay servicios disponibles</div>
+        }
+    </div>
+
+    <div class="footer-contact">
+        <h3 class="footer-section-title">CONTACTO</h3>
+        <div class="footer-item">
+            <img src="assets/logos/location-icon.svg" alt="Ubicacion" class="contact-icon"><span>Calle Ejemplo, 123, Cádiz</span>
+        </div>
+        <div class="footer-item">
+            <img src="assets/logos/phone-icon.svg" alt="Telefono" class="contact-icon"><span>+34 123 456 789</span>
+        </div>
+        <div class="footer-item">
+            <img src="assets/logos/email-icon.svg" alt="Email" class="contact-icon"><span>info@carzone.com</span>
+        </div>
+        <div class="footer-item">
+            <img src="assets/logos/time-icon.svg" alt="Horario" class="contact-icon"><span>Lunes a Viernes: 9:00 - 20:00</span>
+        </div>
+    </div>
+</footer>

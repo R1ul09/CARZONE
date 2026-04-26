@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import * as environment from '../../environments/environment';
 import { Coche } from '../interfaces/coche.interface';
 import { Observable } from 'rxjs';
 
@@ -8,14 +8,18 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 
-export class Coche {
-  private apiUrl = environment.apiUrl;
+export class CocheService {
+
+  private apiUrl = (environment as any).environment?.apiUrl || 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  // Método para el catálogo de coches
-  getCoches(): Observable<Coche[]> {
-    return this.http.get<Coche[]>(this.apiUrl);
+  // Método para obtener coches destacados por IDs
+  getCochesDestacados(ids: number[]): Observable<Coche[]> {
+    const idsParam = ids.join(',');
+    const url = `${this.apiUrl}/coches?ids=${idsParam}`;
+    console.log('Fetching from:', url);
+    return this.http.get<Coche[]>(url);
   }
 
   // Método para el detalle de un coche

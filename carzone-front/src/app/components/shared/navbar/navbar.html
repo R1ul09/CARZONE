@@ -1,0 +1,39 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="navbar-container">
+    <button class="logo-btn">
+      <img src="assets/logos/logo-carzone.svg" alt="Carzone Logo" />
+    </button>
+
+    <div class="nav-links">
+      <a href="#">INICIO</a>
+      <div class="dropdown" [class.active]="isDropdownOpen">
+        <button class="dropdown-toggle" (click)="toggleDropdown()">
+          MARCAS
+          <span class="dropdown-arrow" [class.rotated]="isDropdownOpen">▼</span>
+        </button>
+        @if (isDropdownOpen) {
+          <div class="dropdown-menu">
+            @for (marca of marcas; track marca.id) {
+              <a [href]="'/marcas/' + marca.id" class="marca-item">
+                <img [src]="marca.logo" [alt]="marca.nombre" class="marca-logo" (error)="$event.target.style.display='none'">
+                <span>{{ marca.nombre }}</span>
+              </a>
+            } @empty {
+              <div class="no-marcas">No hay marcas disponibles</div>
+            }
+          </div>
+        }
+      </div>
+      <a href="#">FINANCIACIÓN</a>
+    </div>
+
+    <div class="auth-buttons">
+      <button class="login-btn">INICIAR SESIÓN</button>
+    </div>
+
+    <button class="menu-toggle" aria-label="Abrir menú">
+      <span class="line"></span>
+      <span class="line"></span>
+    </button>
+  </div>
+</nav>
