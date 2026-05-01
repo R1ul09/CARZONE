@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Marca } from '../../../interfaces/marca.interface';
 import { MarcaService } from '../../../services/marca';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './navbar.html', 
   styleUrl: './navbar.scss',
 })
