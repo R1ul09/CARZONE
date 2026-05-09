@@ -15,7 +15,21 @@ class FinanciacionController extends Controller
 
     public function store(Request $request)
     {
-        $financiacion = Financiacion::create($request->all());
+        $request->validate([
+            'coche_id'       => 'required|exists:coches,id',
+            'meses'          => 'required|integer',
+            'cuota_mensual'  => 'required|numeric',
+            'entrada'        => 'required|numeric',
+            'interes'        => 'required|numeric',
+        ]);
+
+        $financiacion = Financiacion::create([
+            'coche_id'      => $request->coche_id,
+            'meses'         => $request->meses,
+            'cuota_mensual' => $request->cuota_mensual,
+            'entrada'       => $request->entrada,
+            'interes'       => $request->interes,
+        ]);
 
         return response()->json($financiacion, 201);
     }

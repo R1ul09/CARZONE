@@ -1,0 +1,25 @@
+<section class="featured-models">
+    <div class="section-title">
+        <p class="subtitle">NUESTRA SELECCIÓN</p>
+        <h2 class="main-title">NUESTROS MODELOS DESTACADOS</h2>
+        <p class="description">Descubre nuestros modelos más populares y exclusivos</p>
+    </div>
+
+    <div class="our-models-content">
+        @for (coche of coches; track coche.id; let i = $index) {
+            <div class="model-car" data-aos="fade-up" [attr.data-aos-delay]="i * 100">
+                <img [src]="coche.imagen_principal?.ruta" [alt]="coche.modelo" class="model-img" (error)="$event.target.style.display='none'">
+                <div class="model-info">
+                    <h3 class="model-name">{{ coche.modelo }}</h3>
+                    <p class="model-description">{{ coche.descripcion }}</p>
+                    <div class="price-row">
+                        <p class="model-price">Desde {{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+                        <a [href]="'/coches/' + coche.id" class="details-link">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+        } @empty {
+            <div class="no-coches">No hay coches disponibles</div>
+        }
+    </div>
+</section>

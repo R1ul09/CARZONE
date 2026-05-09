@@ -1,0 +1,117 @@
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mixins;
+
+.reviews {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    background: #0a0a0a;
+
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+
+        .subtitle {
+            font-size: vars.$subtitle-font-size;
+            letter-spacing: vars.$subtitle-letter-spacing;
+            color: vars.$accent-color;
+            margin-bottom: vars.$subtitle-margin-bottom;
+            font-weight: 600;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0;
+            line-height: 100%;
+        }
+    }
+
+    .reviews-content {
+        display: flex;
+        gap: 24px;
+        margin-top: 40px;
+        width: 100%;
+        max-width: 1400px;
+
+        .review-card {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .stars {
+                display: flex;
+                gap: 4px;
+
+                span {
+                    color: vars.$accent-color;
+                    font-size: 20px;
+                }
+            }
+
+            .review-text {
+                font-size: 14px;
+                color: vars.$text-muted;
+                line-height: 1.7;
+                font-style: italic;
+                flex: 1;
+            }
+
+            &:hover {
+                border-color: vars.$accent-color;
+                box-shadow: 0 2px 8px vars.$accent-color;
+                transition: transform 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+            }
+
+            .reviewer {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
+                padding-top: 16px;
+
+                img {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .reviewer-name {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: vars.$text-color;
+                }
+
+                .reviewer-car {
+                    font-size: 12px;
+                    color: vars.$text-muted;
+                    opacity: 0.6;
+                    margin-top: 2px;
+                }
+            }
+        }
+    }
+
+    @media (max-width: vars.$screen-md) {
+        padding: 32px 12px;
+
+        .section-title .main-title {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .reviews-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+}

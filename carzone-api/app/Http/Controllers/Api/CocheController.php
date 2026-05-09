@@ -12,31 +12,57 @@ class CocheController extends Controller
     public function index(Request $request)
     {
         // vamos a hacer que se pueda filtrar por cualquier campo del modelo coche, para eso vamos a usar
-        $cochesFiltrados = Coche::with(['marca', 'imagenPrincipal'])
+        $query = Coche::with(['marca', 'imagenPrincipal'])
             // el metodo when sirve para filtro si el campo existe en la request, si no existe pues nada
             // es mucho mejor que muchos if para cada campo
-            ->when($request->input('modelo'), function ($query, $modelo) {
-                $query->where('modelo', 'like', '%' . $modelo . '%');
+            ->when($request->input('modelo'), function ($q, $modelo) {
+                $q->where('modelo', 'like', '%' . $modelo . '%');
             })
-            ->when($request->input('precio_min'), function ($query, $precioMin) {
-                $query->where('precio', '>=', $precioMin);
+            ->when($request->input('precio_min'), function ($q, $precioMin) {
+                $q->where('precio', '>=', $precioMin);
             })
-            ->when($request->input('precio_max'), function ($query, $precioMax) {
-                $query->where('precio', '<=', $precioMax);
+            ->when($request->input('precio_max'), function ($q, $precioMax) {
+                $q->where('precio', '<=', $precioMax);
             })
-            ->when($request->input('anio'), function ($query, $anio) {
-                $query->where('anio', $anio);
+            ->when($request->input('anio'), function ($q, $anio) {
+                $q->where('anio', $anio);
             })
-            ->when($request->input('marca'), function ($query, $marca) {
-                $query->whereHas('marca', function($q) use ($marca) {
-                    $q->where('nombre', 'like', '%' . $marca . '%');
+            ->when($request->input('marca_id'), function ($q, $marcaId) {
+                $q->where('marca_id', $marcaId);
+            })
+            ->when($request->input('marca'), function ($q, $marca) {
+                $q->whereHas('marca', function($subq) use ($marca) {
+                    $subq->where('nombre', 'like', '%' . $marca . '%');
                 });
             })
-            ->get();
+            ->when(!is_null($request->input('disponible')), function ($q, $disponible) {
+                $q->where('disponible', filter_var($disponible, FILTER_VALIDATE_BOOLEAN));
+            })
+            ->when($request->input('ids'), function ($q, $ids) {
+                $idsArray = explode(',', $ids);
+                $q->whereIn('id', $idsArray);
+            });
+
+        // Aplicar ordenamiento
+        $order = $request->input('order', 'id');
+        $direction = $request->input('direction', 'asc');
+        
+        // Validar que la dirección sea asc o desc
+        if (!in_array(strtolower($direction), ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+        
+        // Validar campos permitidos para ordenar
+        $allowedFields = ['id', 'precio', 'anio', 'modelo', 'created_at'];
+        if (!in_array($order, $allowedFields)) {
+            $order = 'id';
+        }
+        
+        $query->orderBy($order, $direction);
+        
+        $coches = $query->get();
 
         // Finalmente, obtenemos los resultados
-        $coches = $cochesFiltrados;
-
         return response()->json($coches, 200);
     }
 

@@ -10,11 +10,10 @@ class Coche extends Model
     use HasFactory;
 
     protected $fillable = [
-        'modelo',
-        'anio',
-        'precio',
-        'descripcion',
-        'marca_id'
+        'modelo', 'anio', 'precio', 'descripcion', 'marca_id',
+        'potencia', 'par_motor', 'velocidad_max', 'aceleracion',
+        'combustible', 'transmision', 'traccion', 'num_plazas',
+        'num_puertas', 'tipo_carroceria', 'color', 'disponible', 'destacado'
     ];
 
     // Un coche pertenece a una marca

@@ -1,0 +1,73 @@
+// ============================================================================
+// COLORS - Paleta de colores principal
+// ============================================================================
+
+// Backgrounds
+$background-color: #0a0a0a !default;
+$white: #ffffff !default;
+
+// Text Colors (WCAG AA compliant)
+$text-color: #ffffff !default; // Primary text (100% white)
+$text-muted: rgba(243, 243, 243, 0.7) !default; // Secondary text (70% opacity, ~5.8:1 contrast)
+$text-secondary: rgba(243, 243, 243, 0.85) !default; // Better for small text (85% opacity, ~7.2:1 contrast AA)
+$text-secondary-strong: rgba(243, 243, 243, 0.95) !default; // High contrast (95% opacity, ~9.5:1 contrast AAA)
+$text-tertiary: rgba(243, 243, 243, 0.55) !default; // Additional information
+
+// Accent Colors
+$accent-color: #c62828 !default;
+$accent-color-alt: #ec2b2b !default;
+
+// ============================================================================
+// TYPOGRAPHY - Fuentes y tamaños
+// ============================================================================
+
+$font-family-base: 'Inter', sans-serif !default;
+
+// Font Sizes
+$main-title-size: 8rem !default;
+$main-title-mobile-size: 4rem !default;
+$subtitle-font-size: 12px !default;
+$navbar-link-font-size: 14px !default;
+$hero-scroll-font-size: 12px !default;
+$hero-scroll-mobile-font-size: 9px !default;
+
+// Letter Spacing
+$navbar-link-letter-spacing: 0.1em !default;
+$subtitle-letter-spacing: 6px !default;
+$scroll-letter-spacing: 3px !default;
+$scroll-mobile-letter-spacing: 2px !default;
+
+// ============================================================================
+// SPACING - Espaciado y tamaños
+// ============================================================================
+
+$navbar-height: 80px !default;
+$logo-height: 48px !default;
+$navbar-padding: 0 40px !default;
+$navbar-max-width: 1400px !default;
+$nav-link-gap: 32px !default;
+$subtitle-margin-bottom: 24px !default;
+
+// Hero Section
+$hero-height: 100vh !default;
+$hero-line-height: 0.9 !default;
+$hero-line-size: 1px !default;
+$hero-line-height-size: 40px !default;
+$hero-line-mobile-height: 32px !default;
+$hero-line-gap: 10px !default;
+$hero-line-mobile-gap: 6px !default;
+$red-line-width: 100px !default;
+$red-line-height: 2px !default;
+
+// ============================================================================
+// BREAKPOINTS - Puntos de quiebre responsive
+// ============================================================================
+
+$screen-sm: 576px !default;
+$screen-md: 768px !default;
+
+// ============================================================================
+// GRADIENTS - Gradientes reutilizables
+// ============================================================================
+
+$overlay-gradient: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%) !default;

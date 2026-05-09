@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use './styles/variables' as vars;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: vars.$font-family-base;
+    background-color: vars.$background-color;
+    color: vars.$text-color;
+}
+
+::selection {
+    background-color: vars.$accent-color;
+    color: #fff;
+}

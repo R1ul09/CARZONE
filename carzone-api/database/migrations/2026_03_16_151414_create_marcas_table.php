@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('pais')->nullable();
             $table->text('descripcion')->nullable();
             $table->string('logo')->nullable();
+            
+            // Campos de identidad visual
+            $table->string('imagen_hero')->nullable();
+            $table->string('slogan')->nullable();
+            
             $table->timestamps();
         });
     }

@@ -1,0 +1,141 @@
+<div class="coche-page">
+  @if (coche) {
+
+  <!-- HERO / GALERÍA -->
+  <section class="coche-hero">
+    <div class="galeria">
+
+      <div class="galeria-principal">
+        <img [src]="imagenActiva" [alt]="coche.modelo"
+            (error)="$event.target.style.display='none'">
+        <div class="overlay"></div>
+
+        <div class="coche-hero-info">
+          <h1 class="coche-nombre">{{ coche.modelo }}</h1>
+          <p class="coche-meta">{{ coche.anio }} · {{ coche.tipo_carroceria }} · {{ coche.color }}</p>
+        </div>
+
+        <div class="disponibilidad-badge" [class.reservado]="!coche.disponible">
+          {{ coche.disponible ? 'DISPONIBLE' : 'RESERVADO' }}
+        </div>
+      </div>
+
+      @if (coche.imagenes && coche.imagenes.length > 1) {
+        <div class="galeria-miniaturas">
+          @for (img of coche.imagenes; track img.id) {
+            <div class="miniatura" [class.active]="imagenActiva === img.ruta"
+                (click)="setImagen(img.ruta)">
+              <img [src]="img.ruta" [alt]="coche.modelo"
+                  (error)="$event.target.style.display='none'">
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <section class="coche-contenido">
+    <div class="coche-contenido-inner">
+
+      <div class="coche-specs" data-aos="fade-right">
+        <div class="specs-block">
+          <p class="specs-titulo">ESPECIFICACIONES TÉCNICAS</p>
+          <div class="specs-grid">
+            @if (coche.potencia) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">POTENCIA</span>
+                  <span class="spec-value">{{ coche.potencia }} CV</span>
+                </div>
+              </div>
+            }
+            @if (coche.par_motor) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">PAR MOTOR</span>
+                  <span class="spec-value">{{ coche.par_motor }} Nm</span>
+                </div>
+              </div>
+            }
+            @if (coche.aceleracion) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">0 - 100 KM/H</span>
+                  <span class="spec-value">{{ coche.aceleracion }}s</span>
+                </div>
+              </div>
+            }
+            @if (coche.velocidad_max) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">VEL. MÁXIMA</span>
+                  <span class="spec-value">{{ coche.velocidad_max }} km/h</span>
+                </div>
+              </div>
+            }
+            @if (coche.transmision) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">TRANSMISIÓN</span>
+                  <span class="spec-value">{{ coche.transmision }}</span>
+                </div>
+              </div>
+            }
+            @if (coche.traccion) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">TRACCIÓN</span>
+                  <span class="spec-value">{{ coche.traccion }}</span>
+                </div>
+              </div>
+            }
+            @if (coche.combustible) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">COMBUSTIBLE</span>
+                  <span class="spec-value">{{ coche.combustible }}</span>
+                </div>
+              </div>
+            }
+            @if (coche.num_plazas) {
+              <div class="spec-item">
+                <div>
+                  <span class="spec-label">PLAZAS</span>
+                  <span class="spec-value">{{ coche.num_plazas }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="coche-info" data-aos="fade-left">
+
+        @if (coche.descripcion) {
+          <div class="info-block">
+            <p class="specs-titulo">SOBRE ESTE VEHÍCULO</p>
+            <p class="coche-descripcion">{{ coche.descripcion }}</p>
+          </div>
+        }
+
+        <div class="info-block precio-block">
+          <p class="precio-label">PRECIO</p>
+          <p class="coche-precio">{{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+          <p class="precio-sub">IVA incluido · Financiación disponible</p>
+        </div>
+
+        <div class="coche-actions">
+          <button class="btn-cita" (click)="pedirCita()">PEDIR CITA</button>
+          <!-- vamos ha hacer que esto te envia a la ruta de financiacion con el id del coche -->
+          <button class="btn-info" >SOLICITAR FINANCIARLO</button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  }
+</div>
