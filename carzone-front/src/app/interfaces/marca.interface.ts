@@ -3,4 +3,8 @@ export interface Marca {
     nombre: string;
     logo?: string;
     descripcion?: string;
+    anio_fundacion?: number;
+    pais?: string;
+    imagen_hero?: string;
+    slogan?: string;
 }

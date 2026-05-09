@@ -1,0 +1,107 @@
+<div class="marca-page" [class.transitioning]="isTransitioning">
+
+  <section class="marca-hero">
+    @if (marca) {
+      <div class="marca-hero-bg">
+        @if (marca.imagen_hero) {
+          <img [src]="marca.imagen_hero" [alt]="marca.nombre">
+        }
+        <div class="overlay"></div>
+      </div>
+      <div class="marca-hero-content">
+        <p class="subtitle">CARZONE · COLECCIÓN EXCLUSIVA</p>
+        <h1 class="marca-nombre">{{ marca.nombre }}</h1>
+        <div class="red-line"></div>
+        @if (marca.slogan) {
+          <p class="marca-slogan">{{ marca.slogan }}</p>
+        }
+        @if (marca.descripcion) {
+          <p class="marca-descripcion">{{ marca.descripcion }}</p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="marca-stats">
+    @if (marca) {
+      <div class="stats-container">
+        @if (marca.anio_fundacion) {
+          <div class="stat-item">
+            <span class="stat-value">{{ marca.anio_fundacion }}</span>
+            <span class="stat-label">AÑO DE FUNDACIÓN</span>
+          </div>
+        }
+        <div class="stat-divider"></div>
+        @if (marca.pais) {
+          <div class="stat-item">
+            <span class="stat-value">{{ marca.pais }}</span>
+            <span class="stat-label">PAÍS DE ORIGEN</span>
+          </div>
+        }
+      <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-value">{{ coches.length }}</span>
+          <span class="stat-label">MODELOS DISPONIBLES</span>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="marca-modelos">
+
+    @if (marca && marca.logo) {
+      <div class="logo-watermark">
+        <img [src]="marca.logo" [alt]="marca.nombre">
+      </div>
+    }
+
+    <div class="modelos-header">
+      <div class="modelos-header-left">
+        <p class="modelos-count">MOSTRANDO {{ coches.length }} MODELOS</p>
+        <h2 class="modelos-title">Modelos {{ marca?.nombre }}</h2>
+      </div>
+    </div>
+
+    <div class="modelos-grid">
+      @for (coche of coches; track coche.id) {
+        <div class="modelo-card" data-aos="fade-up" [attr.data-aos-delay]="$index * 100">
+
+          <div class="modelo-imagen">
+            <img [src]="coche.imagen_principal?.ruta" [alt]="coche.modelo"
+                (error)="$event.target.style.display='none'">
+            <div class="modelo-badge" [class.reservado]="!coche.disponible">
+              {{ coche.disponible ? 'DISPONIBLE' : 'RESERVADO' }}
+            </div>
+            @if (coche.destacado) {
+              <div class="modelo-badge-top">TOP</div>
+            }
+          </div>
+
+          <div class="modelo-info">
+            <h3 class="modelo-nombre">{{ coche.modelo }}</h3>
+            <p class="modelo-meta">{{ coche.anio }} · {{ coche.color }}</p>
+
+            @if (coche.potencia) {
+              <div class="modelo-specs">
+                <div class="spec">
+                  <span class="spec-label">POTENCIA</span>
+                  <span class="spec-value">{{ coche.potencia }} CV</span>
+                </div>
+              </div>
+            }
+
+            <div class="modelo-footer">
+              <p class="modelo-precio">{{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+              <a [href]="'/coches/' + coche.id" class="modelo-link">Ver detalles</a>
+            </div>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="no-modelos">No hay modelos disponibles</div>
+      }
+    </div>
+
+  </section>
+
+</div>

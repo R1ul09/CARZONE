@@ -21,10 +21,6 @@ export class OurModels implements OnInit {
     this.cocheService.getCochesDestacados(this.cochesDestacadosIds).subscribe({
       next: (res) => {
         this.coches = res;
-        console.log('Coches destacados cargados:', this.coches);
-      },
-      error: (error) => {
-        console.error('Error al cargar coches destacados:', error);
       }
     });
   }

@@ -15,19 +15,13 @@ export class Footer implements OnInit {
     marcas: Marca[] = [];
     servicios: Servicio[] = [];
 
-  constructor(private marcaService: MarcaService, private servicioService: ServicioService) {
-    console.log('Footer component initialized');
-  }
+  constructor(private marcaService: MarcaService, private servicioService: ServicioService) {}
 
   ngOnInit() {
     // nada mas cargar el componente, traemos las marcas del back para el dropdown
     this.marcaService.getMarcas().subscribe({
       next: (res) => {
         this.marcas = res;
-        console.log('Marcas cargadas:', res);
-      },
-      error: (error) => {
-        console.error('Error al cargar marcas:', error);
       }
     });
 
@@ -35,10 +29,6 @@ export class Footer implements OnInit {
     this.servicioService.getServicios().subscribe({
       next: (res) => {
         this.servicios = res;
-        console.log('Servicios cargados:', res);
-      },
-      error: (error) => {
-        console.error('Error al cargar servicios:', error);
       }
     });
   }

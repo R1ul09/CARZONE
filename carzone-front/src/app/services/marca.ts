@@ -17,4 +17,9 @@ export class MarcaService {
   getMarcas(): Observable<Marca[]> {
     return this.http.get<Marca[]>(`${this.apiUrl}/marcas`);
   }
+
+  // Método para traer una marca por su ID
+  getMarcaById(id: string | null): Observable<Marca> {
+    return this.http.get<Marca>(`${this.apiUrl}/marcas/${id}`);
+  }
 }

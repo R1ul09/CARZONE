@@ -1,0 +1,388 @@
+@use '../../../../styles/variables' as vars;
+
+.financiacion-page {
+    background: vars.$background-color;
+    min-height: 100vh;
+
+    // ── HERO ──────────────────────────────────────────
+    .fin-hero {
+        padding: calc(vars.$navbar-height + 60px) 60px 60px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background-image: url('../../../../assets/image/financiacion-hero.png' );
+        background-size: cover;
+        background-position: center;
+
+        .subtitle {
+            font-size: vars.$subtitle-font-size;
+            letter-spacing: vars.$subtitle-letter-spacing;
+            color: vars.$accent-color;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            color: vars.$text-color;
+            margin: 0 0 20px;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .description {
+            font-size: 16px;
+            color: vars.$text-muted;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    }
+
+    // ── CONTENIDO ─────────────────────────────────────
+    .fin-contenido {
+        padding: 60px;
+
+        .fin-contenido-inner {
+            max-width: vars.$navbar-max-width;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+    }
+
+    // ── IZQUIERDA ─────────────────────────────────────
+    .fin-izquierda {
+
+        .ventajas {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+
+            .ventaja-item {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+
+                .ventaja-texto {
+                    font-size: 15px;
+                    color: vars.$text-secondary;
+                }
+            }
+        }
+
+        .calculadora {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 32px;
+
+            .calculadora-titulo {
+                font-size: 11px;
+                letter-spacing: vars.$subtitle-letter-spacing;
+                color: vars.$accent-color;
+                font-weight: 600;
+                margin-bottom: 28px;
+            }
+
+            .calc-field {
+                margin-bottom: 24px;
+
+                label {
+                    font-size: 10px;
+                    letter-spacing: 0.1em;
+                    color: vars.$text-tertiary;
+                    display: block;
+                    margin-bottom: 10px;
+                }
+
+                .calc-field-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 10px;
+
+                    label { margin-bottom: 0; }
+
+                    .calc-valor {
+                        font-size: 15px;
+                        font-weight: 700;
+                        color: vars.$text-color;
+                    }
+                }
+
+                select {
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.04);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    color: vars.$text-color;
+                    font-size: 14px;
+                    outline: none;
+                    cursor: pointer;
+                    transition: border-color 0.2s ease;
+
+                    &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+
+                    option { background: #111; }
+                }
+
+                input[type="range"] {
+                    width: 100%;
+                    height: 3px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 2px;
+                    outline: none;
+                    cursor: pointer;
+
+                    &::-webkit-slider-thumb {
+                        -webkit-appearance: none;
+                        width: 18px;
+                        height: 18px;
+                        background: vars.$accent-color;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        transition: transform 0.2s ease;
+
+                        &:hover { transform: scale(1.2); }
+                    }
+                }
+
+                .plazos {
+                    display: flex;
+                    gap: 8px;
+                    flex-wrap: wrap;
+
+                    .plazo-btn {
+                        flex: 1;
+                        padding: 10px 6px;
+                        background: rgba(255, 255, 255, 0.04);
+                        border: 1px solid rgba(255, 255, 255, 0.08);
+                        border-radius: 6px;
+                        color: vars.$text-muted;
+                        font-size: 13px;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+
+                        &:hover {
+                            border-color: rgba(255, 255, 255, 0.2);
+                            color: vars.$text-color;
+                        }
+
+                        &.active {
+                            background: vars.$accent-color;
+                            border-color: vars.$accent-color;
+                            color: vars.$white;
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+
+            .calc-resultado {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 8px;
+                padding: 24px;
+                text-align: center;
+                margin-top: 8px;
+
+                .resultado-label {
+                    font-size: 10px;
+                    letter-spacing: 0.1em;
+                    color: vars.$text-tertiary;
+                    margin-bottom: 10px;
+                }
+
+                .resultado-valor {
+                    font-size: 42px;
+                    font-weight: 900;
+                    color: vars.$text-color;
+                    letter-spacing: -0.03em;
+                    line-height: 1;
+                    margin-bottom: 8px;
+                }
+
+                .resultado-sub {
+                    font-size: 12px;
+                    color: vars.$text-tertiary;
+                }
+            }
+        }
+    }
+
+    // ── DERECHA ───────────────────────────────────────
+    .fin-derecha {
+        position: sticky;
+        top: calc(vars.$navbar-height + 20px);
+
+        .fin-form {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 32px;
+
+            .form-titulo {
+                font-size: 11px;
+                letter-spacing: vars.$subtitle-letter-spacing;
+                color: vars.$accent-color;
+                font-weight: 600;
+                margin-bottom: 28px;
+            }
+
+            .form-aviso {
+                text-align: center;
+                padding: 40px 20px;
+                color: vars.$text-tertiary;
+                font-size: 14px;
+                border: 1px dashed rgba(255, 255, 255, 0.08);
+                border-radius: 8px;
+            }
+
+            .coche-resumen {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 8px;
+                padding: 14px;
+                margin-bottom: 24px;
+
+                img {
+                    width: 80px;
+                    height: 54px;
+                    object-fit: cover;
+                    border-radius: 6px;
+                    flex-shrink: 0;
+                }
+
+                .resumen-nombre {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: vars.$text-color;
+                    margin-bottom: 4px;
+                }
+
+                .resumen-precio {
+                    font-size: 13px;
+                    color: vars.$accent-color;
+                    font-weight: 600;
+                }
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+                margin-bottom: 14px;
+            }
+
+            .form-field {
+                margin-bottom: 14px;
+
+                label {
+                    display: block;
+                    font-size: 10px;
+                    letter-spacing: 0.1em;
+                    color: vars.$text-tertiary;
+                    margin-bottom: 8px;
+                }
+
+                input, textarea {
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.04);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 8px;
+                    padding: 12px 14px;
+                    color: vars.$text-color;
+                    font-size: 14px;
+                    outline: none;
+                    resize: none;
+                    transition: border-color 0.2s ease;
+                    font-family: vars.$font-family-base;
+
+                    &::placeholder { color: rgba(255, 255, 255, 0.2); }
+                    &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+                }
+            }
+
+            .form-resumen {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 8px;
+                padding: 16px;
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .resumen-row {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 13px;
+                    color: vars.$text-tertiary;
+
+                    &.destacado {
+                        color: vars.$text-color;
+                        font-weight: 700;
+                        font-size: 15px;
+                        padding-top: 10px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.06);
+                    }
+                }
+            }
+
+            .btn-solicitar {
+                width: 100%;
+                padding: 15px;
+                background: vars.$accent-color;
+                border: none;
+                border-radius: 8px;
+                color: vars.$white;
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                cursor: pointer;
+                transition: background 0.2s ease;
+                margin-bottom: 12px;
+
+                &:hover { background: vars.$accent-color-alt; }
+            }
+
+            .form-legal {
+                text-align: center;
+                font-size: 11px;
+                color: vars.$text-tertiary;
+            }
+        }
+    }
+
+    // ── RESPONSIVE ────────────────────────────────────
+    @media (max-width: vars.$screen-md) {
+        .fin-hero { padding: calc(vars.$navbar-height + 40px) 24px 40px; }
+
+        .fin-contenido {
+            padding: 40px 24px;
+
+            .fin-contenido-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fin-derecha {
+            position: static;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @media (max-width: vars.$screen-sm) {
+        .fin-hero .main-title { font-size: 2.2rem; }
+    }
+}

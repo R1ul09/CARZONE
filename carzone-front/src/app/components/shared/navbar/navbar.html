@@ -1,39 +1,59 @@
 <nav class="navbar" [class.scrolled]="isScrolled">
   <div class="navbar-container">
-    <button class="logo-btn">
-      <img src="assets/logos/logo-carzone.svg" alt="Carzone Logo" />
+    <button class="logo-btn" routerLink="/">
+      <img src="assets/logos/logo-carzone-no-bg.svg" alt="Carzone Logo" />
     </button>
 
     <div class="nav-links">
-      <a href="#">INICIO</a>
+      <a routerLink="/">INICIO</a>
       <div class="dropdown" [class.active]="isDropdownOpen">
         <button class="dropdown-toggle" (click)="toggleDropdown()">
           MARCAS
           <span class="dropdown-arrow" [class.rotated]="isDropdownOpen">▼</span>
         </button>
-        @if (isDropdownOpen) {
-          <div class="dropdown-menu">
+        <div class="dropdown-menu">
             @for (marca of marcas; track marca.id) {
-              <a [href]="'/marcas/' + marca.id" class="marca-item">
-                <img [src]="marca.logo" [alt]="marca.nombre" class="marca-logo" (error)="$event.target.style.display='none'">
-                <span>{{ marca.nombre }}</span>
+              <a [routerLink]="['/marcas', marca.id]" class="marca-item">
+                <img [src]="marca.logo" [alt]="marca.nombre" data-aos="fade-up" [attr.data-aos-delay]="marca.id * 50" class="marca-logo">
+                <span data-aos="fade-up" [attr.data-aos-delay]="marca.id * 50">{{ marca.nombre }}</span>
               </a>
-            } @empty {
-              <div class="no-marcas">No hay marcas disponibles</div>
             }
           </div>
-        }
       </div>
-      <a href="#">FINANCIACIÓN</a>
+      <a routerLink="/financiacion">FINANCIACIÓN</a>
     </div>
 
     <div class="auth-buttons">
       <a routerLink="/login" class="login-btn">INICIAR SESIÓN</a>
     </div>
 
-    <button class="menu-toggle" aria-label="Abrir menú">
+    <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span class="line"></span>
       <span class="line"></span>
       <span class="line"></span>
     </button>
+  </div>
+
+  <div class="mobile-overlay" [class.active]="isMenuOpen">
+    <div class="mobile-menu-content">
+      <a routerLink="/" (click)="toggleMenu()">INICIO</a>
+      
+      <div class="mobile-marcas-accordion" [class.open]="isMobileMarcasOpen">
+        <button class="mobile-marcas-toggle" (click)="toggleMobileMarcas()">
+          MARCAS
+          <span class="mobile-dropdown-arrow" [class.rotated]="isMobileMarcasOpen">▼</span>
+        </button>
+        <div class="mobile-marcas-list">
+          @for (marca of marcas; track marca.id) {
+            <a [routerLink]="['/marcas', marca.id]" (click)="toggleMenu()">
+              {{ marca.nombre }}
+            </a>
+          }
+        </div>
+      </div>
+
+      <a routerLink="/financiacion" (click)="toggleMenu()">FINANCIACIÓN</a>
+      <a routerLink="/login" class="login-btn-mobile" (click)="toggleMenu()">INICIAR SESIÓN</a>
+    </div>
   </div>
 </nav>

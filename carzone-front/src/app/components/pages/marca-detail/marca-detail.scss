@@ -1,0 +1,451 @@
+@use '../../../../styles/variables' as vars;
+
+.marca-page {
+    background: vars.$background-color;
+    min-height: 100vh;
+
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+
+    &.transitioning {
+        opacity: 0;
+        transform: translateY(16px);
+        pointer-events: none;
+    }
+
+    .marca-hero {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: flex-end;
+        padding: 0 60px 80px;
+        overflow: hidden;
+
+        .marca-hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                filter: brightness(0.5);
+            }
+
+            .overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    to top,
+                    rgba(10, 10, 10, 1) 0%,
+                    rgba(10, 10, 10, 0.4) 50%,
+                    rgba(10, 10, 10, 0.2) 100%
+                );
+            }
+        }
+
+        .marca-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+
+            .subtitle {
+                font-size: vars.$subtitle-font-size;
+                letter-spacing: vars.$subtitle-letter-spacing;
+                color: vars.$accent-color;
+                font-weight: 600;
+                margin-bottom: 16px;
+            }
+
+            .marca-nombre {
+                font-size: clamp(4rem, 12vw, 10rem);
+                font-weight: 900;
+                color: vars.$text-color;
+                line-height: 0.9;
+                margin: 0;
+                letter-spacing: -0.02em;
+            }
+
+            .red-line {
+                width: vars.$red-line-width;
+                height: vars.$red-line-height;
+                background: vars.$accent-color;
+                margin: 24px 0;
+            }
+
+            .marca-slogan {
+                font-size: 16px;
+                color: vars.$text-muted;
+                font-style: italic;
+                margin-bottom: 12px;
+                letter-spacing: 0.05em;
+            }
+
+            .marca-descripcion {
+                font-size: 15px;
+                color: vars.$text-muted;
+                max-width: 500px;
+                line-height: 1.7;
+            }
+        }
+    }
+
+    .marca-stats {
+        background: #111;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 40px 60px;
+
+        .stats-container {
+            max-width: vars.$navbar-max-width;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+
+            .stat-value {
+                font-size: 28px;
+                font-weight: 800;
+                color: vars.$text-color;
+                letter-spacing: -0.02em;
+            }
+
+            .stat-label {
+                font-size: 11px;
+                letter-spacing: vars.$subtitle-letter-spacing;
+                color: vars.$text-tertiary;
+                font-weight: 500;
+            }
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .marca-modelos {
+        position: relative;
+        padding: 60px 60px 80px;
+        max-width: vars.$navbar-max-width;
+        margin: 0 auto;
+
+        .logo-watermark {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 0;
+
+            img {
+                width: 50%;
+                max-width: 600px;
+                opacity: 0.03;
+                filter: invert(1);
+                user-select: none;
+            }
+        }
+
+        .modelos-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+
+            .modelos-count {
+                font-size: 11px;
+                letter-spacing: vars.$subtitle-letter-spacing;
+                color: vars.$text-tertiary;
+                margin-bottom: 6px;
+            }
+
+            .modelos-title {
+                font-size: 28px;
+                font-weight: 700;
+                color: vars.$text-color;
+                margin: 0;
+            }
+
+            .modelos-filtros {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+
+                .filtro-btn {
+                    background: transparent;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    color: vars.$text-muted;
+                    padding: 8px 18px;
+                    font-size: 12px;
+                    letter-spacing: 0.08em;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        border-color: rgba(255, 255, 255, 0.3);
+                        color: vars.$text-color;
+                    }
+
+                    &.active {
+                        background: vars.$accent-color;
+                        border-color: vars.$accent-color;
+                        color: vars.$white;
+                    }
+                }
+
+                .filtro-select {
+                    background: #111;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    color: vars.$text-muted;
+                    padding: 8px 16px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    outline: none;
+                    transition: border-color 0.2s ease;
+
+                    &:hover {
+                        border-color: rgba(255, 255, 255, 0.3);
+                    }
+
+                    option {
+                        background: #111;
+                    }
+                }
+            }
+        }
+
+        .modelos-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+
+            .modelo-card {
+                background: #111;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 12px;
+                overflow: hidden;
+                transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                            border-color 0.3s ease,
+                            box-shadow 0.3s ease;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0%;
+                    height: 2px;
+                    background: vars.$accent-color;
+                    transition: width 0.4s ease;
+                }
+
+                &:hover {
+                    transform: translateY(-6px);
+                    border-color: rgba(vars.$accent-color, 0.3);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+
+                    &::after { width: 100%; }
+
+                    .modelo-imagen img { transform: scale(1.05); filter: brightness(1); }
+                }
+
+                .modelo-imagen {
+                    position: relative;
+                    height: 220px;
+                    overflow: hidden;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                                    filter 0.5s ease;
+                        filter: brightness(0.88);
+                    }
+
+                    .modelo-badge {
+                        position: absolute;
+                        top: 14px;
+                        right: 14px;
+                        padding: 4px 10px;
+                        font-size: 10px;
+                        font-weight: 700;
+                        letter-spacing: 0.08em;
+                        border-radius: 4px;
+                        background: vars.$accent-color;
+                        color: vars.$white;
+
+                        &.reservado {
+                            background: rgba(255, 255, 255, 0.15);
+                            color: vars.$text-muted;
+                        }
+                    }
+
+                    .modelo-badge-top {
+                        position: absolute;
+                        top: 14px;
+                        left: 14px;
+                        padding: 4px 10px;
+                        font-size: 10px;
+                        font-weight: 700;
+                        letter-spacing: 0.08em;
+                        border-radius: 4px;
+                        background: rgba(0, 0, 0, 0.15);
+                        color: white;
+                        border: 1px solid white;
+                    }
+                }
+
+                .modelo-info {
+                    padding: 20px 24px 24px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+
+                    .modelo-nombre {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: vars.$text-color;
+                        margin: 0;
+                    }
+
+                    .modelo-meta {
+                        font-size: 13px;
+                        color: vars.$text-tertiary;
+                    }
+
+                    .modelo-specs {
+                        display: flex;
+                        gap: 12px;
+                        margin-top: 4px;
+
+                        .spec {
+                            flex: 1;
+                            background: rgba(255, 255, 255, 0.03);
+                            border: 1px solid rgba(255, 255, 255, 0.06);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 4px;
+
+                            .spec-label {
+                                font-size: 9px;
+                                letter-spacing: 0.1em;
+                                color: vars.$text-tertiary;
+                            }
+
+                            .spec-value {
+                                font-size: 13px;
+                                font-weight: 600;
+                                color: vars.$text-color;
+                            }
+                        }
+                    }
+
+                    .modelo-footer {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-top: 8px;
+
+                        .modelo-precio {
+                            font-size: 22px;
+                            font-weight: 800;
+                            color: vars.$accent-color;
+                            letter-spacing: -0.02em;
+                        }
+
+                        .modelo-link {
+                            padding: 8px 18px;
+                            border: 1px solid rgba(vars.$accent-color, 0.45);
+                            color: vars.$accent-color;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            text-decoration: none;
+                            letter-spacing: 0.05em;
+                            transition: background 0.2s ease, border-color 0.2s ease;
+
+                            &:hover {
+                                background: rgba(vars.$accent-color, 0.1);
+                                border-color: vars.$accent-color;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .no-modelos {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 60px;
+                color: vars.$text-tertiary;
+                font-size: 14px;
+            }
+        }
+    }
+
+    // ── RESPONSIVE ────────────────────────────────────
+    @media (max-width: vars.$screen-md) {
+        .marca-hero {
+            padding: 0 24px 60px;
+        }
+
+        .marca-stats {
+            padding: 32px 24px;
+
+            .stats-container {
+                gap: 32px;
+            }
+        }
+
+        .marca-modelos {
+            padding: 40px 24px 60px;
+
+            .modelos-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .modelos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    @media (max-width: vars.$screen-sm) {
+        .marca-stats .stats-container {
+            flex-direction: column;
+            gap: 24px;
+
+            .stat-divider { display: none; }
+        }
+
+        .marca-modelos .modelos-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}

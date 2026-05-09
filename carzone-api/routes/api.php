@@ -17,6 +17,7 @@ Route::get('/marcas/{id}', [MarcaController::class, 'show']);
 Route::get('/coches', [CocheController::class, 'index']);
 Route::get('/coches/{id}', [CocheController::class, 'show']);
 Route::get('/servicios', [ServicioController::class, 'index']);
+Route::post('/chatbot', [ChatbotController::class, 'procesarMensaje']);
 
 // RUTAS PROTEGIDAS (Requieren Token/Estar logueado)
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -29,7 +30,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/citas/{id}', [CitaController::class, 'destroy']);
     // El update y delete los dejamos para cuando definamos quién puede cancelar
 
-    Route::post('/chatbot', [ChatbotController::class, 'procesarMensaje']);
+    // modificar marca
+    Route::post('/marcas', [MarcaController::class, 'store']);
+    Route::put('/marcas/{id}', [MarcaController::class, 'update']);
+    Route::delete('/marcas/{id}', [MarcaController::class, 'destroy']);
 
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::post('/coches', [CocheController::class, 'store']);

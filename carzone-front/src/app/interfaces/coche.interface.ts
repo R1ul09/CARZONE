@@ -1,8 +1,4 @@
-export interface Marca {
-    id: number;
-    nombre: string;
-    logo?: string;
-}
+import { Marca } from './marca.interface';
 
 export interface ImagenVehiculo {
     id: number;
@@ -19,4 +15,23 @@ export interface Coche {
     marca: Marca;
     imagen_principal?: ImagenVehiculo;
     imagenes?: ImagenVehiculo[];
+
+    // Especificaciones técnicas
+    potencia?: number;
+    par_motor?: number;
+    velocidad_max?: number;
+    aceleracion?: number;
+
+    // Configuración
+    combustible?: string;
+    transmision?: string;
+    traccion?: string;
+    num_plazas?: number;
+    num_puertas?: number;
+
+    // Estética y estado
+    tipo_carroceria?: string;
+    color?: string;
+    disponible?: boolean;
+    destacado?: boolean;
 }
