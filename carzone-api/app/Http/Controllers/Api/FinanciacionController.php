@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class FinanciacionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Financiacion::all(), 200);
+        $financiaciones = Financiacion::with(['coche.marca'])
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($financiaciones);
     }
 
     public function store(Request $request)

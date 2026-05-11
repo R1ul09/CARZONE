@@ -56,10 +56,63 @@
     }
 
     <div class="modelos-header">
-      <div class="modelos-header-left">
-        <p class="modelos-count">MOSTRANDO {{ coches.length }} MODELOS</p>
-        <h2 class="modelos-title">Modelos {{ marca?.nombre }}</h2>
-      </div>
+        <div class="modelos-header-left">
+            <p class="modelos-count">MOSTRANDO {{ coches.length }} MODELOS</p>
+            <h2 class="modelos-title">Modelos {{ marca?.nombre }}</h2>
+        </div>
+
+        <div class="modelos-filtros">
+
+            <!-- Disponibilidad -->
+            <div class="filtros-grupo">
+                <button class="filtro-btn" [class.active]="filtros.disponible === null"
+                        (click)="setDisponible(null)">TODOS</button>
+                <button class="filtro-btn" [class.active]="filtros.disponible === 1"
+                        (click)="setDisponible(1)">DISPONIBLES</button>
+                <button class="filtro-btn" [class.active]="filtros.disponible === 0"
+                        (click)="setDisponible(0)">RESERVADOS</button>
+            </div>
+
+            <!-- Tipo carrocería -->
+            <select class="filtro-select" (change)="setCarroceria($event)">
+                <option value="">Carrocería</option>
+                <option value="Coupé">Coupé</option>
+                <option value="SUV">SUV</option>
+                <option value="Cabrio">Cabrio</option>
+                <option value="Berlina">Berlina</option>
+            </select>
+
+            <!-- Combustible -->
+            <select class="filtro-select" (change)="setCombustible($event)">
+                <option value="">Combustible</option>
+                <option value="Gasolina">Gasolina</option>
+                <option value="Híbrido">Híbrido</option>
+                <option value="Eléctrico">Eléctrico</option>
+            </select>
+
+            <!-- Precio -->
+            <select class="filtro-select" (change)="setPrecioMax($event)">
+                <option value="">Precio</option>
+                <option value="200000">Hasta 200.000€</option>
+                <option value="500000">Hasta 500.000€</option>
+                <option value="1000000">Hasta 1.000.000€</option>
+            </select>
+
+            <!-- Ordenar -->
+            <select class="filtro-select" (change)="setOrden($event)">
+                <option value="">Ordenar</option>
+                <option value="precio_asc">Precio: menor a mayor</option>
+                <option value="precio_desc">Precio: mayor a menor</option>
+                <option value="anio_desc">Más recientes</option>
+                <option value="potencia_desc">Mayor potencia</option>
+            </select>
+
+            <!-- Reset -->
+            @if (hayFiltrosActivos()) {
+                <button class="filtro-reset" (click)="resetFiltros()">✕</button>
+            }
+
+        </div>
     </div>
 
     <div class="modelos-grid">

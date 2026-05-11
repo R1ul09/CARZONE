@@ -47,4 +47,9 @@ export class CocheDetail implements OnInit {
       // aquí irá el formulario de cita más adelante
     }
   }
+
+  solicitarFinanciacion() {
+    this.router.navigate(['/financiacion'], { 
+      queryParams: { coche: this.coche?.id } });
+  }
 }

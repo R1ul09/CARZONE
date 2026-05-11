@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('coche_id')->constrained('coches')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
             $table->integer('meses');
             $table->decimal('cuota_mensual', 8, 2);

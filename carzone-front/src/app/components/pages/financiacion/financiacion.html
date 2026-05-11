@@ -107,8 +107,8 @@
             <div class="coche-resumen">
               @if (cocheSeleccionado?.imagen_principal?.ruta) {
                 <img [src]="cocheSeleccionado!.imagen_principal!.ruta"
-                     [alt]="cocheSeleccionado!.modelo"
-                     (error)="$event.target.style.display='none'">
+                    [alt]="cocheSeleccionado!.modelo"
+                    (error)="$event.target.style.display='none'">
               }
               <div>
                 <p class="resumen-nombre"> {{ cocheSeleccionado?.modelo }}</p>

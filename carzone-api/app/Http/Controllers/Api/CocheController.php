@@ -30,35 +30,35 @@ class CocheController extends Controller
             ->when($request->input('marca_id'), function ($q, $marcaId) {
                 $q->where('marca_id', $marcaId);
             })
+            ->when($request->input('tipo_carroceria'), function ($q, $tipo) {
+                $q->where('tipo_carroceria', $tipo);
+            })
+            ->when($request->input('combustible'), function ($q, $combustible) {
+                $q->where('combustible', $combustible);
+            })
+            ->when($request->input('precio_max'), function ($q, $precioMax) {
+                $q->where('precio', '<=', $precioMax);
+            })
+            ->when($request->input('orden'), function ($q, $orden) {
+                match($orden) {
+                    'precio_asc'   => $q->orderBy('precio', 'asc'),
+                    'precio_desc'  => $q->orderBy('precio', 'desc'),
+                    'anio_desc'    => $q->orderBy('anio', 'desc'),
+                    'potencia_desc'=> $q->orderBy('potencia', 'desc'),
+                    default        => null
+                };
+            })
             ->when($request->input('marca'), function ($q, $marca) {
                 $q->whereHas('marca', function($subq) use ($marca) {
                     $subq->where('nombre', 'like', '%' . $marca . '%');
                 });
             })
-            ->when(!is_null($request->input('disponible')), function ($q, $disponible) {
-                $q->where('disponible', filter_var($disponible, FILTER_VALIDATE_BOOLEAN));
-            })
             ->when($request->input('ids'), function ($q, $ids) {
-                $idsArray = explode(',', $ids);
-                $q->whereIn('id', $idsArray);
+                $idsArray = array_filter(explode(',', $ids));
+                if (!empty($idsArray)) {
+                    $q->whereIn('id', $idsArray);
+                }
             });
-
-        // Aplicar ordenamiento
-        $order = $request->input('order', 'id');
-        $direction = $request->input('direction', 'asc');
-        
-        // Validar que la dirección sea asc o desc
-        if (!in_array(strtolower($direction), ['asc', 'desc'])) {
-            $direction = 'asc';
-        }
-        
-        // Validar campos permitidos para ordenar
-        $allowedFields = ['id', 'precio', 'anio', 'modelo', 'created_at'];
-        if (!in_array($order, $allowedFields)) {
-            $order = 'id';
-        }
-        
-        $query->orderBy($order, $direction);
         
         $coches = $query->get();
 
@@ -85,7 +85,7 @@ class CocheController extends Controller
 
     public function show($id)
     {
-        $coche = Coche::with(['marca', 'imagenes'])->find($id);
+        $coche = Coche::with(['marca', 'imagenes', 'imagenPrincipal'])->find($id);
 
         if (!$coche) return response()->json(['message' => 'No encontrado'], 404);
 

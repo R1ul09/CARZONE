@@ -8,7 +8,7 @@
       <label>Correo electrónico</label>
       <div class="input-wrap">
         <span class="icon">✉</span>
-        <input type="email" placeholder="tu@email.com">
+        <input type="email" placeholder="tu@email.com" [(ngModel)]="email">
       </div>
     </div>
 
@@ -17,7 +17,7 @@
       <div class="input-wrap">
         <span class="icon">&#x1f512;&#xfe0e;
         </span>
-        <input type="password" placeholder="••••••••">
+        <input type="password" placeholder="••••••••" [(ngModel)]="password">
       </div>
     </div>
 
@@ -28,7 +28,7 @@
       <a routerLink="/forgot-password" class="forgot">¿Olvidaste tu contraseña?</a>
     </div>
 
-    <button class="btn-primary">Iniciar sesión</button>
+    <button class="btn-primary" (click)="login()">Iniciar sesión</button>
 
     <p class="register">
       ¿Nuevo en Carzone? <a routerLink="/register">Crear cuenta</a>

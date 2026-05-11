@@ -55,3 +55,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('imagenes-vehiculos', [ImagenVehiculoController::class, 'store']);
 
 });
+
+require __DIR__.'/auth.php';

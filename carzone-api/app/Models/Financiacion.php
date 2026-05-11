@@ -21,4 +21,10 @@ class Financiacion extends Model
     {
         return $this->belongsTo(Coche::class);
     }
+
+    // La financiación pertenece a un usuario
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

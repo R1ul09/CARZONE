@@ -1,0 +1,161 @@
+<div class="comparar-page">
+
+  <!-- HERO -->
+  <section class="comparar-hero">
+    <div class="comparar-hero-content" data-aos="fade-up">
+      <p class="subtitle">CARZONE · ANÁLISIS</p>
+      <h1 class="main-title">COMPARADOR DE VEHÍCULOS</h1>
+      <p class="description">Enfrenta dos modelos y descubre cuál se adapta mejor a ti</p>
+    </div>
+  </section>
+
+  <!-- SELECTORES -->
+  <section class="comparar-selectores">
+    <div class="selectores-inner">
+
+      <!-- COCHE A -->
+      <div class="selector-bloque" data-aos="fade-right">
+        <p class="selector-label">VEHÍCULO A</p>
+
+        <select class="selector-marca" (change)="onMarcaChange($event, 'A')">
+          <option value="">Selecciona una marca</option>
+          @for (marca of marcas; track marca.id) {
+            <option [value]="marca.id">{{ marca.nombre }}</option>
+          }
+        </select>
+
+        @if (cochesA.length > 0) {
+          <select class="selector-coche" (change)="onCocheChange($event, 'A')">
+            <option value="">Selecciona un modelo</option>
+            @for (coche of cochesA; track coche.id) {
+              <option [value]="coche.id">{{ coche.modelo }}</option>
+            }
+          </select>
+        }
+
+        @if (cocheA) {
+          <div class="coche-preview">
+            @if (cocheA.imagen_principal?.ruta) {
+              <img [src]="cocheA.imagen_principal!.ruta" [alt]="cocheA.modelo"
+                   (error)="$event.target.style.display='none'">
+            }
+            <div class="coche-preview-info">
+              <p class="preview-marca">{{ cocheA.marca.nombre }}</p>
+              <p class="preview-modelo">{{ cocheA.modelo }}</p>
+              <p class="preview-precio">{{ cocheA.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- VS -->
+      <div class="vs-badge" data-aos="fade-up">VS</div>
+
+      <!-- COCHE B -->
+      <div class="selector-bloque" data-aos="fade-left">
+        <p class="selector-label">VEHÍCULO B</p>
+
+        <select class="selector-marca" (change)="onMarcaChange($event, 'B')">
+          <option value="">Selecciona una marca</option>
+          @for (marca of marcas; track marca.id) {
+            <option [value]="marca.id">{{ marca.nombre }}</option>
+          }
+        </select>
+
+        @if (cochesB.length > 0) {
+          <select class="selector-coche" (change)="onCocheChange($event, 'B')">
+            <option value="">Selecciona un modelo</option>
+            @for (coche of cochesB; track coche.id) {
+              <option [value]="coche.id">{{ coche.modelo }}</option>
+            }
+          </select>
+        }
+
+        @if (cocheB) {
+          <div class="coche-preview">
+            @if (cocheB.imagen_principal?.ruta) {
+              <img [src]="cocheB.imagen_principal!.ruta" [alt]="cocheB.modelo"
+                   (error)="$event.target.style.display='none'">
+            }
+            <div class="coche-preview-info">
+              <p class="preview-marca">{{ cocheB.marca.nombre }}</p>
+              <p class="preview-modelo">{{ cocheB.modelo }}</p>
+              <p class="preview-precio">{{ cocheB.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TABLA COMPARATIVA -->
+  @if (cocheA && cocheB) {
+    <section class="comparar-tabla" data-aos="fade-up">
+      <div class="tabla-inner">
+
+        <div class="tabla-header">
+          <div class="tabla-header-nombre">{{ cocheA.modelo }}</div>
+          <div class="tabla-header-campo">ESPECIFICACIÓN</div>
+          <div class="tabla-header-nombre">{{ cocheB.modelo }}</div>
+        </div>
+
+        @for (campo of campos; track campo.key) {
+          <div class="tabla-fila">
+
+            <!-- Valor A -->
+            <div class="tabla-valor" [class]="getClase(campo.key, 'A')">
+              <span class="valor-texto">{{ getValor(cocheA, campo.key) }}</span>
+              @if (getClase(campo.key, 'A') === 'ganador') {
+                <span class="valor-icono">▲</span>
+              }
+              @if (getClase(campo.key, 'A') === 'perdedor') {
+                <span class="valor-icono">▼</span>
+              }
+            </div>
+
+            <!-- Campo -->
+            <div class="tabla-campo">
+              <span class="campo-nombre">{{ campo.label }}</span>
+            </div>
+
+            <!-- Valor B -->
+            <div class="tabla-valor" [class]="getClase(campo.key, 'B')">
+              @if (getClase(campo.key, 'B') === 'ganador') {
+                <span class="valor-icono">▲</span>
+              }
+              @if (getClase(campo.key, 'B') === 'perdedor') {
+                <span class="valor-icono">▼</span>
+              }
+              <span class="valor-texto">{{ getValor(cocheB, campo.key) }}</span>
+            </div>
+
+          </div>
+        }
+
+        <!-- Ganador general -->
+        <div class="tabla-ganador">
+          <div class="ganador-bloque" [class.activo]="ganador === 'A'">
+            @if (ganador === 'A') {
+              <p class="ganador-label">MEJOR VALORADO</p>
+              <p class="ganador-nombre">{{ cocheA.modelo }}</p>
+            }
+          </div>
+          <div class="ganador-centro">
+            @if (ganador === 'empate') {
+              <p class="empate-texto">EMPATE TÉCNICO</p>
+            }
+          </div>
+          <div class="ganador-bloque" [class.activo]="ganador === 'B'">
+            @if (ganador === 'B') {
+              <p class="ganador-label">MEJOR VALORADO</p>
+              <p class="ganador-nombre">{{ cocheB.modelo }}</p>
+            }
+          </div>
+        </div>
+
+      </div>
+    </section>
+  }
+
+</div>

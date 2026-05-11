@@ -20,5 +20,10 @@ export class Hero implements AfterViewInit {
     video.play().catch(error => {
       console.warn("El autoplay fue bloqueado o falló, reintentando...", error);
     });
+
+    // cuando termine se queda parado en el último frame
+    video.addEventListener('ended', () => {
+        video.pause();
+    });
   }
 }
