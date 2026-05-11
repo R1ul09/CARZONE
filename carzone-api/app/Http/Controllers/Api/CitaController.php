@@ -11,21 +11,14 @@ use Illuminate\Support\Facades\Validator;
 class CitaController extends Controller
 {
     // Listar citas
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $citas = Cita::with(['coche.marca'])
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        // Si es admin, ve todas las citas con la info del usuario, coche y servicio
-        if ($user->rol->nombre === 'admin') {
-            $citas = Cita::with(['user', 'coche', 'servicio'])->get();
-        } else {
-            // Si es cliente, solo ve las suyas
-            $citas = Cita::with(['coche', 'servicio'])
-                        ->where('user_id', $user->id)
-                        ->get();
-        }
-
-        return response()->json($citas, 200);
+        return response()->json($citas);
     }
 
     // Crear una cita

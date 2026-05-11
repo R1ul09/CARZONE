@@ -166,6 +166,89 @@
             display: flex;
         }
 
+        .user-menu {
+            position: relative;
+
+            .user-btn {
+                background: none;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: vars.$text-color;
+                padding: 8px 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: vars.$navbar-link-font-size;
+                letter-spacing: vars.$navbar-link-letter-spacing;
+                transition: border-color 0.3s ease;
+
+                &:hover {
+                    border-color: rgba(255, 255, 255, 0.4);
+                }
+
+                .user-icon { font-size: 16px; }
+
+                .dropdown-arrow {
+                    font-size: 10px;
+                    transition: transform 0.3s ease;
+                    &.rotated { transform: rotate(180deg); }
+                }
+            }
+
+            .user-dropdown {
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 8px;
+                padding: 8px 0;
+                min-width: 180px;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-8px);
+                transition: all 0.3s ease;
+
+                a, button {
+                    display: block;
+                    width: 100%;
+                    padding: 12px 20px;
+                    color: vars.$text-muted;
+                    text-decoration: none;
+                    font-size: 13px;
+                    letter-spacing: 0.05em;
+                    background: none;
+                    border: none;
+                    text-align: left;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        color: vars.$text-color;
+                        background: rgba(255, 255, 255, 0.05);
+                    }
+                }
+
+                .dropdown-divider {
+                    height: 1px;
+                    background: rgba(255, 255, 255, 0.06);
+                    margin: 6px 0;
+                }
+
+                button:last-child:hover {
+                    color: vars.$accent-color;
+                }
+            }
+
+            &.active .user-dropdown {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+
         .login-btn{
             background: none;
             border: 1px solid vars.$white;

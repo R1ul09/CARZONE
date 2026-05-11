@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Auth } from '../services/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -9,5 +11,31 @@ import { RouterLink } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
+
 export class Login {
+
+  email: string = '';
+  password: string = '';
+
+  constructor(
+    private authService: Auth, 
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  login() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        // Guardar el token en localStorage
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        this.toastr.success(`Bienvenido, ${response.user.name}`, 'Sesión iniciada');
+        // Redirigir al usuario a la página principal o dashboard
+        this.router.navigate(['/']);
+      },
+      error: () => {
+          this.toastr.error('Credenciales incorrectas', 'Error');
+      }
+    });
+  }
 }

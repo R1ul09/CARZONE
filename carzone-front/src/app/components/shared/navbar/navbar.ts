@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { NavigationStart, Router, RouterLink } from '@angular/router';
 import { Marca } from '../../../interfaces/marca.interface';
 import { MarcaService } from '../../../services/marca';
+import { AuthUser } from '../../../interfaces/auth.interface';
+import { Auth } from '../../../services/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -26,6 +29,10 @@ export class Navbar implements OnInit {
   // para el acordeón de marcas dentro del menú móvil
   isMobileMarcasOpen = false;
 
+  isLoggedIn: boolean = false;
+  user: AuthUser | null = null;
+  isUserMenuOpen: boolean = false;
+
   @HostListener('window:scroll')
   onScroll() {
     // detecta el scroll para cambiar el fondo del navbar
@@ -40,7 +47,14 @@ export class Navbar implements OnInit {
     }
   }
 
-  constructor(private marcaService: MarcaService, private el: ElementRef, private router: Router) {}
+  constructor(
+    private marcaService: MarcaService, 
+    private el: ElementRef, 
+    private router: Router,
+    private authService: Auth, 
+    private cd: ChangeDetectorRef,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     // nada mas cargar el componente, traemos las marcas del back para el dropdown
@@ -56,6 +70,16 @@ export class Navbar implements OnInit {
         this.isDropdownOpen = false;
       }
     });
+
+    // comprobamos si hay token al cargar
+    const token = localStorage.getItem('authToken');
+    const user = localStorage.getItem('user');
+
+    if (token && user) {
+      this.isLoggedIn = true;
+      this.user = JSON.parse(user);
+      this.cd.detectChanges();
+    }
   }
 
   // metodo para abrir/cerrar el dropdown de marcas
@@ -81,5 +105,39 @@ export class Navbar implements OnInit {
   // metodo para abrir/cerrar el acordeón de marcas en móvil
   toggleMobileMarcas() {
     this.isMobileMarcasOpen = !this.isMobileMarcasOpen;
+  }
+
+  // metodo para abrir/cerrar el menú de usuario
+  toggleUserMenu() {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  // metodo para cerrar sesión
+  logout() {
+      this.authService.logout().subscribe({
+        // con next hacemos la limpieza local aunque falle la petición al backend, porque aunque falle el logout en el backend, el usuario ya no debería tener acceso a nada protegido
+          next: () => {
+              localStorage.removeItem('authToken');
+              localStorage.removeItem('user');
+              this.isLoggedIn = false;
+              this.user = null;
+              this.toastr.info('Sesión cerrada correctamente');
+              this.router.navigate(['/']);
+              this.cd.detectChanges();
+          },
+          error: () => {
+              // aunque falle borramos el token igualmente
+              this.toastr.error('Error al cerrar sesión');
+              localStorage.removeItem('authToken');
+              localStorage.removeItem('user');
+              this.isLoggedIn = false;
+              this.cd.detectChanges();
+              this.router.navigate(['/']);
+          }
+      });
+  }
+
+  irAlLogin() {
+    this.router.navigate(['/login']);
   }
 }

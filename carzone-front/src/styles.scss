@@ -17,3 +17,7 @@ body {
     background-color: vars.$accent-color;
     color: #fff;
 }
+
+.toast-top-center {
+    top: clamp(20px, 5vh, 60px) !important;
+}

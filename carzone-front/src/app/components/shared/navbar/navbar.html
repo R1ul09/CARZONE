@@ -21,10 +21,30 @@
           </div>
       </div>
       <a routerLink="/financiacion">FINANCIACIÓN</a>
+      <a routerLink="/comparar">COMPARAR</a>
     </div>
 
     <div class="auth-buttons">
-      <a routerLink="/login" class="login-btn">INICIAR SESIÓN</a>
+      @if (!isLoggedIn) {
+          <button class="login-btn" (click)="irAlLogin()">
+              INICIAR SESIÓN
+          </button>
+      }
+
+      @if (isLoggedIn) {
+          <div class="user-menu" [class.active]="isUserMenuOpen">
+              <button class="user-btn" (click)="toggleUserMenu()">
+                  <span class="user-icon">👤</span>
+                  <span class="user-name">{{ user?.name }}</span>
+                  <span class="dropdown-arrow" [class.rotated]="isUserMenuOpen">▼</span>
+              </button>
+              <div class="user-dropdown">
+                  <a routerLink="/dashboard">Dashboard</a>
+                  <div class="dropdown-divider"></div>
+                  <button (click)="logout()">Cerrar sesión</button>
+              </div>
+          </div>
+        }
     </div>
 
     <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
@@ -53,6 +73,7 @@
       </div>
 
       <a routerLink="/financiacion" (click)="toggleMenu()">FINANCIACIÓN</a>
+      <a routerLink="/comparar" (click)="toggleMenu()">COMPARAR</a>
       <a routerLink="/login" class="login-btn-mobile" (click)="toggleMenu()">INICIAR SESIÓN</a>
     </div>
   </div>

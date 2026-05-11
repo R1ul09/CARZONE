@@ -9,9 +9,9 @@
         padding: calc(vars.$navbar-height + 60px) 60px 60px;
         text-align: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        background-image: url('../../../../assets/image/financiacion-hero.png' );
+        background-image: url('../../../../assets/image/financiacion-hero.jpg' );
         background-size: cover;
-        background-position: center;
+        background-position: 50% 25%;
 
         .subtitle {
             font-size: vars.$subtitle-font-size;
