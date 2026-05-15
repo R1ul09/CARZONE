@@ -114,27 +114,27 @@ export class Navbar implements OnInit {
 
   // metodo para cerrar sesión
   logout() {
-      this.authService.logout().subscribe({
-        // con next hacemos la limpieza local aunque falle la petición al backend, porque aunque falle el logout en el backend, el usuario ya no debería tener acceso a nada protegido
-          next: () => {
-              localStorage.removeItem('authToken');
-              localStorage.removeItem('user');
-              this.isLoggedIn = false;
-              this.user = null;
-              this.toastr.info('Sesión cerrada correctamente');
-              this.router.navigate(['/']);
-              this.cd.detectChanges();
-          },
-          error: () => {
-              // aunque falle borramos el token igualmente
-              this.toastr.error('Error al cerrar sesión');
-              localStorage.removeItem('authToken');
-              localStorage.removeItem('user');
-              this.isLoggedIn = false;
-              this.cd.detectChanges();
-              this.router.navigate(['/']);
-          }
-      });
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+    this.toastr.info('Sesión cerrada');
+    this.router.navigate(['/']);
+  }
+
+  getDashboardRoute(): string[] {
+    if (!this.user) {
+      return ['/'];
+    }
+
+    switch (this.user.role_id) {
+      case 1:
+        return ['/dashboard/cliente'];
+      case 2:
+        return ['/dashboard/admin'];
+      case 3:
+        return ['/dashboard/empleado'];
+      default:
+        return ['/'];
+    }
   }
 
   irAlLogin() {

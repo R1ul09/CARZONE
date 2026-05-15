@@ -30,8 +30,14 @@ export class Login {
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
         this.toastr.success(`Bienvenido, ${response.user.name}`, 'Sesión iniciada');
-        // Redirigir al usuario a la página principal o dashboard
-        this.router.navigate(['/']);
+        
+        // redirige según el rol
+        switch (response.user.role_id) {
+            case 1: this.router.navigate(['/dashboard/cliente']); break;
+            case 2: this.router.navigate(['/dashboard/admin']); break;
+            case 3: this.router.navigate(['/dashboard/empleado']); break;
+            default: this.router.navigate(['/']);
+        }
       },
       error: () => {
           this.toastr.error('Credenciales incorrectas', 'Error');

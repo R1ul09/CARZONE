@@ -39,7 +39,7 @@
                   <span class="dropdown-arrow" [class.rotated]="isUserMenuOpen">▼</span>
               </button>
               <div class="user-dropdown">
-                  <a routerLink="/dashboard">Dashboard</a>
+                  <a [routerLink]="getDashboardRoute()">Dashboard</a>
                   <div class="dropdown-divider"></div>
                   <button (click)="logout()">Cerrar sesión</button>
               </div>

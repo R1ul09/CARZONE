@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import * as environment from '../../environments/environment';
+import { environment } from '../../environments/environment';
 import { LoginResponse } from '../interfaces/auth.interface';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { LoginResponse } from '../interfaces/auth.interface';
 
 export class Auth {
 
-  private apiUrl = (environment as any).environment?.apiUrl || 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -23,7 +23,12 @@ export class Auth {
   // metodo register para enviar las credenciales al backend
   register(name: string, email: string, password: string): Observable<LoginResponse> {
     // tenemos que enviar una petición POST al backend a su endpoint correspondiente
-    return this.http.post<LoginResponse>(`${this.apiUrl}/register`, { name, email, password });
+    return this.http.post<LoginResponse>(`${this.apiUrl}/register`, { 
+      name, 
+      email, 
+      password,
+      password_confirmation: password
+    });
   }
 
   // metodo logout para cerrar sesión

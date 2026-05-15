@@ -1,0 +1,367 @@
+@use '../../../../../../../styles/variables' as vars;
+
+.resumen {
+    padding: 48px 60px;
+    max-width: 1000px;
+
+    .seccion-header {
+        margin-bottom: 36px;
+
+        .seccion-subtitulo {
+            font-size: 11px;
+            letter-spacing: vars.$subtitle-letter-spacing;
+            color: vars.$accent-color;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .seccion-titulo {
+            font-size: 28px;
+            font-weight: 800;
+            color: vars.$text-color;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+    }
+
+    // ── STATS ─────────────────────────────────────────
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.25s ease;
+
+            &:hover {
+                border-color: rgba(vars.$accent-color, 0.2);
+                transform: translateY(-2px);
+            }
+
+            &.accent {
+                border-color: rgba(vars.$accent-color, 0.2);
+                background: rgba(vars.$accent-color, 0.05);
+            }
+
+            &.urgente {
+                border-color: rgba(vars.$accent-color, 0.4);
+                background: rgba(vars.$accent-color, 0.08);
+            }
+
+            .stat-icono {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                background: rgba(vars.$accent-color, 0.1);
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                    stroke: vars.$accent-color;
+                }
+            }
+
+            .stat-info {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                overflow: hidden;
+
+                .stat-valor {
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: vars.$text-color;
+                    letter-spacing: -0.02em;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .stat-label {
+                    font-size: 11px;
+                    color: vars.$text-tertiary;
+                }
+            }
+        }
+    }
+
+    // ── BANNER ────────────────────────────────────────
+    .banner-cita {
+        background: linear-gradient(135deg, rgba(vars.$accent-color, 0.12), rgba(vars.$accent-color, 0.04));
+        border: 1px solid rgba(vars.$accent-color, 0.25);
+        border-radius: 12px;
+        padding: 24px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+
+        .banner-izq {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            svg {
+                width: 30px;
+                height: 30px;
+                min-width: 30px;
+                stroke: vars.$accent-color;
+            }
+
+            .banner-label {
+                font-size: 10px;
+                letter-spacing: 0.1em;
+                color: vars.$accent-color;
+                margin-bottom: 4px;
+            }
+
+            .banner-servicio {
+                font-size: 16px;
+                font-weight: 700;
+                color: vars.$text-color;
+                margin-bottom: 3px;
+            }
+
+            .banner-meta {
+                font-size: 13px;
+                color: vars.$text-muted;
+            }
+        }
+
+        .banner-countdown {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(vars.$accent-color, 0.15);
+            border: 1px solid rgba(vars.$accent-color, 0.3);
+            border-radius: 10px;
+            padding: 12px 20px;
+
+            .countdown-valor {
+                font-size: 32px;
+                font-weight: 900;
+                color: vars.$text-color;
+                line-height: 1;
+                letter-spacing: -0.03em;
+            }
+
+            .countdown-label {
+                font-size: 11px;
+                color: vars.$accent-color;
+            }
+        }
+    }
+
+    // ── BOTTOM GRID ───────────────────────────────────
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    .widget {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 24px;
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .widget-titulo {
+            font-size: 10px;
+            letter-spacing: vars.$subtitle-letter-spacing;
+            color: vars.$text-tertiary;
+            font-weight: 600;
+        }
+
+        // Calendario
+        .cal-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: vars.$text-color;
+            font-weight: 600;
+
+            button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: vars.$text-muted;
+                display: flex;
+                align-items: center;
+                padding: 4px;
+                border-radius: 4px;
+                transition: color 0.2s ease;
+
+                &:hover { color: vars.$text-color; }
+
+                svg { width: 16px; height: 16px; stroke: currentColor; }
+            }
+        }
+
+        .cal-semana {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 8px;
+
+            span {
+                text-align: center;
+                font-size: 10px;
+                font-weight: 600;
+                color: vars.$text-tertiary;
+                padding: 4px 0;
+            }
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+
+            .cal-dia {
+                position: relative;
+                aspect-ratio: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                color: vars.$text-color;
+                border-radius: 6px;
+
+                &.otro-mes { color: vars.$text-tertiary; opacity: 0.4; }
+
+                &.hoy {
+                    background: rgba(vars.$accent-color, 0.15);
+                    color: vars.$accent-color;
+                    font-weight: 700;
+                    border: 1px solid rgba(vars.$accent-color, 0.3);
+                }
+
+                &.tiene-cita { font-weight: 600; }
+
+                .cal-punto {
+                    position: absolute;
+                    bottom: 3px;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    background: vars.$accent-color;
+                }
+            }
+        }
+
+        // Actividad
+        .actividad {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .actividad-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px;
+                border-radius: 8px;
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+
+                .actividad-icono {
+                    width: 34px;
+                    height: 34px;
+                    min-width: 34px;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    svg { width: 15px; height: 15px; }
+
+                    &.cita {
+                        background: rgba(vars.$accent-color, 0.1);
+                        svg { stroke: vars.$accent-color; }
+                    }
+
+                    &.fin {
+                        background: rgba(34, 197, 94, 0.1);
+                        svg { stroke: #22c55e; }
+                    }
+                }
+
+                .actividad-info {
+                    flex: 1;
+                    overflow: hidden;
+
+                    .actividad-titulo {
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: vars.$text-color;
+                        margin-bottom: 2px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .actividad-meta {
+                        font-size: 11px;
+                        color: vars.$text-tertiary;
+                    }
+                }
+
+                .estado {
+                    font-size: 9px;
+                    font-weight: 700;
+                    letter-spacing: 0.08em;
+                    padding: 3px 8px;
+                    border-radius: 20px;
+                    white-space: nowrap;
+
+                    &.pendiente {
+                        background: rgba(234, 179, 8, 0.1);
+                        color: #eab308;
+                    }
+                    &.confirmada {
+                        background: rgba(34, 197, 94, 0.1);
+                        color: #22c55e;
+                    }
+                    &.cancelada {
+                        background: rgba(239, 68, 68, 0.1);
+                        color: #ef4444;
+                    }
+                }
+
+                .actividad-vacia {
+                    text-align: center;
+                    color: vars.$text-tertiary;
+                    font-size: 13px;
+                    padding: 20px 0;
+                }
+            }
+        }
+    }
+
+    @media (max-width: vars.$screen-md) {
+        padding: 24px 16px;
+
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .bottom-grid { grid-template-columns: 1fr; }
+    }
+}

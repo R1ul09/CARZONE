@@ -1,0 +1,46 @@
+<div class="perfil">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">CUENTA</p>
+      <h2 class="seccion-titulo">Mi Perfil</h2>
+    </div>
+  </div>
+
+  <div class="perfil-card">
+    <p class="card-titulo">INFORMACIÓN PERSONAL</p>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label>NOMBRE</label>
+        <input type="text" [(ngModel)]="perfilData.name" placeholder="Tu nombre">
+      </div>
+      <div class="form-field">
+        <label>EMAIL</label>
+        <input type="email" [(ngModel)]="perfilData.email" placeholder="tu@email.com">
+      </div>
+    </div>
+
+    <button class="btn-guardar" (click)="guardarCambios()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+        <polyline points="17 21 17 13 7 13 7 21"/>
+        <polyline points="7 3 7 8 15 8"/>
+      </svg>
+      GUARDAR CAMBIOS
+    </button>
+  </div>
+
+  <div class="perfil-card">
+    <p class="card-titulo">INFORMACIÓN DE CUENTA</p>
+    <div class="info-row">
+      <span class="info-label">MIEMBRO DESDE</span>
+      <span class="info-valor">Carzone Premium</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">ROL</span>
+      <span class="info-valor rol">Cliente</span>
+    </div>
+  </div>
+
+</div>
