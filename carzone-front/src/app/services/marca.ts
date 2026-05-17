@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class MarcaService {
 
-  private apiUrl = (environment as any).environment?.apiUrl || 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

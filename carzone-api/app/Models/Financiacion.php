@@ -9,6 +9,7 @@ class Financiacion extends Model
     protected $table = 'financiaciones';
 
     protected $fillable = [
+        'user_id',
         'coche_id',
         'meses',
         'cuota_mensual',

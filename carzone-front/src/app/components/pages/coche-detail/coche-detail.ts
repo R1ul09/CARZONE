@@ -40,7 +40,7 @@ export class CocheDetail implements OnInit {
 
   pedirCita() {
     // Si no está logueado manda al login
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (!token) {
       this.router.navigate(['/login']);
     } else {

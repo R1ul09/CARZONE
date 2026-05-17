@@ -6,8 +6,10 @@ import { MarcaDetail } from './components/pages/marca-detail/marca-detail';
 import { CocheDetail } from './components/pages/coche-detail/coche-detail';
 import { Financiacion } from './components/pages/financiacion/financiacion';
 import { Comparar } from './components/pages/comparar/comparar';
-import { DashboardComponent } from './components/dashboard/dashboard/dashboard';
-import { authGuard } from './guards/auth-guard';
+import { ClienteDashboard } from './components/pages/dashboard/cliente/cliente-dashboard/cliente-dashboard';
+import { EmpleadoDashboard } from './components/pages/dashboard/empleado/empleado-dashboard/empleado-dashboard';
+import { clienteGuard } from './guards/cliente-guard';
+import { empleadoGuard } from './guards/empleado-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -17,6 +19,8 @@ export const routes: Routes = [
   { path: 'coches/:id', component: CocheDetail },
   { path: 'financiacion', component: Financiacion },
   { path: 'comparar', component: Comparar },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'dashboard/cliente', component: ClienteDashboard, canActivate: [clienteGuard] },
+  //{ path: 'dashboard/admin', component: AdminDashboard, canActivate: [authGuard] },
+  { path: 'dashboard/empleado', component: EmpleadoDashboard, canActivate: [empleadoGuard] },
   { path: '**', redirectTo: '' }
 ];

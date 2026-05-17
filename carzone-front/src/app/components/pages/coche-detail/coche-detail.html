@@ -128,12 +128,18 @@
 
         <div class="coche-actions">
           <button class="btn-cita" (click)="pedirCita()">PEDIR CITA</button>
-          <button class="btn-info" (click)="solicitarFinanciacion()">SOLICITAR FINANCIACIÓN</button>        
+          @if (coche.disponible) {
+            <button class="btn-info" (click)="solicitarFinanciacion()">SOLICITAR FINANCIACIÓN</button>
+          } @else {
+            <button class="btn-info" disabled>RESERVADO</button>
+          }
         </div>
       </div>
 
     </div>
   </section>
 
+  } @else {
+    <p class="coche-noencontrado">Coche no encontrado.</p>
   }
 </div>

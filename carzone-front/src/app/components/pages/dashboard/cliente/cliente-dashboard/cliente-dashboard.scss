@@ -1,0 +1,189 @@
+@use '../../../../../../styles/variables' as vars;
+
+.cliente-dashboard {
+    display: flex;
+    min-height: 100vh;
+    padding-top: vars.$navbar-height;
+    background: vars.$background-color;
+    background-image:
+        radial-gradient(ellipse at 0% 0%, rgba(198, 40, 40, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(198, 40, 40, 0.08) 0%, transparent 50%);
+
+    .sidebar {
+        width: 280px;
+        flex-shrink: 0;
+        background: rgba(10, 10, 10, 0.95);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: vars.$navbar-height;
+        height: calc(100vh - vars.$navbar-height);
+
+        .sidebar-header {
+            padding: 28px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            .sidebar-avatar {
+                width: 46px;
+                height: 46px;
+                min-width: 46px;
+                border-radius: 50%;
+                background: rgba(vars.$accent-color, 0.1);
+                border: 1px solid rgba(vars.$accent-color, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    min-width: 20px;
+                    stroke: vars.$accent-color;
+                }
+            }
+
+            .sidebar-titulo {
+                font-size: 9px;
+                letter-spacing: vars.$subtitle-letter-spacing;
+                color: vars.$accent-color;
+                font-weight: 600;
+                margin-bottom: 3px;
+            }
+
+            .sidebar-nombre {
+                font-size: 15px;
+                font-weight: 700;
+                color: vars.$text-color;
+                margin-bottom: 2px;
+            }
+
+            .sidebar-email {
+                font-size: 11px;
+                color: vars.$text-tertiary;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 160px;
+            }
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 16px;
+                border-radius: 8px;
+                background: none;
+                border: 1px solid transparent;
+                color: vars.$text-muted;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                width: 100%;
+                text-align: left;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                    min-width: 18px;
+                    stroke: currentColor;
+                }
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.04);
+                    color: vars.$text-color;
+                }
+
+                &.active {
+                    background: rgba(vars.$accent-color, 0.1);
+                    border-color: rgba(vars.$accent-color, 0.2);
+                    color: vars.$text-color;
+
+                    svg { stroke: vars.$accent-color; }
+                }
+
+                .nav-badge {
+                    margin-left: auto;
+                    background: vars.$accent-color;
+                    color: vars.$white;
+                    font-size: 10px;
+                    font-weight: 700;
+                    padding: 2px 7px;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+            .btn-logout {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 16px;
+                border-radius: 8px;
+                background: none;
+                border: none;
+                color: vars.$text-muted;
+                font-size: 14px;
+                cursor: pointer;
+                width: 100%;
+                transition: all 0.2s ease;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                    min-width: 18px;
+                    stroke: currentColor;
+                }
+
+                &:hover {
+                    color: vars.$accent-color;
+                    background: rgba(vars.$accent-color, 0.05);
+                }
+            }
+        }
+    }
+
+    .dashboard-main {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    @media (max-width: vars.$screen-md) {
+        flex-direction: column;
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: static;
+
+            .sidebar-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 8px;
+
+                .nav-item {
+                    flex-direction: column;
+                    gap: 4px;
+                    font-size: 10px;
+                    padding: 10px 12px;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}

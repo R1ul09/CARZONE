@@ -1,0 +1,54 @@
+<div class="financiaciones">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Mis Financiaciones</h2>
+    </div>
+    <a routerLink="/financiacion" class="btn-accion">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nueva financiación
+    </a>
+  </div>
+
+  @if (financiaciones.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M2 10h20"/>
+      </svg>
+      <p>No tienes financiaciones activas</p>
+      <a routerLink="/financiacion" class="btn-accion">Solicitar financiación</a>
+    </div>
+  }
+
+  <div class="lista">
+    @for (fin of financiaciones; track fin.id) {
+      <div class="fin-card">
+
+        @if (fin.coche?.imagen_principal?.ruta) {
+          <img [src]="fin.coche!.imagen_principal!.ruta" [alt]="fin.coche!.modelo"
+               (error)="$event.target.style.display='none'" class="fin-img">
+        }
+
+        <div class="fin-info">
+          <p class="fin-coche">{{ fin.coche?.marca?.nombre }} {{ fin.coche?.modelo }}</p>
+          <p class="fin-meta">
+            {{ fin.meses }} meses · {{ fin.interes }}% TAE
+            @if (fin.entrada) { · Entrada {{ fin.entrada | currency:'EUR':'symbol':'1.0-0' }} }
+          </p>
+        </div>
+
+        <div class="fin-cuota">
+          <span class="fin-valor">{{ fin.cuota_mensual | currency:'EUR':'symbol':'1.0-0' }}</span>
+          <span class="fin-mes">/mes</span>
+        </div>
+
+      </div>
+    }
+  </div>
+
+</div>

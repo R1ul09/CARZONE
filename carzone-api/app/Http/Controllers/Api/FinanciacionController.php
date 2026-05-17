@@ -29,6 +29,7 @@ class FinanciacionController extends Controller
         ]);
 
         $financiacion = Financiacion::create([
+            'user_id'       => $request->user()->id,
             'coche_id'      => $request->coche_id,
             'meses'         => $request->meses,
             'cuota_mensual' => $request->cuota_mensual,

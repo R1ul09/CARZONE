@@ -8,7 +8,7 @@
       <label>Nombre completo</label>
       <div class="input-wrap">
         <span class="icon">👤︎</span>
-        <input type="text" placeholder="Tu nombre completo">
+        <input type="text" placeholder="Tu nombre completo" [(ngModel)]="name">
       </div>
     </div>
 
@@ -16,7 +16,7 @@
       <label>Correo electrónico</label>
       <div class="input-wrap">
         <span class="icon">✉</span>
-        <input type="email" placeholder="tu@email.com">
+        <input type="email" placeholder="tu@email.com" [(ngModel)]="email">
       </div>
     </div>
 
@@ -24,7 +24,19 @@
       <label>Contraseña</label>
       <div class="input-wrap">
         <span class="icon">&#x1f512;&#xfe0e;</span>
-        <input type="password" placeholder="••••••••">
+        <input 
+          [type]="showPassword ? 'text' : 'password'" 
+          placeholder="••••••••" 
+          [(ngModel)]="password"
+          name="password">  
+          
+        <button type="button" class="btn-eye" (click)="showPassword = !showPassword">
+          @if (!showPassword) {
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          }
+        </button>
       </div>
     </div>
 
@@ -32,11 +44,24 @@
       <label>Confirmar contraseña</label>
       <div class="input-wrap">
         <span class="icon">&#x1f512;&#xfe0e;</span>
-        <input type="password" placeholder="••••••••">
+        
+        <input 
+          [type]="showPassword ? 'text' : 'password'" 
+          placeholder="••••••••" 
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword">
+
+        <button type="button" class="btn-eye" (click)="showPassword = !showPassword">
+          @if (!showPassword) {
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          }
+        </button>
       </div>
     </div>
 
-    <button class="btn-primary">Crear cuenta</button>
+    <button class="btn-primary" (click)="register()">Crear cuenta</button>
 
     <p class="register">
       ¿Ya tienes cuenta? <a routerLink="/login">Iniciar sesión</a>

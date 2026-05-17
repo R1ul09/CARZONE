@@ -1,0 +1,207 @@
+@use '../../../../../../../styles/variables' as vars;
+
+.citas-empleado {
+    padding: 48px 60px;
+    max-width: 1000px;
+
+    .seccion-header {
+        margin-bottom: 32px;
+
+        .seccion-subtitulo {
+            font-size: 11px;
+            letter-spacing: vars.$subtitle-letter-spacing;
+            color: vars.$accent-color;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .seccion-titulo {
+            font-size: 28px;
+            font-weight: 800;
+            color: vars.$text-color;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+    }
+
+    .filtros {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+
+        .filtros-estado {
+            display: flex;
+            gap: 8px;
+
+            .filtro-btn {
+                padding: 8px 16px;
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 6px;
+                color: vars.$text-muted;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    border-color: rgba(255, 255, 255, 0.3);
+                    color: vars.$text-color;
+                }
+
+                &.active {
+                    background: vars.$accent-color;
+                    border-color: vars.$accent-color;
+                    color: vars.$white;
+                }
+            }
+        }
+
+        .filtro-fecha {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: vars.$text-color;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s ease;
+
+            &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        color: vars.$text-tertiary;
+
+        svg { width: 48px; height: 48px; stroke: rgba(255,255,255,0.1); }
+        p { font-size: 14px; }
+    }
+
+    .lista {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .cita-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition: border-color 0.2s ease;
+
+        &:hover { border-color: rgba(255, 255, 255, 0.12); }
+
+        .cita-fecha {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(vars.$accent-color, 0.08);
+            border: 1px solid rgba(vars.$accent-color, 0.15);
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 54px;
+
+            .fecha-dia {
+                font-size: 20px;
+                font-weight: 800;
+                color: vars.$text-color;
+                line-height: 1;
+            }
+
+            .fecha-mes {
+                font-size: 9px;
+                color: vars.$accent-color;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        .cita-info {
+            flex: 1;
+
+            .cita-cliente {
+                font-size: 15px;
+                font-weight: 700;
+                color: vars.$text-color;
+                margin-bottom: 3px;
+            }
+
+            .cita-servicio {
+                font-size: 13px;
+                color: vars.$text-secondary;
+                margin-bottom: 2px;
+            }
+
+            .cita-meta {
+                font-size: 12px;
+                color: vars.$text-muted;
+            }
+        }
+
+        .cita-acciones {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+
+            .cita-estado {
+                padding: 3px 10px;
+                border-radius: 20px;
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+
+                &.pendiente {
+                    background: rgba(234, 179, 8, 0.1);
+                    color: #eab308;
+                    border: 1px solid rgba(234, 179, 8, 0.2);
+                }
+                &.confirmada {
+                    background: rgba(34, 197, 94, 0.1);
+                    color: #22c55e;
+                    border: 1px solid rgba(34, 197, 94, 0.2);
+                }
+                &.cancelada {
+                    background: rgba(239, 68, 68, 0.1);
+                    color: #ef4444;
+                    border: 1px solid rgba(239, 68, 68, 0.2);
+                }
+            }
+
+            .estado-select {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 6px;
+                padding: 6px 10px;
+                color: vars.$text-color;
+                font-size: 12px;
+                outline: none;
+                cursor: pointer;
+                transition: border-color 0.2s ease;
+
+                &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+                option { background: #0d0d0d; }
+            }
+        }
+    }
+
+    @media (max-width: vars.$screen-md) {
+        padding: 24px 16px;
+
+        .filtros { flex-direction: column; align-items: flex-start; }
+        .cita-card { flex-wrap: wrap; }
+    }
+}

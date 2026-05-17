@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import * as environment from '../../environments/environment';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Coche } from '../interfaces/coche.interface';
 import { Observable } from 'rxjs';
 
@@ -13,9 +13,15 @@ export type CocheOrden = 'precio_asc' | 'precio_desc' | 'anio_desc';
 
 export class CocheService {
 
-  private apiUrl = (environment as any).environment?.apiUrl || 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
+
+  // Método para devolver las cabeceras con el token de autenticación
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
 
   // Método para obtener todos los coches
   getTodosLosCoches(): Observable<Coche[]> {
@@ -56,5 +62,12 @@ export class CocheService {
     if (filtros.orden)                    params = params.set('orden', filtros.orden);
 
     return this.http.get<Coche[]>(`${this.apiUrl}/coches`, { params });
+  }
+
+  // Método para actualizar la disponibilidad de un coche (solo para empleados)
+  actualizarDisponibilidad(id: number, disponible: boolean): Observable<Coche> {
+    return this.http.put<Coche>(`${this.apiUrl}/coches/${id}/disponibilidad`, { disponible }, {
+      headers: this.getHeaders()
+    });
   }
 }

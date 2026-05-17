@@ -1,0 +1,105 @@
+<div class="citas">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Mis Citas</h2>
+    </div>
+    <button class="btn-accion" (click)="mostrarForm = !mostrarForm">
+      @if (!mostrarForm) {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Nueva cita
+      } @else {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Cancelar
+      }
+    </button>
+  </div>
+
+  <!-- FORMULARIO -->
+  @if (mostrarForm) {
+    <div class="form-card">
+      <p class="form-titulo">NUEVA CITA</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>SERVICIO *</label>
+          <select [(ngModel)]="nuevaCita.servicio_id">
+            <option value="">Selecciona un servicio</option>
+            @for (s of servicios; track s.id) {
+              <option [value]="s.id">{{ s.nombre }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-field">
+          <label>VEHÍCULO (opcional)</label>
+          <select [(ngModel)]="nuevaCita.coche_id">
+            <option value="">Sin vehículo específico</option>
+            @for (c of coches; track c.id) {
+              <option [value]="c.id">{{ c.marca?.nombre }} {{ c.modelo }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-field">
+          <label>FECHA *</label>
+          <input type="date" [(ngModel)]="nuevaCita.fecha" [min]="hoy">
+        </div>
+        <div class="form-field">
+          <label>HORA *</label>
+          <select [(ngModel)]="nuevaCita.hora">
+            @for (h of horasDisponibles; track h) {
+              <option [value]="h">{{ h }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <button class="btn-confirmar" (click)="crearCita()">CONFIRMAR CITA</button>
+    </div>
+  }
+
+  <!-- LISTA VACÍA -->
+  @if (citas.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <path d="M16 2v4M8 2v4M3 10h18"/>
+      </svg>
+      <p>No tienes citas programadas</p>
+      <button class="btn-accion" (click)="mostrarForm = true">Solicitar primera cita</button>
+    </div>
+  }
+
+  <!-- LISTA DE CITAS -->
+  <div class="lista">
+    @for (cita of citas; track cita.id) {
+      <div class="cita-card">
+
+        <div class="cita-fecha">
+          <span class="fecha-dia">{{ cita.fecha | date:'dd' }}</span>
+          <span class="fecha-mes">{{ cita.fecha | date:'MMM' | uppercase }}</span>
+        </div>
+
+        <div class="cita-info">
+          <p class="cita-servicio">{{ cita.servicio?.nombre }}</p>
+          <p class="cita-meta">
+            {{ cita.hora }} h
+            @if (cita.coche) { · {{ cita.coche.marca?.nombre }} {{ cita.coche.modelo }} }
+          </p>
+        </div>
+
+        <div class="cita-estado" [class]="cita.estado">{{ cita.estado | uppercase }}</div>
+
+        @if (cita.estado === 'pendiente') {
+          <button class="btn-cancelar" (click)="cancelarCita(cita.id)">Cancelar</button>
+        }
+
+      </div>
+    }
+  </div>
+
+</div>

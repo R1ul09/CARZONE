@@ -7,8 +7,10 @@ import { Servicio } from '../interfaces/servicio.interface';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ServicioService {
-  private apiUrl = (environment as any).environment?.apiUrl || 'http://localhost:8000/api';
+
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

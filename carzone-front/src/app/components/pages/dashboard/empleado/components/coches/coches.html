@@ -1,0 +1,83 @@
+<div class="coches-empleado">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Vehículos</h2>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <button class="filtro-btn" [class.active]="filtro === 'todos'"
+            (click)="filtro = 'todos'">Todos</button>
+    <button class="filtro-btn" [class.active]="filtro === 'disponibles'"
+            (click)="filtro = 'disponibles'">Disponibles</button>
+    <button class="filtro-btn" [class.active]="filtro === 'reservados'"
+            (click)="filtro = 'reservados'">Reservados</button>
+  </div>
+
+  @if (cochesFiltrados.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
+        <circle cx="15.5" cy="17.5" r="2.5"/>
+        <circle cx="5.5" cy="17.5" r="2.5"/>
+      </svg>
+      <p>No hay vehículos con estos filtros</p>
+    </div>
+  }
+
+  <div class="coches-grid">
+    @for (coche of cochesFiltrados; track coche.id) {
+      <div class="coche-card" [class.reservado]="!coche.disponible">
+
+        <div class="coche-badge" [class.reservado]="!coche.disponible">
+          {{ coche.disponible ? 'DISPONIBLE' : 'RESERVADO' }}
+        </div>
+
+        @if (coche.imagen_principal?.ruta) {
+          <img [src]="coche.imagen_principal!.ruta" [alt]="coche.modelo"
+               (error)="$event.target.style.display='none'" class="coche-img">
+        } @else {
+          <div class="coche-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
+              <circle cx="15.5" cy="17.5" r="2.5"/>
+              <circle cx="5.5" cy="17.5" r="2.5"/>
+            </svg>
+          </div>
+        }
+
+        <div class="coche-info">
+          <p class="coche-marca">{{ coche.marca.nombre }}</p>
+          <p class="coche-modelo">{{ coche.modelo }}</p>
+          <p class="coche-meta">{{ coche.anio }} · {{ coche.tipo_carroceria }}</p>
+          <p class="coche-precio">{{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+        </div>
+
+        <button class="btn-disponibilidad" [class.reservado]="!coche.disponible"
+                (click)="cambiarDisponibilidad(coche)">
+          @if (coche.disponible) {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Marcar reservado
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+              <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+              <line x1="6" y1="1" x2="6" y2="4"/>
+              <line x1="10" y1="1" x2="10" y2="4"/>
+              <line x1="14" y1="1" x2="14" y2="4"/>
+            </svg>
+            Marcar disponible
+          }
+        </button>
+
+      </div>
+    }
+  </div>
+
+</div>

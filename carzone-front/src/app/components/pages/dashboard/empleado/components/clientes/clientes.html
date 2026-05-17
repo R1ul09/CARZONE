@@ -1,0 +1,57 @@
+<div class="clientes-empleado">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Clientes</h2>
+    </div>
+    <div class="total-badge">
+      {{ clientesFiltrados.length }} clientes
+    </div>
+  </div>
+
+  <!-- BUSCADOR -->
+  <div class="buscador">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="M21 21l-4.35-4.35"/>
+    </svg>
+    <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por nombre o email...">
+  </div>
+
+  @if (clientesFiltrados.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+      </svg>
+      <p>No se encontraron clientes</p>
+    </div>
+  }
+
+  <div class="lista">
+    @for (cliente of clientesFiltrados; track cliente.id) {
+      <div class="cliente-card">
+
+        <div class="cliente-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+
+        <div class="cliente-info">
+          <p class="cliente-nombre">{{ cliente.name }}</p>
+          <p class="cliente-email">{{ cliente.email }}</p>
+        </div>
+
+        <div class="cliente-id">
+          <span class="id-label">ID</span>
+          <span class="id-valor">#{{ cliente.id }}</span>
+        </div>
+
+      </div>
+    }
+  </div>
+
+</div>
