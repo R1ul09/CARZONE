@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { Cita } from '../../../../../../interfaces/cita.interface';
 import { Financiacion } from '../../../../../../interfaces/financiacion.interface';
@@ -10,7 +10,7 @@ import { Financiacion } from '../../../../../../interfaces/financiacion.interfac
   templateUrl: './resumen.html',
   styleUrl: './resumen.scss'
 })
-export class Resumen implements OnInit {
+export class Resumen implements OnInit, OnChanges {
 
   // input sirve para recibir datos del componente padre (cliente-dashboard)
   // en este caso, recibimos las citas y financiaciones del usuario para mostrar un resumen
@@ -26,6 +26,12 @@ export class Resumen implements OnInit {
 
   ngOnInit() {
     this.procesarDatos();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['citas'] || changes['financiaciones']) {
+      this.procesarDatos();
+    }
   }
 
   procesarDatos() {

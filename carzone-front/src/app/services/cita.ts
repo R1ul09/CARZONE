@@ -40,4 +40,18 @@ export class CitaService {
       headers: this.getHeaders()
     });
   }
+
+  // Método para obtener todas las citas (solo para empleados)
+  getTodasLasCitas(): Observable<Cita[]> {
+    return this.http.get<Cita[]>(`${this.apiUrl}/citas/todas`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // Método para actualizar el estado de una cita (solo para empleados)
+  actualizarEstadoCita(id: number, estado: string): Observable<Cita> {
+    return this.http.put<Cita>(`${this.apiUrl}/citas/${id}`, { estado }, {
+      headers: this.getHeaders()
+    });
+  }
 }

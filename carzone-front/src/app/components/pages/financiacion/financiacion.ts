@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 import { CocheService } from '../../../services/coche';
 import { FinanciacionService } from '../../../services/financiacion';
 import { Coche } from '../../../interfaces/coche.interface';
@@ -48,7 +49,8 @@ export class Financiacion implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private cocheService: CocheService,
-    private financiacionService: FinanciacionService
+    private financiacionService: FinanciacionService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -102,15 +104,14 @@ export class Financiacion implements OnInit {
   }
 
   solicitar() {
-    // Comprueba si está logueado
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (!token) {
       this.router.navigate(['/login']);
       return;
     }
 
     if (!this.cocheSeleccionadoId || !this.formData.nombre || !this.formData.email) {
-      alert('Por favor rellena todos los campos obligatorios');
+      this.toastr.error('Por favor rellena todos los campos obligatorios');
       return;
     }
 
@@ -121,8 +122,11 @@ export class Financiacion implements OnInit {
       entrada: this.entrada,
       interes: this.interes
     }).subscribe({
-      next: () => alert('Solicitud enviada correctamente. Nos pondremos en contacto contigo.'),
-      error: () => alert('Ha ocurrido un error. Inténtalo de nuevo.')
+      next: () => {
+        this.toastr.success('Solicitud enviada correctamente. Nos pondremos en contacto contigo.');
+        this.router.navigate(['/dashboard'], { queryParams: { section: 'financiaciones' } });
+      },
+      error: () => this.toastr.error('Ha ocurrido un error. Inténtalo de nuevo.')
     });
   }
 }

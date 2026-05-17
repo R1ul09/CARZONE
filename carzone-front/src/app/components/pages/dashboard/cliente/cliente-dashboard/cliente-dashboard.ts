@@ -56,6 +56,8 @@ export class ClienteDashboard implements OnInit {
     this.cargarDatos();
   }
 
+  datosListos: boolean = false;
+
   cargarDatos() {
     forkJoin({
       citas: this.citaService.getCitas(),
@@ -68,6 +70,7 @@ export class ClienteDashboard implements OnInit {
         this.financiaciones = financiaciones;
         this.servicios = servicios;
         this.cochesDisponibles = coches;
+        this.datosListos = true;
         this.cd.detectChanges();
       },
       error: () => this.toastr.error('Error al cargar los datos')

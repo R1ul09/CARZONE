@@ -13,16 +13,12 @@ class CheckRole
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         $user = $request->user();
-
-        // Si el usuario no existe o su rol no coincide
-        // Comprobamos directamente el nombre a través de la relación
-        if (!$user || !$user->rol || $user->rol->nombre !== $role) {
-            return response()->json([
-                'message' => "Acceso denegado. Tu rol es '" . ($user->rol->nombre ?? 'desconocido') . "' y necesitas ser '$role'."
-            ], 403);
+        
+        if (!$user || !$user->rol || !in_array($user->rol->nombre, $roles)) {
+            return response()->json(['message' => 'No autorizado'], 403);
         }
 
         return $next($request);

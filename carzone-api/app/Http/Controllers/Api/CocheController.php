@@ -118,4 +118,22 @@ class CocheController extends Controller
 
         return response()->json(['message' => 'Coche eliminado'], 200);
     }
+
+    public function cambiarDisponibilidad(Request $request, $id)
+    {
+        $coche = Coche::find($id);
+
+        if (!$coche) {
+            return response()->json(['message' => 'Coche no encontrado'], 404);
+        }
+
+        $request->validate([
+            'disponible' => 'required|boolean'
+        ]);
+
+        $coche->disponible = $request->disponible;
+        $coche->save();
+
+        return response()->json($coche, 200);
+    }
 }

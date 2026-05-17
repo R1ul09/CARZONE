@@ -114,10 +114,28 @@ export class Navbar implements OnInit {
 
   // metodo para cerrar sesión
   logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    this.toastr.info('Sesión cerrada');
-    this.router.navigate(['/']);
+    this.authService.logout().subscribe({
+      // con next hacemos la limpieza local aunque falle la petición al backend, porque aunque falle el logout en el backend, el usuario ya no debería tener acceso a nada protegido
+        next: () => {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            this.isLoggedIn = false;
+            this.user = null;
+            this.toastr.info('Sesión cerrada correctamente');
+            this.router.navigate(['/']);
+            this.cd.detectChanges();
+        },
+        error: () => {
+            // aunque falle, cerramos la sesión en el cliente para evitar que el usuario quede bloqueado
+            this.toastr.info('Sesión cerrada correctamente');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            this.isLoggedIn = false;
+            this.user = null;
+            this.cd.detectChanges();
+            this.router.navigate(['/']);
+        }
+    });
   }
 
   getDashboardRoute(): string[] {

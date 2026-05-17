@@ -1,6 +1,5 @@
-<div class="cliente-dashboard">
+<div class="empleado-dashboard">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-avatar">
@@ -10,7 +9,7 @@
         </svg>
       </div>
       <div class="sidebar-user-info">
-        <p class="sidebar-titulo">MI CUENTA</p>
+        <p class="sidebar-titulo">EMPLEADO</p>
         <p class="sidebar-nombre">{{ user?.name }}</p>
         <p class="sidebar-email">{{ user?.email }}</p>
       </div>
@@ -34,31 +33,34 @@
           <rect x="3" y="4" width="18" height="18" rx="2"/>
           <path d="M16 2v4M8 2v4M3 10h18"/>
         </svg>
-        <span>Mis Citas</span>
+        <span>Citas</span>
         @if (citas.length > 0) {
           <span class="nav-badge">{{ citas.length }}</span>
         }
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'financiaciones'"
-              (click)="setSeccion('financiaciones')">
+      <button class="nav-item" [class.active]="seccionActiva === 'coches'"
+              (click)="setSeccion('coches')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="5" width="20" height="14" rx="2"/>
-          <path d="M2 10h20"/>
+          <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
+          <circle cx="15.5" cy="17.5" r="2.5"/>
+          <circle cx="5.5" cy="17.5" r="2.5"/>
         </svg>
-        <span>Financiaciones</span>
-        @if (financiaciones.length > 0) {
-          <span class="nav-badge">{{ financiaciones.length }}</span>
+        <span>Vehículos</span>
+        @if (coches.length > 0) {
+          <span class="nav-badge">{{ coches.length }}</span>
         }
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'perfil'"
-              (click)="setSeccion('perfil')">
+      <button class="nav-item" [class.active]="seccionActiva === 'clientes'"
+              (click)="setSeccion('clientes')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="8" r="4"/>
-          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
         </svg>
-        <span>Mi Perfil</span>
+        <span>Clientes</span>
       </button>
     </nav>
 
@@ -76,24 +78,28 @@
 
   <main class="dashboard-main">
     @if (!datosListos) {
-      <div class="loading">
-        <p>Cargando...</p>
-      </div>
+        <div class="loading">
+            <p>Cargando...</p>
+        </div>
+    } @else if (cargaError) {
+        <div class="loading">
+            <p>Error al cargar los datos. Intenta recargar la página.</p>
+            <button class="retry-btn" (click)="cargarDatos()">Reintentar</button>
+        </div>
     } @else {
         @if (seccionActiva === 'resumen') {
-          <app-resumen [citas]="citas" [financiaciones]="financiaciones"/>
+            <app-resumen-empleado [citas]="citas" [coches]="coches"/>
         }
         @if (seccionActiva === 'citas') {
-          <app-citas [citas]="citas" [servicios]="servicios" [coches]="cochesDisponibles"
-                    (citaCreada)="cargarDatos()" (citaCancelada)="cargarDatos()"/>
+            <app-citas-empleado [citas]="citas" (citaActualizada)="cargarDatos()"/>
         }
-        @if (seccionActiva === 'financiaciones') {
-          <app-financiaciones [financiaciones]="financiaciones"/>
+        @if (seccionActiva === 'coches') {
+            <app-coches-empleado [coches]="coches" (cocheActualizado)="cargarDatos()"/>
         }
-        @if (seccionActiva === 'perfil') {
-          <app-perfil [user]="user"/>
+        @if (seccionActiva === 'clientes') {
+            <app-clientes-empleado/>
         }
     }
-  </main>
+    </main>
 
 </div>

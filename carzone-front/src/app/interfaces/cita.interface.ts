@@ -25,6 +25,7 @@ export interface Cita {
     estado: 'pendiente' | 'confirmada' | 'cancelada';
     servicio?: Servicio;
     coche?: CitaCoche;
+    user?: { id: number; name: string; email: string; };
 }
 
 export interface CreateCita {

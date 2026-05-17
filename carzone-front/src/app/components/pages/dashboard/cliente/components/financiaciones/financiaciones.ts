@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Financiacion } from '../../../../../../interfaces/financiacion.interface';
@@ -11,7 +11,11 @@ import { Financiacion } from '../../../../../../interfaces/financiacion.interfac
   styleUrl: './financiaciones.scss'
 })
 
-export class Financiaciones {
+export class Financiaciones implements OnChanges{
 
   @Input() financiaciones: Financiacion[] = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    // los getters se recalculan solos
+  }
 }
