@@ -1,0 +1,282 @@
+<div class="coches-admin">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Vehículos</h2>
+    </div>
+    <button class="btn-crear" (click)="abrirCrear()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nuevo vehículo
+    </button>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <div class="filtros-estado">
+      <button class="filtro-btn" [class.active]="filtro === 'todos'" (click)="filtro = 'todos'">Todos</button>
+      <button class="filtro-btn" [class.active]="filtro === 'disponibles'" (click)="filtro = 'disponibles'">Disponibles</button>
+      <button class="filtro-btn" [class.active]="filtro === 'reservados'" (click)="filtro = 'reservados'">Reservados</button>
+    </div>
+    <div class="buscador">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por modelo o marca...">
+    </div>
+  </div>
+
+  @if (cochesFiltrados.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
+        <circle cx="15.5" cy="17.5" r="2.5"/><circle cx="5.5" cy="17.5" r="2.5"/>
+      </svg>
+      <p>No hay vehículos con estos filtros</p>
+    </div>
+  }
+
+  <div class="coches-grid">
+    @for (coche of cochesFiltrados; track coche.id) {
+      <div class="coche-card" [class.reservado]="!coche.disponible">
+
+        <div class="coche-badges">
+          <span class="badge-estado" [class.reservado]="!coche.disponible">
+            {{ coche.disponible ? 'DISPONIBLE' : 'RESERVADO' }}
+          </span>
+          @if (coche.destacado) {
+            <span class="badge-destacado">★ DESTACADO</span>
+          }
+        </div>
+
+        @if (coche.imagen_principal?.ruta) {
+          <img [src]="coche.imagen_principal!.ruta" [alt]="coche.modelo"
+               (error)="$any($event.target).style.display='none'" class="coche-img">
+        } @else {
+          <div class="coche-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
+              <circle cx="15.5" cy="17.5" r="2.5"/><circle cx="5.5" cy="17.5" r="2.5"/>
+            </svg>
+          </div>
+        }
+
+        <div class="coche-info">
+          <p class="coche-marca">{{ coche.marca?.nombre }}</p>
+          <p class="coche-modelo">{{ coche.modelo }}</p>
+          <p class="coche-meta">{{ coche.anio }} · {{ coche.tipo_carroceria }} · {{ coche.combustible }}</p>
+          <p class="coche-precio">{{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
+        </div>
+
+        <div class="coche-acciones">
+          <button class="btn-accion img" (click)="abrirImagenes(coche)" title="Gestionar imágenes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </button>
+          <button class="btn-accion edit" (click)="abrirEditar(coche)" title="Editar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+          <button class="btn-accion delete" (click)="eliminar(coche)" title="Eliminar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    }
+  </div>
+
+</div>
+
+<!-- ═══════════════ MODAL CREAR/EDITAR ═══════════════ -->
+@if (modalAbierto) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ modoEdicion ? 'Editar vehículo' : 'Nuevo vehículo' }}</h3>
+        <button class="modal-close" (click)="cerrarModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Modelo <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="form.modelo" placeholder="ej. 911 Carrera">
+          </div>
+          <div class="form-group">
+            <label>Marca <span class="required">*</span></label>
+            <select [(ngModel)]="form.marca_id">
+              <option [ngValue]="null" disabled>Seleccionar marca</option>
+              @for (marca of marcas; track marca.id) {
+                <option [ngValue]="marca.id">{{ marca.nombre }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Año <span class="required">*</span></label>
+            <input type="number" [(ngModel)]="form.anio" placeholder="2024">
+          </div>
+          <div class="form-group">
+            <label>Precio (€) <span class="required">*</span></label>
+            <input type="number" [(ngModel)]="form.precio" placeholder="75000">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Combustible</label>
+            <select [(ngModel)]="form.combustible">
+              <option value="">— Seleccionar —</option>
+              <option value="Gasolina">Gasolina</option>
+              <option value="Diésel">Diésel</option>
+              <option value="Eléctrico">Eléctrico</option>
+              <option value="Híbrido">Híbrido</option>
+              <option value="Híbrido enchufable">Híbrido enchufable</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Transmisión</label>
+            <select [(ngModel)]="form.transmision">
+              <option value="">— Seleccionar —</option>
+              <option value="Manual">Manual</option>
+              <option value="Automático">Automático</option>
+              <option value="PDK">PDK</option>
+              <option value="DCT">DCT</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo carrocería</label>
+            <select [(ngModel)]="form.tipo_carroceria">
+              <option value="">— Seleccionar —</option>
+              <option value="Berlina">Berlina</option>
+              <option value="SUV">SUV</option>
+              <option value="Coupé">Coupé</option>
+              <option value="Cabrio">Cabrio</option>
+              <option value="Familiar">Familiar</option>
+              <option value="Monovolumen">Monovolumen</option>
+              <option value="Pickup">Pickup</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Color</label>
+            <input type="text" [(ngModel)]="form.color" placeholder="ej. Guards Red">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Potencia (CV)</label>
+            <input type="number" [(ngModel)]="form.potencia" placeholder="450">
+          </div>
+          <div class="form-group">
+            <label>Plazas</label>
+            <input type="number" [(ngModel)]="form.num_plazas" placeholder="5">
+          </div>
+          <div class="form-group">
+            <label>Puertas</label>
+            <input type="number" [(ngModel)]="form.num_puertas" placeholder="4">
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="form.descripcion" rows="3" placeholder="Descripción del vehículo..."></textarea>
+        </div>
+
+        <div class="form-checks">
+          <label class="check-item">
+            <input type="checkbox" [(ngModel)]="form.disponible">
+            <span>Disponible</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" [(ngModel)]="form.destacado">
+            <span>Destacado en portada</span>
+          </label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+          {{ guardando ? 'Guardando' : (modoEdicion ? 'Guardar cambios' : 'Crear vehículo') }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ═══════════════ MODAL IMÁGENES ═══════════════ -->
+@if (modalImagenesAbierto && cocheImagenes) {
+  <div class="modal-overlay" (click)="cerrarImagenes()">
+    <div class="modal modal-imagenes" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Imágenes — {{ cocheImagenes.marca?.nombre }} {{ cocheImagenes.modelo }}</h3>
+        <button class="modal-close" (click)="cerrarImagenes()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Imágenes actuales -->
+        @if (cocheImagenes.imagenes && cocheImagenes.imagenes.length > 0) {
+          <div class="imagenes-actuales">
+            @for (img of cocheImagenes.imagenes; track img.id) {
+              <div class="img-item" [class.principal]="img.es_principal">
+                <img [src]="img.ruta" [alt]="'imagen'" (error)="$any($event.target).style.display='none'">
+                @if (img.es_principal) {
+                  <span class="img-badge">PRINCIPAL</span>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="sin-imagenes">Este vehículo no tiene imágenes todavía.</p>
+        }
+
+        <!-- Añadir imagen -->
+        <div class="add-imagen-form">
+          <p class="add-titulo">AÑADIR IMAGEN</p>
+          <div class="form-group full">
+            <label>URL de la imagen</label>
+            <input type="url" [(ngModel)]="nuevaImagenUrl" placeholder="https://ejemplo.com/imagen.jpg">
+          </div>
+          <div class="add-btns">
+            <button class="btn-add-img" (click)="agregarImagen(false)" [disabled]="agregandoImagen">
+              Añadir imagen
+            </button>
+            <button class="btn-add-img principal" (click)="agregarImagen(true)" [disabled]="agregandoImagen">
+              ★ Establecer como principal
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

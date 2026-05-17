@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ServicioController extends Controller
 {
@@ -15,6 +16,16 @@ class ServicioController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
         $servicio = Servicio::create($request->all());
 
         return response()->json($servicio, 201);
@@ -34,6 +45,16 @@ class ServicioController extends Controller
         $servicio = Servicio::find($id);
 
         if (!$servicio) return response()->json(['message' => 'No encontrado'], 404);
+
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'sometimes|required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio' => 'sometimes|required|numeric|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
         $servicio->update($request->all());
 

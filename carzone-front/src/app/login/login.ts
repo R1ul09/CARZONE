@@ -32,7 +32,8 @@ export class Login {
         this.toastr.success(`Bienvenido, ${response.user.name}`, 'Sesión iniciada');
         
         // redirige según el rol
-        switch (response.user.role_id) {
+        const roleId = Number(response.user.role_id);
+        switch (roleId) {
             case 1: this.router.navigate(['/dashboard/cliente']); break;
             case 2: this.router.navigate(['/dashboard/admin']); break;
             case 3: this.router.navigate(['/dashboard/empleado']); break;

@@ -10,7 +10,7 @@ export const empleadoGuard = (): boolean | UrlTree => {
         return router.createUrlTree(['/login']);
     }
 
-    const role_id = JSON.parse(user).role_id;
+    const role_id = Number(JSON.parse(user).role_id);
     if (role_id !== 3) {
         return router.createUrlTree(['/']);
     }

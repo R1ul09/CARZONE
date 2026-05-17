@@ -64,6 +64,21 @@ export class CocheService {
     return this.http.get<Coche[]>(`${this.apiUrl}/coches`, { params });
   }
 
+  // Método para crear un coche (solo admin)
+  createCoche(data: Partial<Coche>): Observable<Coche> {
+    return this.http.post<Coche>(`${this.apiUrl}/coches`, data, { headers: this.getHeaders() });
+  }
+
+  // Método para actualizar un coche (solo admin)
+  updateCoche(id: number, data: Partial<Coche>): Observable<Coche> {
+    return this.http.put<Coche>(`${this.apiUrl}/coches/${id}`, data, { headers: this.getHeaders() });
+  }
+
+  // Método para eliminar un coche (solo admin)
+  deleteCoche(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/coches/${id}`, { headers: this.getHeaders() });
+  }
+
   // Método para actualizar la disponibilidad de un coche (solo para empleados)
   actualizarDisponibilidad(id: number, disponible: boolean): Observable<Coche> {
     return this.http.put<Coche>(`${this.apiUrl}/coches/${id}/disponibilidad`, { disponible }, {

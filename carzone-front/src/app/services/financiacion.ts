@@ -24,6 +24,16 @@ export class FinanciacionService {
 
   // Método para obtener las financiaciones del usuario autenticado
   getFinanciaciones(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/financiaciones`);
+    const token = localStorage.getItem('authToken');
+    return this.http.get<any[]>(`${this.apiUrl}/financiaciones`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  deleteFinanciacion(id: number): Observable<void> {
+    const token = localStorage.getItem('authToken');
+    return this.http.delete<void>(`${this.apiUrl}/financiaciones/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
   }
 }

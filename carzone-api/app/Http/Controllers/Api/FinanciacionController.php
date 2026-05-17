@@ -10,10 +10,14 @@ class FinanciacionController extends Controller
 {
     public function index(Request $request)
     {
-        $financiaciones = Financiacion::with(['coche.marca'])
-            ->where('user_id', $request->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $user = $request->user();
+        $query = Financiacion::with(['coche.marca'])->orderBy('created_at', 'desc');
+
+        if ($user && $user->rol?->nombre !== 'admin') {
+            $query->where('user_id', $user->id);
+        }
+
+        $financiaciones = $query->get();
 
         return response()->json($financiaciones);
     }

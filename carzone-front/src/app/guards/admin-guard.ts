@@ -11,7 +11,7 @@ export const adminGuard = () => {
         return false;
     }
 
-    const role_id = JSON.parse(user).role_id;
+    const role_id = Number(JSON.parse(user).role_id);
     if (role_id !== 2) {
         router.navigate(['/']);
         return false;

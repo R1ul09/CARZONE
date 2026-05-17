@@ -1,0 +1,159 @@
+<div class="resumen-admin">
+
+  <div class="seccion-header">
+    <p class="seccion-subtitulo">PANEL ADMIN</p>
+    <h2 class="seccion-titulo">Resumen general</h2>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="stats-grid">
+
+    <div class="stat-card accent">
+      <div class="stat-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-valor">{{ citasHoy }}</span>
+        <span class="stat-label">Citas hoy</span>
+      </div>
+    </div>
+
+    <div class="stat-card warning">
+      <div class="stat-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-valor">{{ citasPendientes.length }}</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
+          <circle cx="15.5" cy="17.5" r="2.5"/>
+          <circle cx="5.5" cy="17.5" r="2.5"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-valor">{{ cochesDisponibles }}</span>
+        <span class="stat-label">Coches disponibles</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-valor">{{ clientesCount }}</span>
+        <span class="stat-label">Clientes</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-valor">{{ marcas.length }}</span>
+        <span class="stat-label">Marcas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-valor">{{ ingresosPotenciales | currency:'EUR':'symbol':'1.0-0' }}</span>
+        <span class="stat-label">Stock valorado</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DOBLE WIDGET -->
+  <div class="widgets-row">
+
+    <!-- PRÓXIMAS CITAS -->
+    <div class="widget">
+      <p class="widget-titulo">PRÓXIMAS CITAS</p>
+
+      @if (proximasCitas.length === 0) {
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+          <p>No hay citas próximas</p>
+        </div>
+      }
+
+      <div class="lista">
+        @for (cita of proximasCitas; track cita.id) {
+          <div class="cita-item">
+            <div class="cita-fecha">
+              <span class="fecha-dia">{{ cita.fecha | date:'dd' }}</span>
+              <span class="fecha-mes">{{ cita.fecha | date:'MMM' }}</span>
+            </div>
+            <div class="cita-info">
+              <p class="cita-cliente">{{ cita.user?.name }}</p>
+              <p class="cita-servicio">{{ cita.servicio?.nombre }} · {{ cita.hora }}h</p>
+            </div>
+            <div class="cita-estado" [class]="cita.estado">
+              {{ cita.estado | uppercase }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- CITAS PENDIENTES -->
+    <div class="widget">
+      <p class="widget-titulo">REQUIEREN ATENCIÓN</p>
+
+      @if (citasPendientes.length === 0) {
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <p>Todo al día</p>
+        </div>
+      }
+
+      <div class="lista">
+        @for (cita of citasPendientes.slice(0, 6); track cita.id) {
+          <div class="cita-item pendiente-item">
+            <div class="cita-fecha">
+              <span class="fecha-dia">{{ cita.fecha | date:'dd' }}</span>
+              <span class="fecha-mes">{{ cita.fecha | date:'MMM' }}</span>
+            </div>
+            <div class="cita-info">
+              <p class="cita-cliente">{{ cita.user?.name }}</p>
+              <p class="cita-servicio">{{ cita.servicio?.nombre }}</p>
+            </div>
+            <div class="cita-estado pendiente">PENDIENTE</div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+</div>

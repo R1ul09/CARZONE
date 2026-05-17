@@ -7,9 +7,11 @@ import { CocheDetail } from './components/pages/coche-detail/coche-detail';
 import { Financiacion } from './components/pages/financiacion/financiacion';
 import { Comparar } from './components/pages/comparar/comparar';
 import { ClienteDashboard } from './components/pages/dashboard/cliente/cliente-dashboard/cliente-dashboard';
+import { AdminDashboard } from './components/pages/dashboard/admin/admin-dashboard/admin-dashboard';
 import { EmpleadoDashboard } from './components/pages/dashboard/empleado/empleado-dashboard/empleado-dashboard';
 import { clienteGuard } from './guards/cliente-guard';
 import { empleadoGuard } from './guards/empleado-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -20,7 +22,7 @@ export const routes: Routes = [
   { path: 'financiacion', component: Financiacion },
   { path: 'comparar', component: Comparar },
   { path: 'dashboard/cliente', component: ClienteDashboard, canActivate: [clienteGuard] },
-  //{ path: 'dashboard/admin', component: AdminDashboard, canActivate: [authGuard] },
+  { path: 'dashboard/admin', component: AdminDashboard, canActivate: [adminGuard] },
   { path: 'dashboard/empleado', component: EmpleadoDashboard, canActivate: [empleadoGuard] },
   { path: '**', redirectTo: '' }
 ];

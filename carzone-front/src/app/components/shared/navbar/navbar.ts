@@ -143,7 +143,8 @@ export class Navbar implements OnInit {
       return ['/'];
     }
 
-    switch (this.user.role_id) {
+    const roleId = Number(this.user.role_id);
+    switch (roleId) {
       case 1:
         return ['/dashboard/cliente'];
       case 2:

@@ -74,7 +74,12 @@
 
       <a routerLink="/financiacion" (click)="toggleMenu()">FINANCIACIÓN</a>
       <a routerLink="/comparar" (click)="toggleMenu()">COMPARAR</a>
-      <a routerLink="/login" class="login-btn-mobile" (click)="toggleMenu()">INICIAR SESIÓN</a>
+      @if (!isLoggedIn) {
+        <a routerLink="/login" class="login-btn-mobile" (click)="toggleMenu()">INICIAR SESIÓN</a>
+      } @else {
+        <a [routerLink]="getDashboardRoute()" (click)="toggleMenu()">Dashboard</a>
+        <button class="login-btn-mobile" (click)="logout(); toggleMenu()">Cerrar sesión</button>
+      }
     </div>
   </div>
 </nav>

@@ -1,0 +1,78 @@
+<div class="usuarios-admin">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Usuarios</h2>
+    </div>
+    <div class="buscador">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por nombre, email o rol...">
+    </div>
+  </div>
+
+  @if (usuariosFiltrados.length === 0) {
+    <div class="empty-state">
+      <p>No hay usuarios para mostrar.</p>
+    </div>
+  }
+
+  <div class="usuarios-lista">
+    @for (usuario of usuariosFiltrados; track usuario.id) {
+      <div class="usuario-card">
+        <div>
+          <p class="usuario-nombre">{{ usuario.name }}</p>
+          <p class="usuario-email">{{ usuario.email }}</p>
+        </div>
+
+        <div class="usuario-meta">
+          <span class="badge-role">{{ usuario.role?.nombre || roleMap[usuario.role_id] || 'Sin rol' }}</span>
+        </div>
+
+        <div class="usuario-acciones">
+          <button class="btn-accion edit" (click)="abrirEditar(usuario)">Editar</button>
+          <button class="btn-accion delete" (click)="eliminar(usuario)">Eliminar</button>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
+
+@if (modalAbierto) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar usuario</h3>
+        <button class="modal-close" (click)="cerrarModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="form.name" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="form.email" placeholder="usuario@ejemplo.com">
+        </div>
+        <div class="form-group">
+          <label>Rol</label>
+          <select [(ngModel)]="form.role_id">
+            <option [ngValue]="null" disabled>Seleccionar rol</option>
+            <option [ngValue]="1">Cliente</option>
+            <option [ngValue]="2">Administrador</option>
+            <option [ngValue]="3">Empleado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">{{ guardando ? 'Guardando...' : 'Guardar cambios' }}</button>
+      </div>
+    </div>
+  </div>
+}

@@ -14,10 +14,16 @@ class CitaController extends Controller
     // Listar citas
     public function index(Request $request)
     {
-        $citas = Cita::with(['coche.marca'])
-            ->where('user_id', $request->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $user = $request->user();
+        $query = Cita::with(['coche.marca', 'user']);
+
+        if ($user && in_array($user->rol?->nombre, ['admin', 'empleado'])) {
+            $citas = $query->orderBy('created_at', 'desc')->get();
+        } else {
+            $citas = $query->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         return response()->json($citas);
     }
