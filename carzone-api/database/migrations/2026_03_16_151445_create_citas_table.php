@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('fecha');
             $table->time('hora');
             $table->string('estado')->default('pendiente');
+            $table->text('mensaje_empleado')->nullable()->after('estado');
             $table->timestamps();
         });
     }

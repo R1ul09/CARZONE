@@ -24,9 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->validateCsrfTokens(except: [
-            '/register',
-            '/login',
-            '/logout',
+            '/api/register',
+            '/api/login',
+            '/api/logout',
             'api/*',
         ]);
 
@@ -34,6 +34,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: [
             'XSRF-TOKEN',
         ]);
+
+        $middleware->trustProxies(at: '*');
 
         //
     })

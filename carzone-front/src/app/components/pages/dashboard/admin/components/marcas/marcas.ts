@@ -32,8 +32,13 @@ export class MarcasAdmin implements OnChanges {
   modoEdicion: boolean = false;
   guardando: boolean = false;
 
-  // formVacio hace un reset del formulario para crear una nueva marca o limpiar el modal al cerrar
   form: MarcaForm = this.formVacio();
+
+  // Archivos seleccionados
+  logoFile: File | null = null;
+  heroFile: File | null = null;
+  logoPreview: string = '';
+  heroPreview: string = '';
 
   constructor(
     private adminService: AdminService,
@@ -48,12 +53,15 @@ export class MarcasAdmin implements OnChanges {
 
   get marcasFiltradas(): Marca[] {
     if (!this.busqueda.trim()) return this.marcas;
-    const query = this.busqueda.toLowerCase();
-    return this.marcas.filter(marca => marca.nombre.toLowerCase().includes(query) || marca.pais?.toLowerCase().includes(query));
+    const q = this.busqueda.toLowerCase();
+    return this.marcas.filter(m =>
+      m.nombre.toLowerCase().includes(q) || m.pais?.toLowerCase().includes(q)
+    );
   }
 
   abrirCrear() {
     this.form = this.formVacio();
+    this.resetArchivos();
     this.modoEdicion = false;
     this.modalAbierto = true;
   }
@@ -69,6 +77,10 @@ export class MarcasAdmin implements OnChanges {
       logo: marca.logo ?? '',
       imagen_hero: marca.imagen_hero ?? '',
     };
+    this.resetArchivos();
+    // Ponemos las URLs actuales como preview
+    this.logoPreview = marca.logo ?? '';
+    this.heroPreview = marca.imagen_hero ?? '';
     this.modoEdicion = true;
     this.modalAbierto = true;
   }
@@ -76,6 +88,34 @@ export class MarcasAdmin implements OnChanges {
   cerrarModal() {
     this.modalAbierto = false;
     this.form = this.formVacio();
+    this.resetArchivos();
+  }
+
+  resetArchivos() {
+    this.logoFile = null;
+    this.heroFile = null;
+    this.logoPreview = '';
+    this.heroPreview = '';
+  }
+
+  onLogoSeleccionado(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.logoFile = file;
+      const reader = new FileReader();
+      reader.onload = (event) => this.logoPreview = event.target?.result as string;
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onHeroSeleccionado(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.heroFile = file;
+      const reader = new FileReader();
+      reader.onload = (event) => this.heroPreview = event.target?.result as string;
+      reader.readAsDataURL(file);
+    }
   }
 
   guardar() {
@@ -85,29 +125,31 @@ export class MarcasAdmin implements OnChanges {
     }
     this.guardando = true;
 
-    const payload = {
-      nombre: this.form.nombre.trim(),
-      pais: this.form.pais.trim() || undefined,
-      anio_fundacion: this.form.anio_fundacion ?? undefined,
-      descripcion: this.form.descripcion.trim() || undefined,
-      slogan: this.form.slogan.trim() || undefined,
-      logo: this.form.logo.trim() || undefined,
-      imagen_hero: this.form.imagen_hero.trim() || undefined,
+    // Preparamos el objeto de datos (sin los campos de archivo)
+    const data = {
+      nombre: this.form.nombre,
+      pais: this.form.pais,
+      anio_fundacion: this.form.anio_fundacion,
+      descripcion: this.form.descripcion,
+      slogan: this.form.slogan,
+      // Solo mandamos la URL si NO hay archivo nuevo (si hay archivo, el back la sobreescribe)
+      ...(!this.logoFile && { logo: this.form.logo }),
+      ...(!this.heroFile && { imagen_hero: this.form.imagen_hero }),
     };
 
-    const observable = this.modoEdicion && this.form.id
-      ? this.adminService.updateMarca(this.form.id, payload)
-      : this.adminService.createMarca(payload);
+    const obs = this.modoEdicion && this.form.id
+      ? this.adminService.updateMarca(this.form.id, data, this.logoFile ?? undefined, this.heroFile ?? undefined)
+      : this.adminService.createMarca(data, this.logoFile ?? undefined, this.heroFile ?? undefined);
 
-    observable.subscribe({
+    obs.subscribe({
       next: () => {
         this.toastr.success(this.modoEdicion ? 'Marca actualizada' : 'Marca creada');
         this.cerrarModal();
         this.actualizar.emit();
         this.guardando = false;
       },
-      error: () => {
-        this.toastr.error('Error al guardar la marca');
+      error: (err) => {
+        this.toastr.error(err?.error?.message ?? 'Error al guardar la marca');
         this.guardando = false;
       }
     });

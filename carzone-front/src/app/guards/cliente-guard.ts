@@ -1,19 +1,13 @@
 import { inject } from '@angular/core';
-import { Router, UrlTree } from '@angular/router';
+import { Router } from '@angular/router';
+import { Auth } from '../services/auth';
 
-export const clienteGuard = (): boolean | UrlTree => {
+export const clienteGuard = () => {
+    const auth   = inject(Auth);
     const router = inject(Router);
-    const token = localStorage.getItem('authToken');
-    const user = localStorage.getItem('user');
-
-    if (!token || !user) {
-        return router.createUrlTree(['/login']);
-    }
-
-    const role_id = Number(JSON.parse(user).role_id);
-    if (role_id !== 1) {
-        return router.createUrlTree(['/']);
-    }
-
+    const user   = auth.user();
+    
+    if (!user) { router.navigate(['/login']); return false; }
+    if (user.role_id !== 1) { router.navigate(['/']); return false; }
     return true;
 };

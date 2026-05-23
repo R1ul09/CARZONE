@@ -3,27 +3,23 @@
   <div class="seccion-header">
     <div>
       <p class="seccion-subtitulo">GESTIÓN</p>
-      <h2 class="seccion-titulo">Todas las Citas</h2>
+      <h2 class="seccion-titulo">Todas las citas</h2>
     </div>
+    <span class="total-badge">{{ citasFiltradas.length }} citas</span>
   </div>
 
   <!-- FILTROS -->
   <div class="filtros">
     <div class="filtros-estado">
-      <button class="filtro-btn" [class.active]="filtroEstado === 'todas'"
-              (click)="filtroEstado = 'todas'">Todas</button>
-      <button class="filtro-btn" [class.active]="filtroEstado === 'pendiente'"
-              (click)="filtroEstado = 'pendiente'">Pendientes</button>
-      <button class="filtro-btn" [class.active]="filtroEstado === 'confirmada'"
-              (click)="filtroEstado = 'confirmada'">Confirmadas</button>
-      <button class="filtro-btn" [class.active]="filtroEstado === 'cancelada'"
-              (click)="filtroEstado = 'cancelada'">Canceladas</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'todas'"        (click)="filtroEstado = 'todas'">Todas</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'pendiente'"    (click)="filtroEstado = 'pendiente'">Pendientes</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'confirmada'"   (click)="filtroEstado = 'confirmada'">Confirmadas</button>
+      <button class="filtro-btn ho" [class.active]="filtroEstado === 'hora_ocupada'" (click)="filtroEstado = 'hora_ocupada'">Hora ocupada</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'cancelada'"    (click)="filtroEstado = 'cancelada'">Canceladas</button>
     </div>
-    <input type="date" class="filtro-fecha" [(ngModel)]="filtroFecha"
-           placeholder="Filtrar por fecha">
+    <input type="date" class="filtro-fecha" [(ngModel)]="filtroFecha">
   </div>
 
-  <!-- LISTA -->
   @if (citasFiltradas.length === 0) {
     <div class="empty-state">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -36,7 +32,9 @@
 
   <div class="lista">
     @for (cita of citasFiltradas; track cita.id) {
-      <div class="cita-card">
+
+      <!-- TARJETA -->
+      <div class="cita-card" [class.hora-ocupada-card]="cita.estado === 'hora_ocupada'">
 
         <div class="cita-fecha">
           <span class="fecha-dia">{{ cita.fecha | date:'dd' }}</span>
@@ -45,26 +43,74 @@
 
         <div class="cita-info">
           <p class="cita-cliente">{{ cita.user?.name }}</p>
+          <p class="cita-email">{{ cita.user?.email }}</p>
           <p class="cita-servicio">{{ cita.servicio?.nombre }}</p>
           <p class="cita-meta">
             {{ cita.hora }}h
             @if (cita.coche) { · {{ cita.coche.marca?.nombre }} {{ cita.coche.modelo }} }
           </p>
+          @if (cita.mensaje_empleado && mensajeAbierto !== cita.id) {
+            <p class="mensaje-preview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              {{ cita.mensaje_empleado }}
+            </p>
+          }
         </div>
 
         <div class="cita-acciones">
-          <div class="cita-estado" [class]="cita.estado">
-            {{ cita.estado | uppercase }}
-          </div>
-          <select class="estado-select" [value]="cita.estado"
-                  (change)="cambiarEstado(cita, $any($event.target).value)">
-            @for (estado of estados; track estado) {
-              <option [value]="estado">{{ estado }}</option>
+          <span class="cita-estado" [class]="cita.estado">
+            @if (cita.estado === 'hora_ocupada') { ⚠ HORA OCUPADA }
+            @else { {{ cita.estado | uppercase }} }
+          </span>
+
+          <select [value]="cita.estado" (change)="cambiarEstado(cita, $any($event.target).value)">
+            @for (e of estados; track e.valor) {
+              <option [value]="e.valor">{{ e.etiqueta }}</option>
             }
           </select>
+
+          <button class="btn-mensaje" [class.activo]="mensajeAbierto === cita.id"
+                  (click)="abrirMensaje(cita)"
+                  [title]="cita.mensaje_empleado ? 'Editar mensaje' : 'Añadir mensaje al cliente'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            {{ cita.mensaje_empleado ? 'Editar mensaje' : 'Mensaje' }}
+          </button>
         </div>
 
       </div>
+
+      <!-- PANEL DE MENSAJE (se expande bajo la tarjeta) -->
+      @if (mensajeAbierto === cita.id) {
+        <div class="mensaje-panel">
+          <div class="panel-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span>Mensaje para <strong>{{ cita.user?.name }}</strong></span>
+            <button class="btn-cerrar-panel" (click)="cerrarMensaje()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+          <textarea [(ngModel)]="mensajeTexto" rows="3" maxlength="500"
+                    placeholder="Escribe aquí el mensaje que verá el cliente en su panel..."></textarea>
+          <div class="panel-footer">
+            <span class="char-count">{{ mensajeTexto.length }}/500</span>
+            <div class="panel-btns">
+              <button class="btn-cancelar" (click)="cerrarMensaje()">Cancelar</button>
+              <button class="btn-guardar" (click)="guardarMensaje(cita)" [disabled]="guardandoMensaje">
+                {{ guardandoMensaje ? 'Guardando...' : 'Guardar mensaje' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
     }
   </div>
 

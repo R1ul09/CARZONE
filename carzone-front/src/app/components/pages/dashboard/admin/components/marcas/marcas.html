@@ -123,26 +123,79 @@
           </div>
         </div>
 
-        <div class="form-group full" style="margin-bottom: 16px">
-          <label>URL del logo</label>
-          <input type="url" [(ngModel)]="form.logo" placeholder="https://ejemplo.com/logo.png">
-          @if (form.logo) {
-            <div class="preview-img">
-              <img [src]="form.logo" alt="preview logo" (error)="$any($event.target).style.display='none'">
-              <span>Vista previa del logo</span>
+        <!-- ── LOGO (Actualizado por Claude) ── -->
+        <div class="form-group full imagen-upload-group">
+          <label>Logo de la marca</label>
+
+          <!-- Preview actual -->
+          @if (logoPreview) {
+            <div class="imagen-preview logo-preview">
+              <img [src]="logoPreview" alt="Logo preview"
+                   (error)="$any($event.target).style.display='none'">
+              <button class="btn-quitar-imagen" (click)="logoFile = null; logoPreview = form.logo = ''"
+                      type="button" title="Quitar imagen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
             </div>
           }
+
+          <div class="upload-row">
+            <!-- Subir archivo -->
+            <label class="btn-upload" title="Subir desde ordenador">
+              <input type="file" accept="image/*" style="display:none"
+                     (change)="onLogoSeleccionado($event)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Subir logo
+            </label>
+
+            <span class="upload-or">o</span>
+
+            <!-- URL manual -->
+            <input type="url" [(ngModel)]="form.logo" placeholder="https://... URL del logo"
+                   class="upload-url-input"
+                   (input)="logoFile ? null : (logoPreview = form.logo)">
+          </div>
         </div>
 
-        <div class="form-group full" style="margin-bottom: 16px">
-          <label>URL de imagen hero (portada de marca)</label>
-          <input type="url" [(ngModel)]="form.imagen_hero" placeholder="https://ejemplo.com/hero.jpg">
-          @if (form.imagen_hero) {
-            <div class="preview-img hero">
-              <img [src]="form.imagen_hero" alt="preview hero" (error)="$any($event.target).style.display='none'">
-              <span>Vista previa hero</span>
+        <!-- ── IMAGEN HERO (Actualizado por Claude) ── -->
+        <div class="form-group full imagen-upload-group">
+          <label>Imagen hero (portada de marca)</label>
+
+          @if (heroPreview) {
+            <div class="imagen-preview hero-preview">
+              <img [src]="heroPreview" alt="Hero preview"
+                   (error)="$any($event.target).style.display='none'">
+              <button class="btn-quitar-imagen" (click)="heroFile = null; heroPreview = form.imagen_hero = ''"
+                      type="button" title="Quitar imagen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
             </div>
           }
+
+          <div class="upload-row">
+            <label class="btn-upload" title="Subir desde ordenador">
+              <input type="file" accept="image/*" style="display:none"
+                     (change)="onHeroSeleccionado($event)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Subir imagen hero
+            </label>
+
+            <span class="upload-or">o</span>
+
+            <input type="url" [(ngModel)]="form.imagen_hero" placeholder="https://... URL de la imagen hero"
+                   class="upload-url-input"
+                   (input)="heroFile ? null : (heroPreview = form.imagen_hero)">
+          </div>
         </div>
 
         <div class="form-group full">

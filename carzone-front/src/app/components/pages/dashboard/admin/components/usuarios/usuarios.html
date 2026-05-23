@@ -5,74 +5,76 @@
       <p class="seccion-subtitulo">GESTIÓN</p>
       <h2 class="seccion-titulo">Usuarios</h2>
     </div>
+    <span class="total-badge">{{ usuariosFiltrados.length }} usuarios</span>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <div class="filtros-rol">
+      <button class="filtro-btn" [class.active]="filtroRol === 'todos'" (click)="filtroRol = 'todos'">Todos</button>
+      <button class="filtro-btn" [class.active]="filtroRol === '1'" (click)="filtroRol = '1'">Clientes</button>
+      <button class="filtro-btn" [class.active]="filtroRol === '3'" (click)="filtroRol = '3'">Empleados</button>
+      <button class="filtro-btn" [class.active]="filtroRol === '2'" (click)="filtroRol = '2'">Admins</button>
+    </div>
     <div class="buscador">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
       </svg>
-      <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por nombre, email o rol...">
+      <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por nombre o email...">
     </div>
   </div>
 
   @if (usuariosFiltrados.length === 0) {
     <div class="empty-state">
-      <p>No hay usuarios para mostrar.</p>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+      </svg>
+      <p>No se encontraron usuarios</p>
     </div>
   }
 
-  <div class="usuarios-lista">
+  <div class="tabla">
+
+    <div class="tabla-header">
+      <span>Usuario</span>
+      <span>Email</span>
+      <span>Rol</span>
+      <span>Acciones</span>
+    </div>
+
     @for (usuario of usuariosFiltrados; track usuario.id) {
-      <div class="usuario-card">
-        <div>
-          <p class="usuario-nombre">{{ usuario.name }}</p>
-          <p class="usuario-email">{{ usuario.email }}</p>
+      <div class="tabla-row">
+
+        <div class="usuario-nombre">
+          <div class="avatar">{{ usuario.name.charAt(0).toUpperCase() }}</div>
+          <span>{{ usuario.name }}</span>
         </div>
 
-        <div class="usuario-meta">
-          <span class="badge-role">{{ usuario.role?.nombre || roleMap[usuario.role_id] || 'Sin rol' }}</span>
+        <span class="usuario-email">{{ usuario.email }}</span>
+
+        <div class="usuario-rol">
+          <span class="rol-badge" [class]="'rol-' + usuario.role_id">
+            {{ nombreRol(usuario.role_id) }}
+          </span>
+          <select [value]="usuario.role_id"
+                  (change)="cambiarRol(usuario, +$any($event.target).value)">
+            <option value="1">Cliente</option>
+            <option value="3">Empleado</option>
+            <option value="2">Admin</option>
+          </select>
         </div>
 
-        <div class="usuario-acciones">
-          <button class="btn-accion edit" (click)="abrirEditar(usuario)">Editar</button>
-          <button class="btn-accion delete" (click)="eliminar(usuario)">Eliminar</button>
-        </div>
+        <button class="btn-delete" (click)="eliminar(usuario)" title="Eliminar usuario">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          </svg>
+        </button>
+
       </div>
     }
+
   </div>
 
 </div>
-
-@if (modalAbierto) {
-  <div class="modal-overlay" (click)="cerrarModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>Editar usuario</h3>
-        <button class="modal-close" (click)="cerrarModal()">×</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Nombre</label>
-          <input type="text" [(ngModel)]="form.name" placeholder="Nombre completo">
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" [(ngModel)]="form.email" placeholder="usuario@ejemplo.com">
-        </div>
-        <div class="form-group">
-          <label>Rol</label>
-          <select [(ngModel)]="form.role_id">
-            <option [ngValue]="null" disabled>Seleccionar rol</option>
-            <option [ngValue]="1">Cliente</option>
-            <option [ngValue]="2">Administrador</option>
-            <option [ngValue]="3">Empleado</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
-        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">{{ guardando ? 'Guardando...' : 'Guardar cambios' }}</button>
-      </div>
-    </div>
-  </div>
-}

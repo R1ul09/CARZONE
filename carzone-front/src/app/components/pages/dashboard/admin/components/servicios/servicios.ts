@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../../../../../services/admin';
 import { Servicio } from '../../../../../../interfaces/servicio.interface';
@@ -9,21 +10,22 @@ type ServicioForm = {
   nombre: string;
   descripcion: string;
   precio: number | null;
+  duracion_minutos: number | null;
 };
 
 @Component({
   selector: 'app-servicios-admin',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CurrencyPipe],
   templateUrl: './servicios.html',
-  styleUrl: './servicios.scss',
+  styleUrl: './servicios.scss'
 })
+
 export class ServiciosAdmin implements OnChanges {
 
   @Input() servicios: Servicio[] = [];
   @Output() actualizar = new EventEmitter<void>();
 
-  busqueda: string = '';
   modalAbierto: boolean = false;
   modoEdicion: boolean = false;
   guardando: boolean = false;
@@ -38,16 +40,7 @@ export class ServiciosAdmin implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {}
 
   formVacio(): ServicioForm {
-    return { nombre: '', descripcion: '', precio: null };
-  }
-
-  get serviciosFiltrados(): Servicio[] {
-    if (!this.busqueda.trim()) return this.servicios;
-    const query = this.busqueda.toLowerCase();
-    return this.servicios.filter(servicio =>
-      servicio.nombre.toLowerCase().includes(query) ||
-      (servicio.descripcion ?? '').toLowerCase().includes(query)
-    );
+    return { nombre: '', descripcion: '', precio: null, duracion_minutos: null };
   }
 
   abrirCrear() {
@@ -62,6 +55,7 @@ export class ServiciosAdmin implements OnChanges {
       nombre: servicio.nombre,
       descripcion: servicio.descripcion ?? '',
       precio: servicio.precio ?? null,
+      duracion_minutos: servicio.duracion_minutos ?? null,
     };
     this.modoEdicion = true;
     this.modalAbierto = true;
@@ -73,24 +67,24 @@ export class ServiciosAdmin implements OnChanges {
   }
 
   guardar() {
-    if (!this.form.nombre.trim() || !this.form.precio) {
-      this.toastr.warning('Completa los campos obligatorios');
+    if (!this.form.nombre.trim()) {
+      this.toastr.warning('El nombre del servicio es obligatorio');
       return;
     }
-
     this.guardando = true;
 
-    const payload = {
-      nombre: this.form.nombre.trim(),
-      descripcion: this.form.descripcion.trim() || undefined,
-      precio: Number(this.form.precio),
+    const servicioData: Partial<Servicio> = {
+      nombre: this.form.nombre,
+      descripcion: this.form.descripcion,
+      precio: this.form.precio ?? 0,
+      duracion_minutos: this.form.duracion_minutos ?? 0
     };
 
-    const observable = this.modoEdicion && this.form.id
-      ? this.adminService.updateServicio(this.form.id, payload)
-      : this.adminService.createServicio(payload);
+    const obs = this.modoEdicion && this.form.id
+      ? this.adminService.updateServicio(this.form.id, servicioData)
+      : this.adminService.createServicio(servicioData);
 
-    observable.subscribe({
+    obs.subscribe({
       next: () => {
         this.toastr.success(this.modoEdicion ? 'Servicio actualizado' : 'Servicio creado');
         this.cerrarModal();
@@ -105,7 +99,7 @@ export class ServiciosAdmin implements OnChanges {
   }
 
   eliminar(servicio: Servicio) {
-    if (!confirm(`¿Eliminar el servicio ${servicio.nombre}? Esta acción no se puede deshacer.`)) return;
+    if (!confirm(`¿Eliminar el servicio "${servicio.nombre}"?`)) return;
 
     this.adminService.deleteServicio(servicio.id).subscribe({
       next: () => {

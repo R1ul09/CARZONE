@@ -22,7 +22,8 @@ export interface Cita {
     coche_id?: number;
     fecha: string;
     hora: string;
-    estado: 'pendiente' | 'confirmada' | 'cancelada';
+    estado: 'pendiente' | 'confirmada' | 'cancelada' | 'realizada' | 'hora_ocupada';
+    mensaje_empleado?: string | null;
     servicio?: Servicio;
     coche?: CitaCoche;
     user?: { id: number; name: string; email: string; };

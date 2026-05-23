@@ -81,6 +81,7 @@ CREATE TABLE `citas` (
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pendiente',
+  `mensaje_empleado` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -99,7 +100,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-INSERT INTO `citas` VALUES (5,2,1,37,'2026-05-15','16:30:00','pendiente','2026-05-11 11:21:42','2026-05-11 11:21:42');
+INSERT INTO `citas` VALUES (5,2,1,37,'2026-05-15','16:30:00','pendiente',NULL,'2026-05-11 11:21:42','2026-05-11 11:21:42');
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,7 +346,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,7 +355,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'0000_00_00_000000_create_roles_table',1),(2,'0001_01_01_000000_create_users_table',1),(3,'0001_01_01_000001_create_cache_table',1),(4,'0001_01_01_000002_create_jobs_table',1),(5,'2026_03_16_151414_create_marcas_table',1),(6,'2026_03_16_151424_create_coches_table',1),(7,'2026_03_16_151430_create_financiaciones_table',1),(8,'2026_03_16_151436_create_servicios_table',1),(9,'2026_03_16_151445_create_citas_table',1),(10,'2026_03_18_152744_create_personal_access_tokens_table',1),(11,'2026_04_06_102205_create_imagenes_vehiculos_table',2),(12,'2026_04_11_104642_remove_imagen_from_coches_table',3),(13,'2026_05_04_090606_add_technical_fields_to_coches_table',4),(14,'2026_05_04_092627_add_custom_fields_to_marcas_table',5),(15,'2026_05_04_092827_add_destacado_to_coches_table',6),(16,'2026_05_11_124717_add_user_id_to_financiaciones_table',7);
+INSERT INTO `migrations` VALUES (1,'0000_00_00_000000_create_roles_table',1),(2,'0001_01_01_000000_create_users_table',1),(3,'0001_01_01_000001_create_cache_table',1),(4,'0001_01_01_000002_create_jobs_table',1),(5,'2026_03_16_151414_create_marcas_table',1),(6,'2026_03_16_151424_create_coches_table',1),(7,'2026_03_16_151430_create_financiaciones_table',1),(8,'2026_03_16_151436_create_servicios_table',1),(9,'2026_03_16_151445_create_citas_table',1),(10,'2026_03_18_152744_create_personal_access_tokens_table',1),(11,'2026_04_06_102205_create_imagenes_vehiculos_table',2),(12,'2026_04_11_104642_remove_imagen_from_coches_table',3),(13,'2026_05_04_090606_add_technical_fields_to_coches_table',4),(14,'2026_05_04_092627_add_custom_fields_to_marcas_table',5),(15,'2026_05_04_092827_add_destacado_to_coches_table',6),(16,'2026_05_11_124717_add_user_id_to_financiaciones_table',7),(17,'2026_05_19_150828_add_mensaje_empleado_table',8);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,7 +533,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Raul Zaldua','raul@example.com',NULL,'$2y$12$JNM0TOnSZKkqOTxklJhf1uQaxL0tOiSfTRtTsIJVU1NGbt5PckJ82',2,NULL,'2026-03-30 14:41:18','2026-03-30 14:42:12'),(2,'Test User','test@test.com',NULL,'$2y$12$f0OLvqS5MYMgjkc9ikEEjuight.bmca.cWknC75gSYIxuGyHLwSua',2,NULL,'2026-05-10 14:47:12','2026-05-10 14:47:12'),(3,'Raul','zalduaraul05@gmail.com',NULL,'$2y$12$cLYv6GvxWKeCgsgTW5CWFuSK0L9FoHbCYooBDyAyDgZk8Tb5ELZiG',1,NULL,'2026-05-11 16:32:00','2026-05-11 16:32:00'),(4,'Raul','zalduaraul11@gmail.com',NULL,'$2y$12$Rm3LJxECwVqf3JT1qU4xMe7sAenKGxNTMaWIsv2iY89sH5Eh8uJfq',2,NULL,'2026-05-11 16:37:29','2026-05-11 16:37:29'),(5,'Raul','zalduaraul02@gmail.com',NULL,'$2y$12$CxXngpPAQ44889cD.DsXbeXUOgTB4yNeiiQKwbSggSSK9ccyyvJjm',1,NULL,'2026-05-11 16:40:11','2026-05-11 16:40:11'),(6,'qwrwer','zalduaraul01@gmail.com',NULL,'$2y$12$wJBf8FJX/MPQvPrBtLGmOecn5Sl3ZZlmHMPWSImOXf4Pma3S2GgKa',3,NULL,'2026-05-14 14:41:09','2026-05-14 14:41:09');
+INSERT INTO `users` VALUES (1,'Raul Zaldua','raul@example.com',NULL,'$2y$12$JNM0TOnSZKkqOTxklJhf1uQaxL0tOiSfTRtTsIJVU1NGbt5PckJ82',2,NULL,'2026-03-30 14:41:18','2026-03-30 14:42:12'),(2,'Test User','test@test.com',NULL,'$2y$12$f0OLvqS5MYMgjkc9ikEEjuight.bmca.cWknC75gSYIxuGyHLwSua',2,NULL,'2026-05-10 14:47:12','2026-05-10 14:47:12'),(3,'Raul','zalduaraul05@gmail.com',NULL,'$2y$12$cLYv6GvxWKeCgsgTW5CWFuSK0L9FoHbCYooBDyAyDgZk8Tb5ELZiG',2,NULL,'2026-05-11 16:32:00','2026-05-11 16:32:00'),(4,'Raul','zalduaraul11@gmail.com',NULL,'$2y$12$Rm3LJxECwVqf3JT1qU4xMe7sAenKGxNTMaWIsv2iY89sH5Eh8uJfq',2,NULL,'2026-05-11 16:37:29','2026-05-11 16:37:29'),(5,'Raul','zalduaraul02@gmail.com',NULL,'$2y$12$CxXngpPAQ44889cD.DsXbeXUOgTB4yNeiiQKwbSggSSK9ccyyvJjm',1,NULL,'2026-05-11 16:40:11','2026-05-11 16:40:11'),(6,'qwrwer','zalduaraul01@gmail.com',NULL,'$2y$12$wJBf8FJX/MPQvPrBtLGmOecn5Sl3ZZlmHMPWSImOXf4Pma3S2GgKa',3,NULL,'2026-05-14 14:41:09','2026-05-14 14:41:09');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -545,4 +546,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-15 23:24:49
+-- Dump completed on 2026-05-19 17:09:56

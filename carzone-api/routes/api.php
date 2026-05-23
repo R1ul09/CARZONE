@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\ChatbotController;
 use App\Http\Controllers\Api\ImagenVehiculoController;
 use Illuminate\Support\Facades\Route;
 
+// Incluir rutas de autenticación
+require __DIR__.'/auth.php';
+
 // RUTAS PÚBLICAS (No requieren autenticación)
 Route::get('/marcas', [MarcaController::class, 'index']);
 Route::get('/marcas/{id}', [MarcaController::class, 'show']);
@@ -18,6 +21,7 @@ Route::get('/coches', [CocheController::class, 'index']);
 Route::get('/coches/{id}', [CocheController::class, 'show']);
 Route::get('/servicios', [ServicioController::class, 'index']);
 Route::post('/chatbot', [ChatbotController::class, 'procesarMensaje']);
+Route::get('/citas/horas-ocupadas', [CitaController::class, 'horasOcupadas']);
 
 // RUTAS PROTEGIDAS (Requieren Token/Estar logueado)
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -38,6 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Rutas para Imagenes de Vehiculos
     Route::get('imagenes-vehiculos', [ImagenVehiculoController::class, 'index']);
     Route::post('imagenes-vehiculos', [ImagenVehiculoController::class, 'store']);
+    Route::delete('imagenes-vehiculos/{id}', [ImagenVehiculoController::class, 'destroy']);
 
     Route::middleware('role:admin')->group(function () {
         Route::apiResource('users', UserController::class);

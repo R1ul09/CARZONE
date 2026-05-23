@@ -114,27 +114,29 @@ export class Navbar implements OnInit {
 
   // metodo para cerrar sesión
   logout() {
+    // Nos suscribimos para esperar a que el backend destruya la sesión de verdad
     this.authService.logout().subscribe({
-      // con next hacemos la limpieza local aunque falle la petición al backend, porque aunque falle el logout en el backend, el usuario ya no debería tener acceso a nada protegido
-        next: () => {
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('user');
-            this.isLoggedIn = false;
-            this.user = null;
-            this.toastr.info('Sesión cerrada correctamente');
-            this.router.navigate(['/']);
-            this.cd.detectChanges();
-        },
-        error: () => {
-            // aunque falle, cerramos la sesión en el cliente para evitar que el usuario quede bloqueado
-            this.toastr.info('Sesión cerrada correctamente');
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('user');
-            this.isLoggedIn = false;
-            this.user = null;
-            this.cd.detectChanges();
-            this.router.navigate(['/']);
-        }
+      next: () => {
+        this.isLoggedIn = false;
+        this.user = null;
+        this.isUserMenuOpen = false;
+        this.toastr.success('Te has deslogueado con éxito.', 'Sesión cerrada');
+        
+        // Refrescamos a lo bestia para limpiar la caché de Angular y las cookies CSRF
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1000);
+      },
+      error: (err) => {
+        console.error('Error al hacer logout en el backend', err);
+        // Forzamos la salida de todas formas
+        this.isLoggedIn = false;
+        this.user = null;
+        this.toastr.warning('Sesión cerrada localmente.');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1000);
+      }
     });
   }
 

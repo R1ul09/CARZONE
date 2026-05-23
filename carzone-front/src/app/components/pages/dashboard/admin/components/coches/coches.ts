@@ -46,10 +46,20 @@ export class CochesAdmin implements OnChanges {
   modoEdicion: boolean = false;
   guardando: boolean = false;
 
-  // Modal imágenes
+  // Modal imágenes (Actualizado con los cambios de Claude)
   modalImagenesAbierto: boolean = false;
   cocheImagenes: Coche | null = null;
+  modoImagen: 'archivo' | 'url' = 'archivo';
+
+  // Modo archivo
+  archivoSeleccionado: File | null = null;
+  previewUrl: string = '';
+
+  // Modo URL
   nuevaImagenUrl: string = '';
+
+  // Compartido
+  nuevaImagenPrincipal: boolean = false;
   agregandoImagen: boolean = false;
 
   // formVacio hace un reset del formulario para crear un nuevo coche o limpiar el modal al cerrar
@@ -73,7 +83,6 @@ export class CochesAdmin implements OnChanges {
   }
 
   get cochesFiltrados(): Coche[] {
-
     let lista = this.coches;
     if (this.filtro === 'disponibles') lista = lista.filter(coche => coche.disponible);
     if (this.filtro === 'reservados') lista = lista.filter(coche => !coche.disponible);
@@ -175,42 +184,112 @@ export class CochesAdmin implements OnChanges {
     });
   }
 
-  // ── GESTIÓN DE IMÁGENES ──
+  // ── GESTIÓN DE IMÁGENES (Nuevos métodos sugeridos por Claude) ──
   abrirImagenes(coche: Coche) {
     this.cocheImagenes = coche;
-    this.nuevaImagenUrl = '';
+    this.resetFormImagen();
     this.modalImagenesAbierto = true;
   }
 
   cerrarImagenes() {
     this.modalImagenesAbierto = false;
     this.cocheImagenes = null;
+    this.resetFormImagen();
   }
 
-  agregarImagen(esPrincipal: boolean) {
-    if (!this.nuevaImagenUrl.trim() || !this.cocheImagenes) {
-      this.toastr.warning('Introduce una URL válida');
+  resetFormImagen() {
+    this.modoImagen = 'archivo';
+    this.archivoSeleccionado = null;
+    this.previewUrl = '';
+    this.nuevaImagenUrl = '';
+    this.nuevaImagenPrincipal = false;
+  }
+
+  onArchivoSeleccionado(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) this.setArchivo(file);
+  }
+
+  onDropCoche(event: DragEvent) {
+    event.preventDefault();
+    const file = event.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) this.setArchivo(file);
+  }
+
+  setArchivo(file: File) {
+    if (file.size > 5 * 1024 * 1024) {
+      this.toastr.warning('La imagen no puede superar los 5 MB');
       return;
     }
+    this.archivoSeleccionado = file;
+    const reader = new FileReader();
+    reader.onload = (e) => this.previewUrl = e.target?.result as string;
+    reader.readAsDataURL(file);
+  }
+
+  quitarArchivo(event: Event) {
+    event.stopPropagation();
+    this.archivoSeleccionado = null;
+    this.previewUrl = '';
+  }
+
+  agregarImagen() {
+    if (!this.cocheImagenes) return;
+
     this.agregandoImagen = true;
-    this.adminService.addImagenCoche(this.cocheImagenes.id, this.nuevaImagenUrl.trim(), esPrincipal)
-      .subscribe({
-        next: () => {
-          this.toastr.success('Imagen añadida correctamente');
-          this.nuevaImagenUrl = '';
-          this.agregandoImagen = false;
-          // emit() sirve para enviar un evento al componente padre, en este caso para 
-          // que el AdminDashboard vuelva a cargar los datos y así mostrar la nueva imagen 
-          // en el listado de coches y en el modal de imágenes
-          this.actualizar.emit();
-          // Actualizamos la referencia local para reflejar las imágenes en el modal
-          const updated = this.coches.find(coche => coche.id === this.cocheImagenes?.id);
-          if (updated) this.cocheImagenes = updated;
-        },
-        error: () => {
-          this.toastr.error('Error al añadir la imagen');
-          this.agregandoImagen = false;
-        }
-      });
+
+    const obs = this.modoImagen === 'archivo'
+      ? (() => {
+          if (!this.archivoSeleccionado) {
+            this.toastr.warning('Selecciona un archivo');
+            this.agregandoImagen = false;
+            return null;
+          }
+          return this.adminService.addImagenCocheArchivo(
+            this.cocheImagenes!.id,
+            this.archivoSeleccionado,
+            this.nuevaImagenPrincipal
+          );
+        })()
+      : (() => {
+          if (!this.nuevaImagenUrl.trim()) {
+            this.toastr.warning('Introduce una URL válida');
+            this.agregandoImagen = false;
+            return null;
+          }
+          return this.adminService.addImagenCocheUrl(
+            this.cocheImagenes!.id,
+            this.nuevaImagenUrl.trim(),
+            this.nuevaImagenPrincipal
+          );
+        })();
+
+    if (!obs) return;
+
+    obs.subscribe({
+      next: () => {
+        this.toastr.success('Imagen añadida correctamente');
+        this.resetFormImagen();
+        this.agregandoImagen = false;
+        this.actualizar.emit();
+      },
+      error: (err) => {
+        const msg = err?.error?.message ?? 'Error al subir la imagen';
+        this.toastr.error(msg);
+        this.agregandoImagen = false;
+      }
+    });
+  }
+
+  eliminarImagen(imagenId: number) {
+    if (!confirm('¿Eliminar esta imagen?')) return;
+    this.adminService.deleteImagenCoche(imagenId).subscribe({
+      next: () => {
+        this.toastr.success('Imagen eliminada');
+        this.actualizar.emit();
+      },
+      error: () => this.toastr.error('Error al eliminar la imagen')
+    });
   }
 }

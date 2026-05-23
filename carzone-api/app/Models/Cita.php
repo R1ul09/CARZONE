@@ -12,7 +12,8 @@ class Cita extends Model
         'coche_id', 
         'fecha', 
         'hora', 
-        'estado'
+        'estado',
+        'mensaje_empleado'
     ];
 
     public function user()

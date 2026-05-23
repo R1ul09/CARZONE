@@ -2,7 +2,7 @@
 
 .citas {
     padding: 48px 60px;
-    max-width: 1100px;
+    max-width: 900px;
 
     .seccion-header {
         display: flex;
@@ -142,6 +142,12 @@
 
         &:hover { border-color: rgba(255, 255, 255, 0.12); }
 
+        // Tarjeta especial para hora_ocupada
+        &.hora-ocupada-card {
+            border-color: rgba(vars.$hora-ocupada, 0.3);
+            background: rgba(vars.$hora-ocupada, 0.03);
+        }
+
         .cita-fecha {
             display: flex;
             flex-direction: column;
@@ -152,34 +158,47 @@
             padding: 10px 14px;
             min-width: 54px;
 
-            .fecha-dia {
-                font-size: 20px;
-                font-weight: 800;
-                color: vars.$text-color;
-                line-height: 1;
-            }
-
-            .fecha-mes {
-                font-size: 9px;
-                color: vars.$accent-color;
-                font-weight: 600;
-                letter-spacing: 0.05em;
-            }
+            .fecha-dia { font-size: 20px; font-weight: 800; color: vars.$text-color; line-height: 1; }
+            .fecha-mes { font-size: 9px; color: vars.$accent-color; font-weight: 600; letter-spacing: 0.05em; }
         }
 
         .cita-info {
             flex: 1;
+            min-width: 0;
 
-            .cita-servicio {
-                font-size: 15px;
-                font-weight: 600;
-                color: vars.$text-color;
-                margin-bottom: 4px;
+            .cita-servicio { font-size: 15px; font-weight: 600; color: vars.$text-color; margin-bottom: 4px; }
+            .cita-meta     { font-size: 12px; color: vars.$text-muted; }
+
+            // Bloque del mensaje del empleado
+            .mensaje-empleado {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                margin-top: 10px;
+                background: rgba(vars.$hora-ocupada, 0.07);
+                border: 1px solid rgba(vars.$hora-ocupada, 0.2);
+                border-radius: 8px;
+                padding: 10px 12px;
+
+                svg { width: 15px; height: 15px; stroke: vars.$hora-ocupada; flex-shrink: 0; margin-top: 1px; }
+
+                .mensaje-label { font-size: 10px; color: vars.$hora-ocupada; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 3px; }
+                .mensaje-texto { font-size: 13px; color: vars.$text-secondary; line-height: 1.4; }
             }
+        }
 
-            .cita-meta {
-                font-size: 12px;
-                color: vars.$text-muted;
+        .cita-estado-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+
+            .hora-ocupada-hint {
+                font-size: 10px;
+                color: vars.$text-tertiary;
+                text-align: right;
+                max-width: 140px;
+                line-height: 1.3;
             }
         }
 
@@ -191,21 +210,11 @@
             letter-spacing: 0.08em;
             white-space: nowrap;
 
-            &.pendiente {
-                background: rgba(234, 179, 8, 0.1);
-                color: #eab308;
-                border: 1px solid rgba(234, 179, 8, 0.2);
-            }
-            &.confirmada {
-                background: rgba(34, 197, 94, 0.1);
-                color: #22c55e;
-                border: 1px solid rgba(34, 197, 94, 0.2);
-            }
-            &.cancelada {
-                background: rgba(239, 68, 68, 0.1);
-                color: #ef4444;
-                border: 1px solid rgba(239, 68, 68, 0.2);
-            }
+            &.pendiente    { background: rgba(234,179,8,0.1);  color: #eab308; border: 1px solid rgba(234,179,8,0.2); }
+            &.confirmada   { background: rgba(34,197,94,0.1);  color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+            &.cancelada    { background: rgba(239,68,68,0.1);  color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+            &.realizada    { background: rgba(99,102,241,0.1); color: #6366f1; border: 1px solid rgba(99,102,241,0.2); }
+            &.hora_ocupada { background: rgba(vars.$hora-ocupada, 0.12); color: vars.$hora-ocupada; border: 1px solid rgba(vars.$hora-ocupada, 0.25); }
         }
 
         .btn-cancelar {
@@ -219,15 +228,13 @@
             transition: all 0.2s ease;
             white-space: nowrap;
 
-            &:hover {
-                background: rgba(239, 68, 68, 0.08);
-                border-color: #ef4444;
-            }
+            &:hover { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; }
         }
     }
 
     @media (max-width: vars.$screen-md) {
         padding: 24px 16px;
         .form-grid { grid-template-columns: 1fr; }
+        .cita-card { flex-wrap: wrap; }
     }
 }
