@@ -46,6 +46,16 @@ export class Login implements OnInit {
 
     this.cargando = true;
 
+    // Si hay sesión activa, la cerramos primero para evitar conflictos de cookie
+    const hayUsuario = this.authService.user();
+    if (hayUsuario) {
+      this.authService.logout().subscribe({ complete: () => this.hacerLogin() });
+    } else {
+      this.hacerLogin();
+    }
+  }
+
+  private hacerLogin() {
     // obtener cookie CSRF de Sanctum
     this.authService.getCsrfCookie().subscribe({
       next: () => {

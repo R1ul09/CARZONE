@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('imagenes-vehiculos/{id}', [ImagenVehiculoController::class, 'destroy']);
 
     Route::middleware('role:admin')->group(function () {
+        Route::post('/users/empleado', [UserController::class, 'crearEmpleado']);
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RolController::class);
 

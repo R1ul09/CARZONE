@@ -5,7 +5,18 @@
       <p class="seccion-subtitulo">GESTIÓN</p>
       <h2 class="seccion-titulo">Usuarios</h2>
     </div>
-    <span class="total-badge">{{ usuariosFiltrados.length }} usuarios</span>
+    <div class="header-actions">
+      <span class="total-badge">{{ usuariosFiltrados.length }} usuarios</span>
+      <button class="btn-crear-empleado" (click)="abrirModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" y1="8" x2="19" y2="14"/>
+          <line x1="22" y1="11" x2="16" y2="11"/>
+        </svg>
+        Nuevo empleado
+      </button>
+    </div>
   </div>
 
   <!-- FILTROS -->
@@ -76,5 +87,66 @@
     }
 
   </div>
+
+  <!-- ── MODAL CREAR EMPLEADO ─────────────────────────────────────────── -->
+  @if (modalAbierto) {
+    <div class="modal-overlay" (click)="cerrarModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+          <h3>Crear nuevo empleado</h3>
+          <button class="modal-close" (click)="cerrarModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          El empleado se creará con el email ya verificado y podrá iniciar sesión de inmediato.
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" [(ngModel)]="nuevoEmpleado.name"
+                  placeholder="Ej: Carlos García" [disabled]="guardando"/>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="nuevoEmpleado.email"
+                  placeholder="carlos@carzone.es" [disabled]="guardando"/>
+          </div>
+
+          <div class="form-group">
+            <label>Contraseña temporal</label>
+            <input type="password" [(ngModel)]="nuevoEmpleado.password"
+                  placeholder="Mínimo 8 caracteres" [disabled]="guardando"/>
+            <small>El empleado podrá cambiarla desde su perfil</small>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-cancelar" (click)="cerrarModal()" [disabled]="guardando">
+            Cancelar
+          </button>
+          <button class="btn-confirmar" (click)="crearEmpleado()" [disabled]="guardando">
+            @if (guardando) {
+              <span class="spinner-small"></span> Creando...
+            } @else {
+              Crear empleado
+            }
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
 
 </div>

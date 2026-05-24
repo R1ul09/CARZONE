@@ -85,7 +85,6 @@ export class Auth {
   }
 
   // LOGOUT
-  // LOGOUT (Ahora devuelve un Observable)
   logout(): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/logout`, {}, { 
       withCredentials: true,

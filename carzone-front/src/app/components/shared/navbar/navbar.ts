@@ -71,13 +71,11 @@ export class Navbar implements OnInit {
       }
     });
 
-    // comprobamos si hay token al cargar
-    const token = localStorage.getItem('authToken');
-    const user = localStorage.getItem('user');
-
-    if (token && user) {
+    // Usamos el signal reactivo del servicio Auth — siempre sincronizado
+    const usuario = this.authService.user();
+    if (usuario) {
       this.isLoggedIn = true;
-      this.user = JSON.parse(user);
+      this.user = usuario;
       this.cd.detectChanges();
     }
   }

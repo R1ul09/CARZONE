@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../../../../../services/admin';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
@@ -7,10 +8,11 @@ import { Cliente } from '../../../../../../interfaces/cliente.interface';
 @Component({
   selector: 'app-usuarios-admin',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.scss'
 })
+
 export class UsuariosAdmin implements OnChanges {
 
   @Input() usuarios: Cliente[] = [];
@@ -18,6 +20,11 @@ export class UsuariosAdmin implements OnChanges {
 
   busqueda: string = '';
   filtroRol: string = 'todos';
+
+  // Modal crear empleado
+  modalAbierto: boolean = false;
+  guardando: boolean = false;
+  nuevoEmpleado = { name: '', email: '', password: '' };
 
   // ID del admin logueado — para ocultarse de su propia lista
   private miId: number | null = null;
@@ -73,6 +80,55 @@ export class UsuariosAdmin implements OnChanges {
         this.actualizar.emit();
       },
       error: () => this.toastr.error('Error al eliminar el usuario')
+    });
+  }
+
+  abrirModal() {
+    this.nuevoEmpleado = { name: '', email: '', password: '' };
+    this.modalAbierto = true;
+  }
+
+  cerrarModal() {
+    this.modalAbierto = false;
+  }
+
+  crearEmpleado() {
+    const { name, email, password } = this.nuevoEmpleado;
+
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      this.toastr.warning('Rellena todos los campos');
+      return;
+    }
+
+    if (password.length < 8) {
+      this.toastr.warning('La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+
+    this.guardando = true;
+
+    this.adminService.crearEmpleado(this.nuevoEmpleado).subscribe({
+      next: () => {
+        this.toastr.success(`Empleado "${name}" creado correctamente`);
+        this.guardando = false;
+        this.cerrarModal();
+        this.actualizar.emit();
+      },
+      error: (err) => {
+        this.guardando = false;
+        if (err.status === 422) {
+          const errores = err.error?.errors;
+          if (errores) {
+            Object.values(errores).forEach((msgs: any) =>
+              (msgs as string[]).forEach(m => this.toastr.error(m))
+            );
+          } else {
+            this.toastr.error('Datos inválidos');
+          }
+        } else {
+          this.toastr.error('Error al crear el empleado');
+        }
+      }
     });
   }
 }

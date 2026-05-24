@@ -5,6 +5,7 @@ import { CurrencyPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { CocheService } from '../../../services/coche';
 import { FinanciacionService } from '../../../services/financiacion';
+import { Auth } from '../../../services/auth';
 import { Coche } from '../../../interfaces/coche.interface';
 
 @Component({
@@ -13,14 +14,12 @@ import { Coche } from '../../../interfaces/coche.interface';
   styleUrl: './financiacion.scss',
   imports: [FormsModule, CurrencyPipe]
 })
-
 export class Financiacion implements OnInit {
 
   coches: Coche[] = [];
   cocheSeleccionadoId: number | string = '';
   cocheSeleccionado: Coche | null = null;
 
-  // Calculadora
   precioVehiculo: number = 200000;
   entrada: number = 40000;
   plazoSeleccionado: number = 60;
@@ -28,13 +27,7 @@ export class Financiacion implements OnInit {
   interes: number = 3.9;
   cuotaMensual: number = 0;
 
-  // Formulario
-  formData = {
-    nombre: '',
-    email: '',
-    telefono: '',
-    mensaje: ''
-  };
+  formData = { nombre: '', email: '', telefono: '', mensaje: '' };
 
   ventajas = [
     { texto: 'Aprobación en 24 horas' },
@@ -50,21 +43,19 @@ export class Financiacion implements OnInit {
     private router: Router,
     private cocheService: CocheService,
     private financiacionService: FinanciacionService,
+    private authService: Auth,
     private toastr: ToastrService
   ) {}
 
   ngOnInit() {
     this.cocheService.getTodosLosCoches().subscribe(data => {
       this.coches = data;
-
-      // Si viene con ?coche=id en la URL lo preselecciona
       const cocheId = this.route.snapshot.queryParamMap.get('coche');
       if (cocheId) {
         this.cocheSeleccionadoId = Number(cocheId);
         this.onCocheChange();
       }
     });
-
     this.calcular();
   }
 
@@ -72,7 +63,6 @@ export class Financiacion implements OnInit {
     this.cocheSeleccionado = this.coches.find(
       c => c.id === Number(this.cocheSeleccionadoId)
     ) ?? null;
-
     if (this.cocheSeleccionado) {
       this.precioVehiculo = this.cocheSeleccionado.precio;
       this.entrada = Math.round(this.cocheSeleccionado.precio * 0.2);
@@ -88,15 +78,8 @@ export class Financiacion implements OnInit {
   calcular() {
     const capital = this.precioVehiculo - this.entrada;
     const tasaMensual = this.interes / 100 / 12;
-    // n es el número total de pagos (meses)
     const n = this.plazoSeleccionado;
-
-    if (capital <= 0) {
-      this.cuotaMensual = 0;
-      return;
-    }
-
-    // Fórmula estándar de cuota mensual
+    if (capital <= 0) { this.cuotaMensual = 0; return; }
     this.cuotaMensual = Math.round(
       (capital * tasaMensual * Math.pow(1 + tasaMensual, n)) /
       (Math.pow(1 + tasaMensual, n) - 1)
@@ -104,17 +87,14 @@ export class Financiacion implements OnInit {
   }
 
   solicitar() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
+    if (!this.authService.estaLogueado()) {
       this.router.navigate(['/login']);
       return;
     }
-
     if (!this.cocheSeleccionadoId || !this.formData.nombre || !this.formData.email) {
       this.toastr.error('Por favor rellena todos los campos obligatorios');
       return;
     }
-
     this.financiacionService.solicitarFinanciacion({
       coche_id: Number(this.cocheSeleccionadoId),
       meses: this.plazoSeleccionado,

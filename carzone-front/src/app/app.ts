@@ -3,13 +3,14 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Navbar } from "./components/shared/navbar/navbar";
 import { Footer } from './components/shared/footer/footer';
+import { Chatbot } from './chatbot/chatbot';
 import AOS from 'aos';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, Navbar, Footer],
+  imports: [CommonModule, RouterOutlet, Navbar, Footer, Chatbot],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
