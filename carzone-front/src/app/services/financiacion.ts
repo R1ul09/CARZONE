@@ -4,26 +4,22 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Financiacion, CreateFinanciacion } from '../interfaces/financiacion.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class FinanciacionService {
 
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  // Método para solicitar una financiación
   solicitarFinanciacion(data: CreateFinanciacion): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    return this.http.post(`${this.apiUrl}/financiaciones`, data, {
-      // bearer es el formato estándar para enviar tokens de autenticación en las cabeceras HTTP
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    return this.http.post(`${this.apiUrl}/financiaciones`, data);
   }
 
-  // Método para obtener las financiaciones del usuario autenticado
-  getFinanciaciones(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/financiaciones`);
+  getFinanciaciones(): Observable<Financiacion[]> {
+    return this.http.get<Financiacion[]>(`${this.apiUrl}/financiaciones`);
+  }
+
+  eliminarFinanciacion(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/financiaciones/${id}`);
   }
 }

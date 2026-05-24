@@ -88,7 +88,7 @@
                     (citaCreada)="cargarDatos()" (citaCancelada)="cargarDatos()"/>
         }
         @if (seccionActiva === 'financiaciones') {
-          <app-financiaciones [financiaciones]="financiaciones"/>
+          <app-financiaciones [financiaciones]="financiaciones" (financiacionEliminada)="cargarDatos()"/>
         }
         @if (seccionActiva === 'perfil') {
           <app-perfil [user]="user"/>

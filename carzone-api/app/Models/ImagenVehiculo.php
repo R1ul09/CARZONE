@@ -20,14 +20,16 @@ class ImagenVehiculo extends Model
         return $this->belongsTo(Coche::class);
     }
 
-    public function getRutaAttribute($value)
+    // Si la ruta ya es una URL completa (http/https), la devolvemos tal cual.
+    // Si es una ruta local de storage, construimos la URL completa.
+    public function getRutaAttribute($value): ?string
     {
-        // Si por algún motivo la ruta está vacía, evitamos devolver "storage/" solo
-        if (!$value) {
-            return null;
+        if (!$value) return null;
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
         }
 
-        // Construimos la URL completa automáticamente
         return asset('storage/' . $value);
     }
 }

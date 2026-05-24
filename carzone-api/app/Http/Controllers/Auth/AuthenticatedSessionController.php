@@ -6,32 +6,43 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Handle an incoming authentication request.
+     * Login con cookie HttpOnly
+     *
+     * No devuelve ningún token. El navegador recibe una cookie de sesión
+     * que enviará automáticamente en cada petición posterior.
      */
     public function store(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
-    
-        $user = $request->user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+        // cargamos el rol para que el frontend sepa a dónde redirigir
+        $user->load('rol');
 
         return response()->json([
-            'token' => $token,
-            'user'  => $user
+            'user'           => $user,
+            'email_verified' => !is_null($user->email_verified_at),
+            'message'        => "¡Bienvenido de nuevo, {$user->name}!",
         ]);
     }
 
     /**
-     * Destroy an authenticated session.
+     * Logout: invalida la sesión y limpia la cookie.
      */
     public function destroy(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
-        
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return response()->json(['message' => 'Sesión cerrada correctamente']);
     }
 }

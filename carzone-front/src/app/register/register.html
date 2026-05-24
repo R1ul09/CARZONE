@@ -1,71 +1,70 @@
-<section class="login-page">
-  <div class="login-card" data-aos="fade-in" data-aos-duration="1000">
+<section class="register-page">
+  <div class="register-card" data-aos="fade-in" data-aos-duration="1000">
 
-    <h1 class="heading">Crear cuenta</h1>
-    <p class="subheading">Únete a Carzone hoy mismo</p>
-
-    <div class="field">
-      <label>Nombre completo</label>
-      <div class="input-wrap">
-        <span class="icon">👤︎</span>
-        <input type="text" placeholder="Tu nombre completo" [(ngModel)]="name">
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Correo electrónico</label>
-      <div class="input-wrap">
-        <span class="icon">✉</span>
-        <input type="email" placeholder="tu@email.com" [(ngModel)]="email">
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Contraseña</label>
-      <div class="input-wrap">
-        <span class="icon">&#x1f512;&#xfe0e;</span>
-        <input 
-          [type]="showPassword ? 'text' : 'password'" 
-          placeholder="••••••••" 
-          [(ngModel)]="password"
-          name="password">  
-          
-        <button type="button" class="btn-eye" (click)="showPassword = !showPassword">
-          @if (!showPassword) {
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-          }
+    <!-- ── AVISO POST-REGISTRO ── -->
+    @if (registroExitoso) {
+      <div class="verify-notice">
+        <div class="verify-icon">✉️</div>
+        <h2>¡Cuenta creada, {{ nombreRegistrado }}!</h2>
+        <p>
+          Te hemos enviado un email de verificación.<br>
+          Haz clic en el enlace del email para activar tu cuenta.
+        </p>
+        <p class="verify-hint">¿No lo ves? Revisa la carpeta de spam.</p>
+        <button class="btn-resend" (click)="reenviarVerificacion()">
+          Reenviar email de verificación
         </button>
+        <a routerLink="/login" class="link-login">Volver al inicio de sesión</a>
       </div>
-    </div>
+    }
 
-    <div class="field">
-      <label>Confirmar contraseña</label>
-      <div class="input-wrap">
-        <span class="icon">&#x1f512;&#xfe0e;</span>
-        
-        <input 
-          [type]="showPassword ? 'text' : 'password'" 
-          placeholder="••••••••" 
-          [(ngModel)]="confirmPassword"
-          name="confirmPassword">
+    <!-- ── FORMULARIO ── -->
+    @if (!registroExitoso) {
 
-        <button type="button" class="btn-eye" (click)="showPassword = !showPassword">
-          @if (!showPassword) {
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-          }
-        </button>
+      <h1 class="heading">Crear cuenta</h1>
+      <p class="subheading">Únete a CarZone</p>
+
+      <div class="field">
+        <label>Nombre</label>
+        <div class="input-wrap">
+          <span class="icon">👤︎</span>
+          <input type="text" placeholder="Tu nombre" [(ngModel)]="name">
+        </div>
       </div>
-    </div>
 
-    <button class="btn-primary" (click)="register()">Crear cuenta</button>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <div class="input-wrap">
+          <span class="icon">✉</span>
+          <input type="email" placeholder="tu@email.com" [(ngModel)]="email">
+        </div>
+      </div>
 
-    <p class="register">
-      ¿Ya tienes cuenta? <a routerLink="/login">Iniciar sesión</a>
-    </p>
+      <div class="field">
+        <label>Contraseña</label>
+        <div class="input-wrap">
+          <span class="icon">🔒︎</span>
+          <input type="password" placeholder="••••••••" [(ngModel)]="password">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Confirmar contraseña</label>
+        <div class="input-wrap">
+          <span class="icon">🔒︎</span>
+          <input type="password" placeholder="••••••••" [(ngModel)]="confirmPassword"
+                 (keyup.enter)="register()">
+        </div>
+      </div>
+
+      <button class="btn-primary" (click)="register()" [disabled]="cargando">
+        @if (cargando) { Creando cuenta } @else { Crear cuenta }
+      </button>
+
+      <p class="login-link">
+        ¿Ya tienes cuenta? <a routerLink="/login">Iniciar sesión</a>
+      </p>
+    }
 
   </div>
 </section>

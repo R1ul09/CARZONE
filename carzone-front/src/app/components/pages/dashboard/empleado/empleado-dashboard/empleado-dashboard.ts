@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { CitaService } from '../../../../../services/cita';
+import { Auth } from '../../../../../services/auth';
 import { CocheService } from '../../../../../services/coche';
 import { AuthUser } from '../../../../../interfaces/auth.interface';
 import { Cita } from '../../../../../interfaces/cita.interface';
@@ -34,19 +35,14 @@ export class EmpleadoDashboard implements OnInit {
     private citaService: CitaService,
     private cocheService: CocheService,
     private toastr: ToastrService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private authService: Auth
   ) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    const userStr = localStorage.getItem('user');
-    if (userStr) this.user = JSON.parse(userStr);
-
+    const usuario = this.authService.user();
+    if (!usuario) { this.router.navigate(['/login']); return; }
+    this.user = usuario;
     this.cargarDatos();
   }
 
@@ -82,9 +78,9 @@ export class EmpleadoDashboard implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+    this.authService.logout().subscribe({
+      complete: () => this.router.navigate(['/'])
+    });
     this.toastr.info('Sesión cerrada');
-    this.router.navigate(['/']);
   }
 }

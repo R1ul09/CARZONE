@@ -17,6 +17,8 @@ $text-tertiary: rgba(243, 243, 243, 0.55) !default; // Additional information
 $accent-color: #c62828 !default;
 $accent-color-alt: #ec2b2b !default;
 
+$hora-ocupada: #f97316;
+
 // ============================================================================
 // TYPOGRAPHY - Fuentes y tamaños
 // ============================================================================
@@ -58,6 +60,17 @@ $hero-line-gap: 10px !default;
 $hero-line-mobile-gap: 6px !default;
 $red-line-width: 100px !default;
 $red-line-height: 2px !default;
+
+// chatbot
+$rojo:#e63329;
+$rojo-dark:#c0251b;
+$negro:#0d0d0d;
+$gris-oscuro:#1a1a1a;
+$gris-medio:#2a2a2a;
+$gris-claro:#3a3a3a;
+$texto:#f0f0f0;
+$texto-suave:#aaaaaa;
+$blanco:#ffffff;
 
 // ============================================================================
 // BREAKPOINTS - Puntos de quiebre responsive

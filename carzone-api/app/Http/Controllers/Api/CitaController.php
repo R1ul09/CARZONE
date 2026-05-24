@@ -11,12 +11,13 @@ use Illuminate\Http\JsonResponse;
 
 class CitaController extends Controller
 {
-    // Listar citas
+    // Listar citas del usuario autenticado
     public function index(Request $request)
     {
-        $citas = Cita::with(['coche.marca'])
+        $citas = Cita::with(['coche.marca', 'servicio'])
             ->where('user_id', $request->user()->id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('fecha', 'asc')
+            ->orderBy('hora', 'asc')
             ->get();
 
         return response()->json($citas);
@@ -36,26 +37,41 @@ class CitaController extends Controller
             return response()->json($validador->errors(), 422);
         }
 
-        // miramos si la hora esta dentro de la hora buena
         $hora = $request->hora;
         if ($hora < '09:00' || $hora > '20:00') {
-            return response()->json(['message' => 'El concesionario está cerrado a esa hora. El horario es de 09:00 a 20:00.'], 422);
+            return response()->json([
+                'message' => 'El concesionario está cerrado a esa hora. El horario es de 09:00 a 20:00.'
+            ], 422);
         }
 
-        // validamos solapamiento (¿Está el coche ocupado?)
+        // ── NUEVO: evitar que el mismo usuario tenga dos citas a la misma hora el mismo día ──
+        $yaTimeCita = Cita::where('user_id', Auth::id())
+            ->where('fecha', $request->fecha)
+            ->where('hora', $request->hora)
+            ->whereNotIn('estado', ['cancelada'])
+            ->exists();
+
+        if ($yaTimeCita) {
+            return response()->json([
+                'message' => 'Ya tienes una cita a esa hora. Elige otro horario.'
+            ], 409);
+        }
+
+        // Comprobar también que el coche no está ocupado a esa hora
         if ($request->coche_id) {
-            $existeCita = Cita::where('coche_id', $request->coche_id)
+            $cocheOcupado = Cita::where('coche_id', $request->coche_id)
                 ->where('fecha', $request->fecha)
                 ->where('hora', $request->hora)
-                ->where('estado', '!=', 'cancelada')
+                ->whereNotIn('estado', ['cancelada'])
                 ->exists();
 
-            if ($existeCita) {
-                return response()->json(['message' => 'Este coche ya tiene una cita programada para esa hora.'], 422);
+            if ($cocheOcupado) {
+                return response()->json([
+                    'message' => 'Este coche ya tiene una cita programada a esa hora.'
+                ], 409);
             }
         }
 
-        // Si todo está ok, creamos
         $cita = Cita::create([
             'user_id' => Auth::id(),
             'servicio_id' => $request->servicio_id,
@@ -65,13 +81,13 @@ class CitaController extends Controller
             'estado' => 'pendiente',
         ]);
 
-        return response()->json($cita, 201);
+        return response()->json($cita->load(['servicio', 'coche.marca']), 201);
     }
 
     // Ver detalle de una cita
     public function show($id)
     {
-        $cita = Cita::with(['user', 'coche', 'servicio'])->find($id);
+        $cita = Cita::with(['user', 'coche.marca', 'servicio'])->find($id);
 
         if (!$cita) {
             return response()->json(['message' => 'Cita no encontrada'], 404);
@@ -79,7 +95,7 @@ class CitaController extends Controller
 
         $user = Auth::user();
         $rolNombre = $user->rol?->nombre;
-        // Un cliente no puede ver la cita de otro; admin y empleados sí pueden
+
         if (!in_array($rolNombre, ['admin', 'empleado']) && $cita->user_id !== $user->id) {
             return response()->json(['message' => 'No tienes permiso'], 403);
         }
@@ -100,60 +116,52 @@ class CitaController extends Controller
         $rolNombre = $user->rol?->nombre;
         $esAdminOEmpleado = in_array($rolNombre, ['admin', 'empleado']);
 
-        // Seguridad: Si no es admin/empleado y la cita no es suya, fuera
         if (!$esAdminOEmpleado && $cita->user_id !== $user->id) {
             return response()->json(['message' => 'No tienes permiso para editar esta cita'], 403);
         }
 
-        // Solo validar hora si se envía
-        if ($request->has('hora')) {
-            $hora = $request->hora;
-            if ($hora < '09:00' || $hora > '20:00') {
-                return response()->json(['message' => 'El concesionario está cerrado a esa hora. El horario es de 09:00 a 20:00.'], 422);
-            }
-        }
-
-        // validamos solapamiento (¿Está el coche ocupado?)
-        if ($request->has('coche_id') && $request->coche_id) {
-            $existeCita = Cita::where('coche_id', $request->coche_id)
-                ->where('fecha', $request->fecha ?? $cita->fecha)
-                ->where('hora', $request->hora ?? $cita->hora)
-                ->where('estado', '!=', 'cancelada')
-                ->where('id', '!=', $id)
-                ->exists();
-
-            if ($existeCita) {
-                return response()->json(['message' => 'Este coche ya tiene una cita programada para esa hora.'], 422);
-            }
-        }
-
-        // Validación
         $validator = Validator::make($request->all(), [
             'servicio_id' => 'exists:servicios,id',
-            'coche_id'    => 'nullable|exists:coches,id',
-            'fecha'       => 'date|after_or_equal:today',
-            'hora'        => 'string',
-            'estado'      => 'string|in:pendiente,confirmada,cancelada,realizada'
+            'coche_id' => 'nullable|exists:coches,id',
+            'fecha' => 'date|after_or_equal:today',
+            'hora' => 'date_format:H:i',
+            'estado' => 'string|in:pendiente,confirmada,cancelada,realizada,hora_ocupada',
+            'mensaje_empleado' => 'nullable|string|max:500',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // Lógica de negocio: los clientes solo pueden cancelar su propia cita
-        // Admin y empleados pueden cambiar cualquier estado
-        if (!$esAdminOEmpleado && $request->has('estado')) {
-            if ($request->estado !== 'cancelada') {
-                return response()->json(['message' => 'Solo un empleado o administrador puede cambiar el estado a ' . $request->estado], 403);
+        if ($request->has('hora')) {
+            $hora = $request->hora;
+            if ($hora < '09:00' || $hora > '20:00') {
+                return response()->json([
+                    'message' => 'Fuera del horario (09:00-20:00).'
+                ], 422);
             }
         }
 
-        // Actualizar solo los campos permitidos (evitar mass assignment de campos ajenos)
-        $cita->update($request->only(['servicio_id', 'coche_id', 'fecha', 'hora', 'estado']));
+        // Los clientes solo pueden cancelar su propia cita
+        if (!$esAdminOEmpleado && $request->has('estado') && $request->estado !== 'cancelada') {
+            return response()->json([
+                'message' => 'Solo un empleado o administrador puede cambiar el estado a ' . $request->estado
+            ], 403);
+        }
+
+        // Los clientes no pueden escribir el campo de mensaje
+        if (!$esAdminOEmpleado && $request->has('mensaje_empleado')) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
+        $cita->update($request->only([
+            'servicio_id', 'coche_id', 'fecha', 'hora',
+            'estado', 'mensaje_empleado',
+        ]));
 
         return response()->json([
             'message' => 'Cita actualizada correctamente',
-            'cita' => $cita->fresh()
+            'cita' => $cita->fresh(['servicio', 'coche.marca']),
         ], 200);
     }
 
@@ -167,9 +175,9 @@ class CitaController extends Controller
         }
 
         $user = Auth::user();
+        $rolNombre = $user->rol?->nombre;
 
-        // Seguridad: Si no es admin (role_id 2) y la cita no es suya, fuera
-        if ($user->role_id !== 2 && $cita->user_id !== $user->id) {
+        if (!in_array($rolNombre, ['admin', 'empleado']) && $cita->user_id !== $user->id) {
             return response()->json(['message' => 'No tienes permiso para eliminar esta cita'], 403);
         }
 
@@ -178,14 +186,14 @@ class CitaController extends Controller
         return response()->json(['message' => 'Cita eliminada correctamente'], 200);
     }
 
-    // Método para empleados: Listar todas las citas
+    // Listar todas las citas (empleado / admin)
     public function todas(): JsonResponse
     {
         $citas = Cita::with(['servicio', 'coche.marca', 'user'])
             ->orderBy('fecha', 'asc')
+            ->orderBy('hora', 'asc')
             ->get();
 
         return response()->json($citas);
     }
-
 }

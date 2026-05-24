@@ -1,0 +1,89 @@
+<div class="chatbot-wrapper">
+
+    <!-- Burbuja flotante -->
+    <button class="chatbot-fab" (click)="toggleChat()" [class.abierto]="abierto()" aria-label="Abrir chat">
+        <span class="fab-icon fab-chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        </span>
+        <span class="fab-icon fab-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        </span>
+        <span class="fab-badge"></span>
+    </button>
+
+    <!-- Ventana del chat -->
+    <div class="chatbot-window" [class.visible]="abierto()">
+
+        <!-- Cabecera -->
+        <div class="chatbot-header">
+        <div class="header-avatar">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <span class="header-nombre">Asistente CarZone</span>
+            <span class="header-estado">
+            <span class="estado-dot"></span>
+            En línea ahora
+            </span>
+        </div>
+        <button class="header-close" (click)="toggleChat()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        </div>
+
+        <!-- Mensajes -->
+        <div class="chatbot-mensajes" #mensajesContainer>
+        <div
+            *ngFor="let msg of mensajes"
+            class="mensaje"
+            [class.mensaje-usuario]="msg.esUsuario"
+            [class.mensaje-bot]="!msg.esUsuario"
+        >
+            <div class="burbuja" [class.cargando]="msg.cargando">
+            <span *ngIf="msg.cargando" class="typing-dots">
+                <span></span><span></span><span></span>
+            </span>
+            <span *ngIf="!msg.cargando">{{ msg.texto }}</span>
+            </div>
+        </div>
+        </div>
+
+        <!-- Chips de sugerencias -->
+        <div class="chatbot-chips">
+        <button
+            *ngFor="let chip of chipsSugeridos"
+            class="chip"
+            (click)="enviarChip(chip.texto)"
+        >
+            {{ chip.label }}
+        </button>
+        </div>
+
+        <!-- Input -->
+        <div class="chatbot-input">
+        <input
+            type="text"
+            [(ngModel)]="textoUsuario"
+            placeholder="Escribe tu mensaje..."
+            (keydown.enter)="enviar()"
+            maxlength="500"
+        />
+        <button class="btn-enviar" (click)="enviar()" [disabled]="!textoUsuario.trim()">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+        </div>
+
+    </div>
+</div>

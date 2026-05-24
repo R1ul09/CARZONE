@@ -1,0 +1,120 @@
+<div class="servicios-admin">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Servicios</h2>
+    </div>
+    <button class="btn-crear" (click)="abrirCrear()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nuevo servicio
+    </button>
+  </div>
+
+  @if (servicios.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4l3 3"/>
+      </svg>
+      <p>No hay servicios creados todavía</p>
+    </div>
+  }
+
+  <div class="servicios-grid">
+    @for (servicio of servicios; track servicio.id) {
+      <div class="servicio-card">
+
+        <div class="servicio-icono">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.07 4.93A10 10 0 0 1 21 12a10 10 0 0 1-2.93 7.07"/>
+            <path d="M4.93 4.93A10 10 0 0 0 3 12a10 10 0 0 0 1.93 5.74"/>
+          </svg>
+        </div>
+
+        <div class="servicio-info">
+          <p class="servicio-nombre">{{ servicio.nombre }}</p>
+          @if (servicio.descripcion) {
+            <p class="servicio-desc">{{ servicio.descripcion }}</p>
+          }
+          <div class="servicio-meta">
+            @if (servicio.precio) {
+              <span class="servicio-precio">{{ servicio.precio | currency:'EUR':'symbol':'1.0-0' }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="servicio-acciones">
+          <button class="btn-edit" (click)="abrirEditar(servicio)" title="Editar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+          <button class="btn-delete" (click)="eliminar(servicio)" title="Eliminar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    }
+  </div>
+
+</div>
+
+<!-- MODAL -->
+@if (modalAbierto) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h3>{{ modoEdicion ? 'Editar servicio' : 'Nuevo servicio' }}</h3>
+        <button class="modal-close" (click)="cerrarModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label>Nombre <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.nombre" placeholder="ej. Revisión completa">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio (€)</label>
+            <input type="number" [(ngModel)]="form.precio" placeholder="150">
+          </div>
+          <div class="form-group">
+            <label>Duración (min)</label>
+            <input type="number" [(ngModel)]="form.duracion_minutos" placeholder="60">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="form.descripcion" rows="3"
+                    placeholder="Descripción del servicio..."></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+          {{ guardando ? 'Guardando' : (modoEdicion ? 'Guardar cambios' : 'Crear servicio') }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}

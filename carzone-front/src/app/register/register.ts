@@ -12,15 +12,17 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-
 export class Register {
-  // Propiedades para el formulario
+
   name: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  showPassword: boolean = false;
-  showConfirmPassword: boolean = false;
+  cargando: boolean = false;
+
+  // Una vez registrado, mostramos el aviso de verificación en lugar del form
+  registroExitoso: boolean = false;
+  nombreRegistrado: string = '';
 
   constructor(
     private authService: Auth,
@@ -28,44 +30,53 @@ export class Register {
     private toastr: ToastrService
   ) {}
 
-  // metodo para manejar el registro
   register() {
-    // Validación básica en el front antes de enviar
     if (!this.name || !this.email || !this.password) {
-      this.toastr.error('Todos los campos son obligatorios', 'Error');
+      this.toastr.error('Todos los campos son obligatorios');
       return;
     }
 
     if (this.password !== this.confirmPassword) {
-      this.toastr.error('Las contraseñas no coinciden', 'Error');
+      this.toastr.error('Las contraseñas no coinciden');
       return;
     }
 
-    // Llamada al servicio register
-    this.authService.register(this.name, this.email, this.password).subscribe({
-      next: (response) => {
-        localStorage.setItem('authToken', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        
-        this.toastr.success(`¡Cuenta creada! Bienvenido ${response.user.name}`, 'Éxito');
-        this.router.navigate(['/']);
+    this.cargando = true;
+
+    // CSRF
+    this.authService.getCsrfCookie().subscribe({
+      next: () => {
+        // registro
+        this.authService.doRegister(this.name, this.email, this.password).subscribe({
+          next: (res) => {
+            this.cargando = false;
+            this.nombreRegistrado = res.user.name;
+            this.registroExitoso  = true;
+            this.toastr.success('¡Cuenta creada! Revisa tu email para verificar tu cuenta');
+          },
+          error: (err) => {
+            this.cargando = false;
+            if (err.status === 422 && err.error?.errors) {
+              Object.values(err.error.errors).forEach((mensages: any) =>
+                (mensages as string[]).forEach(m => this.toastr.error(m))
+              );
+            } else {
+              this.toastr.error('Error al crear la cuenta');
+            }
+          }
+        });
       },
-      error: (err) => {
-        if (err.status === 422) {
-          const backendErrors = err.error.errors;
-          
-          // Esto recorre CUALQUIER error que Laravel detecte
-          Object.keys(backendErrors).forEach((field) => {
-            // Laravel puede devolver varios errores por campo (ej: min y symbols)
-            backendErrors[field].forEach((message: string) => {
-              this.toastr.error(message, 'Error en ' + field);
-            });
-          });
-        } else {
-          this.toastr.error('Ocurrió un error inesperado', 'Error');
-        }
+      error: () => {
+        this.cargando = false;
+        this.toastr.error('Error de conexión con el servidor');
       }
     });
   }
-  
+
+  reenviarVerificacion() {
+    this.authService.reenviarVerificacion().subscribe({
+      next: () => this.toastr.success('Email de verificación reenviado'),
+      error: () => this.toastr.error('No se pudo reenviar el email')
+    });
+  }
 }
