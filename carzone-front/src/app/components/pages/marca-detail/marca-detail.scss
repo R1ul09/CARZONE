@@ -19,8 +19,15 @@
         height: 100vh;
         display: flex;
         align-items: flex-end;
-        padding: 0 60px 80px;
-        overflow: hidden;
+        padding: 0 20px 60px;
+
+        @media (min-width: vars.$screen-md) {
+            padding: 0 40px 70px;
+        }
+
+        @media (min-width: vars.$screen-lg) {
+            padding: 0 60px 80px;
+        }
 
         .marca-hero-bg {
             position: absolute;
@@ -60,7 +67,7 @@
             }
 
             .marca-nombre {
-                font-size: clamp(4rem, 12vw, 10rem);
+                font-size: clamp(3rem, 12vw, 10rem);
                 font-weight: 900;
                 color: vars.$text-color;
                 line-height: 0.9;
@@ -76,18 +83,26 @@
             }
 
             .marca-slogan {
-                font-size: 16px;
+                font-size: 14px;
                 color: vars.$text-muted;
                 font-style: italic;
                 margin-bottom: 12px;
                 letter-spacing: 0.05em;
+
+                @media (min-width: vars.$screen-md) {
+                    font-size: 16px;
+                }
             }
 
             .marca-descripcion {
-                font-size: 15px;
+                font-size: 13px;
                 color: vars.$text-muted;
                 max-width: 500px;
                 line-height: 1.7;
+
+                @media (min-width: vars.$screen-md) {
+                    font-size: 15px;
+                }
             }
         }
     }
@@ -96,7 +111,15 @@
         background: #111;
         border-top: 1px solid rgba(255, 255, 255, 0.06);
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        padding: 40px 60px;
+        padding: 32px 20px;
+
+        @media (min-width: vars.$screen-md) {
+            padding: 40px 40px;
+        }
+
+        @media (min-width: vars.$screen-lg) {
+            padding: 40px 60px;
+        }
 
         .stats-container {
             max-width: vars.$navbar-max-width;

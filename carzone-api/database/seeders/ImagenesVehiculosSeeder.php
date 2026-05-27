@@ -2,47 +2,501 @@
 
 namespace Database\Seeders;
 
-use App\Models\Coche;
-use App\Models\ImagenVehiculo;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ImagenesVehiculosSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run()
+    public function run(): void
     {
-        // Obtenemos todos los archivos dentro de 'public/coches'
-        $archivos = Storage::disk('public')->allFiles('coches');
+        $now = now();
 
-        foreach ($archivos as $ruta) {
-            // Extraemos el nombre del modelo de la carpeta (ej: veneno_roadster)
-            $partes = explode('/', $ruta);
-            $nombreModeloDir = $partes[2] ?? null; 
+        $imagenes = [
+            // Audi R8 (coche 51)
+            [51,'coches/audi/r8_coupe_v10_gt_rwd/r8-01.png',false],
+            [51,'coches/audi/r8_coupe_v10_gt_rwd/r8-02.png',false],
+            [51,'coches/audi/r8_coupe_v10_gt_rwd/r8-03.png',false],
+            [51,'coches/audi/r8_coupe_v10_gt_rwd/r8-04.png',false],
+            [51,'coches/audi/r8_coupe_v10_gt_rwd/r8-05.png',false],
+            [51,'coches/audi/r8_coupe_v10_gt_rwd/r8-escaparate.png',true],
+            // Audi RS5 (54)
+            [54,'coches/audi/rs5_berlina/rs5-01.png',false],
+            [54,'coches/audi/rs5_berlina/rs5-02.png',false],
+            [54,'coches/audi/rs5_berlina/rs5-03.png',false],
+            [54,'coches/audi/rs5_berlina/rs5-04.png',false],
+            [54,'coches/audi/rs5_berlina/rs5-escaparate.png',true],
+            // Audi RS6 (53)
+            [53,'coches/audi/rs6_avant/rs6-01.png',false],
+            [53,'coches/audi/rs6_avant/rs6-02.png',false],
+            [53,'coches/audi/rs6_avant/rs6-03.png',false],
+            [53,'coches/audi/rs6_avant/rs6-04.png',false],
+            [53,'coches/audi/rs6_avant/rs6-escaparate.png',true],
+            // Audi RS7 (55)
+            [55,'coches/audi/rs7_berlina/rs7-01.png',false],
+            [55,'coches/audi/rs7_berlina/rs7-02.png',false],
+            [55,'coches/audi/rs7_berlina/rs7-03.png',false],
+            [55,'coches/audi/rs7_berlina/rs7-04.png',false],
+            [55,'coches/audi/rs7_berlina/rs7-escaparate.png',true],
+            // Audi S8 (56)
+            [56,'coches/audi/s8_us_version/s8-01.png',false],
+            [56,'coches/audi/s8_us_version/s8-02.png',false],
+            [56,'coches/audi/s8_us_version/s8-03.png',false],
+            [56,'coches/audi/s8_us_version/s8-04.jpg',false],
+            [56,'coches/audi/s8_us_version/s8-escaparate.png',true],
+            // Audi TT (52)
+            [52,'coches/audi/tt_coupe/tt-01.png',false],
+            [52,'coches/audi/tt_coupe/tt-02.png',false],
+            [52,'coches/audi/tt_coupe/tt-03.png',false],
+            [52,'coches/audi/tt_coupe/tt-04.png',false],
+            [52,'coches/audi/tt_coupe/tt-escaparate.png',true],
+            // BMW M2 (36)
+            [36,'coches/bmw/m2/m2-01.png',false],
+            [36,'coches/bmw/m2/m2-02.png',false],
+            [36,'coches/bmw/m2/m2-03.png',false],
+            [36,'coches/bmw/m2/m2-escaparate.png',true],
+            // BMW M3 CS (34)
+            [34,'coches/bmw/m3_cs/m3-cs-01.png',false],
+            [34,'coches/bmw/m3_cs/m3-cs-02.png',false],
+            [34,'coches/bmw/m3_cs/m3-cs-03.png',false],
+            [34,'coches/bmw/m3_cs/m3-cs-04.png',false],
+            [34,'coches/bmw/m3_cs/m3-cs-escaparate.png',true],
+            // BMW M3 Sport Evolution (33)
+            [33,'coches/bmw/m3_sport_evolution/m3-sport-evolution-01.jpg',false],
+            [33,'coches/bmw/m3_sport_evolution/m3-sport-evolution-02.jpg',false],
+            [33,'coches/bmw/m3_sport_evolution/m3-sport-evolution-03.png',false],
+            [33,'coches/bmw/m3_sport_evolution/m3-sport-evolution-04.png',false],
+            [33,'coches/bmw/m3_sport_evolution/m3-sport-evolution-escaparate.jpg',true],
+            // BMW M4 Competition (32)
+            [32,'coches/bmw/m4_coupe_competition/m4-coupe-01.png',false],
+            [32,'coches/bmw/m4_coupe_competition/m4-coupe-02.png',false],
+            [32,'coches/bmw/m4_coupe_competition/m4-coupe-03.png',false],
+            [32,'coches/bmw/m4_coupe_competition/m4-coupe-04.png',false],
+            [32,'coches/bmw/m4_coupe_competition/m4-coupe-escaparate.png',true],
+            // BMW M4 GT3 (31)
+            [31,'coches/bmw/m4_gt3/m4-gt3-01.png',false],
+            [31,'coches/bmw/m4_gt3/m4-gt3-02.png',false],
+            [31,'coches/bmw/m4_gt3/m4-gt3-03.png',false],
+            [31,'coches/bmw/m4_gt3/m4-gt3-04.png',false],
+            [31,'coches/bmw/m4_gt3/m4-gt3-escaparate.png',true],
+            // BMW M5 CS (35)
+            [35,'coches/bmw/m5_cs/m5-cs-01.png',false],
+            [35,'coches/bmw/m5_cs/m5-cs-02.png',false],
+            [35,'coches/bmw/m5_cs/m5-cs-03.png',false],
+            [35,'coches/bmw/m5_cs/m5-cs-04.png',false],
+            [35,'coches/bmw/m5_cs/m5-cs-escaparate.jpg',true],
+            // Ferrari 488 Pista Spider (65)
+            [65,'coches/ferrari/488_pista_spider/488-pista-01.png',false],
+            [65,'coches/ferrari/488_pista_spider/488-pista-02.png',false],
+            [65,'coches/ferrari/488_pista_spider/488-pista-03.png',false],
+            [65,'coches/ferrari/488_pista_spider/488-pista-04.png',false],
+            [65,'coches/ferrari/488_pista_spider/488-pista-05.png',false],
+            [65,'coches/ferrari/488_pista_spider/488-pista-06.png',false],
+            [65,'coches/ferrari/488_pista_spider/488-pista-escaparate.png',true],
+            // Ferrari 599XX (68)
+            [68,'coches/ferrari/599xx/599xx-01.png',false],
+            [68,'coches/ferrari/599xx/599xx-02.png',false],
+            [68,'coches/ferrari/599xx/599xx-03.png',false],
+            [68,'coches/ferrari/599xx/599xx-04.png',false],
+            [68,'coches/ferrari/599xx/599xx-05.png',false],
+            [68,'coches/ferrari/599xx/599xx-escaparate.png',true],
+            // Ferrari 812 Competizione (66)
+            [66,'coches/ferrari/812_competizione/812-competizione-01.jpg',false],
+            [66,'coches/ferrari/812_competizione/812-competizione-02.jpg',false],
+            [66,'coches/ferrari/812_competizione/812-competizione-03.jpg',false],
+            [66,'coches/ferrari/812_competizione/812-competizione-04.jpg',false],
+            [66,'coches/ferrari/812_competizione/812-competizione-05.jpg',false],
+            [66,'coches/ferrari/812_competizione/812-competizione-06.jpg',false],
+            [66,'coches/ferrari/812_competizione/812-competizione-escaparate.jpg',true],
+            // Ferrari 812 GTS (67)
+            [67,'coches/ferrari/812_gts/812-gts-01.png',false],
+            [67,'coches/ferrari/812_gts/812-gts-02.png',false],
+            [67,'coches/ferrari/812_gts/812-gts-03.png',false],
+            [67,'coches/ferrari/812_gts/812-gts-04.png',false],
+            [67,'coches/ferrari/812_gts/812-gts-05.png',false],
+            [67,'coches/ferrari/812_gts/812-gts-escaparate.png',true],
+            // Ferrari F40 (63)
+            [63,'coches/ferrari/f40/f40-01.png',false],
+            [63,'coches/ferrari/f40/f40-02.jpeg',false],
+            [63,'coches/ferrari/f40/f40-03.jpeg',false],
+            [63,'coches/ferrari/f40/f40-04.jpeg',false],
+            [63,'coches/ferrari/f40/f40-05.jpeg',false],
+            [63,'coches/ferrari/f40/f40-escaparate.jpeg',true],
+            // Ferrari LaFerrari Aperta (64)
+            [64,'coches/ferrari/laferrari_aperta/laferrari-01.jpg',false],
+            [64,'coches/ferrari/laferrari_aperta/laferrari-02.jpg',false],
+            [64,'coches/ferrari/laferrari_aperta/laferrari-03.jpg',false],
+            [64,'coches/ferrari/laferrari_aperta/laferrari-04.jpg',false],
+            [64,'coches/ferrari/laferrari_aperta/laferrari-escaparate.jpg',true],
+            // Lamborghini Aventador SVJ Roadster (27)
+            [27,'coches/lamborghini/aventador_svj_roadster/aventador-01.jpg',false],
+            [27,'coches/lamborghini/aventador_svj_roadster/aventador-02.jpg',false],
+            [27,'coches/lamborghini/aventador_svj_roadster/aventador-03.jpg',false],
+            [27,'coches/lamborghini/aventador_svj_roadster/aventador-04.jpg',false],
+            [27,'coches/lamborghini/aventador_svj_roadster/aventador-05.jpg',false],
+            [27,'coches/lamborghini/aventador_svj_roadster/aventador-escaparate.jpg',true],
+            // Lamborghini Huracán Performante (26)
+            [26,'coches/lamborghini/huracan_performante/huracan-01.png',false],
+            [26,'coches/lamborghini/huracan_performante/huracan-02.png',false],
+            [26,'coches/lamborghini/huracan_performante/huracan-03.jpg',false],
+            [26,'coches/lamborghini/huracan_performante/huracan-04.jpg',false],
+            [26,'coches/lamborghini/huracan_performante/huracan-escaparate.png',true],
+            // Lamborghini Murciélago (30)
+            [30,'coches/lamborghini/murcielago/murcielago-01.png',false],
+            [30,'coches/lamborghini/murcielago/murcielago-02.png',false],
+            [30,'coches/lamborghini/murcielago/murcielago-03.png',false],
+            [30,'coches/lamborghini/murcielago/murcielago-04.png',false],
+            [30,'coches/lamborghini/murcielago/murcielago-05.png',false],
+            [30,'coches/lamborghini/murcielago/murcielago-escaparate.png',true],
+            // Lamborghini Revuelto (28)
+            [28,'coches/lamborghini/revuelto/revuelto-01.png',false],
+            [28,'coches/lamborghini/revuelto/revuelto-02.png',false],
+            [28,'coches/lamborghini/revuelto/revuelto-03.png',false],
+            [28,'coches/lamborghini/revuelto/revuelto-04.png',false],
+            [28,'coches/lamborghini/revuelto/revuelto-05.png',false],
+            [28,'coches/lamborghini/revuelto/revuelto-06.png',false],
+            [28,'coches/lamborghini/revuelto/revuelto-escaparate.png',true],
+            // Lamborghini Urus Performante (29)
+            [29,'coches/lamborghini/urus_performante/urus-01.png',false],
+            [29,'coches/lamborghini/urus_performante/urus-02.png',false],
+            [29,'coches/lamborghini/urus_performante/urus-03.png',false],
+            [29,'coches/lamborghini/urus_performante/urus-04.png',false],
+            [29,'coches/lamborghini/urus_performante/urus-05.png',false],
+            [29,'coches/lamborghini/urus_performante/urus-06.png',false],
+            [29,'coches/lamborghini/urus_performante/urus-escaparate.png',true],
+            // Lamborghini Veneno Roadster (25)
+            [25,'coches/lamborghini/veneno_roadster/veneno-01.png',false],
+            [25,'coches/lamborghini/veneno_roadster/veneno-02.png',false],
+            [25,'coches/lamborghini/veneno_roadster/veneno-03.png',false],
+            [25,'coches/lamborghini/veneno_roadster/veneno-04.png',false],
+            [25,'coches/lamborghini/veneno_roadster/veneno-05.png',false],
+            [25,'coches/lamborghini/veneno_roadster/veneno-06.png',false],
+            [25,'coches/lamborghini/veneno_roadster/veneno-escaparate.png',true],
+            // McLaren 600LT (44)
+            [44,'coches/mclaren/600lt/600lt-01.jpg',false],
+            [44,'coches/mclaren/600lt/600lt-02.png',false],
+            [44,'coches/mclaren/600lt/600lt-03.png',false],
+            [44,'coches/mclaren/600lt/600lt-04.png',false],
+            [44,'coches/mclaren/600lt/600lt-05.png',false],
+            [44,'coches/mclaren/600lt/600lt-escaparate.png',true],
+            // McLaren 675LT (41)
+            [41,'coches/mclaren/675lt/675lt-01.png',false],
+            [41,'coches/mclaren/675lt/675lt-02.png',false],
+            [41,'coches/mclaren/675lt/675lt-03.png',false],
+            [41,'coches/mclaren/675lt/675lt-04.png',false],
+            [41,'coches/mclaren/675lt/675lt-05.png',false],
+            [41,'coches/mclaren/675lt/675lt-escaparate.png',true],
+            // McLaren 720S (40)
+            [40,'coches/mclaren/720s/720s-01.png',false],
+            [40,'coches/mclaren/720s/720s-02.png',false],
+            [40,'coches/mclaren/720s/720s-03.png',false],
+            [40,'coches/mclaren/720s/720s-04.png',false],
+            [40,'coches/mclaren/720s/720s-05.png',false],
+            [40,'coches/mclaren/720s/720s-escaparate.png',true],
+            // McLaren 765LT (38)
+            [38,'coches/mclaren/765lt/765lt-01.png',false],
+            [38,'coches/mclaren/765lt/765lt-02.png',false],
+            [38,'coches/mclaren/765lt/765lt-03.png',false],
+            [38,'coches/mclaren/765lt/765lt-04.png',false],
+            [38,'coches/mclaren/765lt/765lt-escaparate.png',true],
+            // McLaren F1 (39)
+            [39,'coches/mclaren/f1/f1-01.png',false],
+            [39,'coches/mclaren/f1/f1-02.png',false],
+            [39,'coches/mclaren/f1/f1-03.png',false],
+            [39,'coches/mclaren/f1/f1-04.png',false],
+            [39,'coches/mclaren/f1/f1-escaparate.png',true],
+            // McLaren P1 (43)
+            [43,'coches/mclaren/p1/p1-01.jpg',false],
+            [43,'coches/mclaren/p1/p1-02.jpg',false],
+            [43,'coches/mclaren/p1/p1-03.jpg',false],
+            [43,'coches/mclaren/p1/p1-04.jpg',false],
+            [43,'coches/mclaren/p1/p1-05.jpg',false],
+            [43,'coches/mclaren/p1/p1-escaparate.jpg',true],
+            // McLaren P1 GTR (42)
+            [42,'coches/mclaren/p1_gtr/p1-gtr-01.png',false],
+            [42,'coches/mclaren/p1_gtr/p1-gtr-02.png',false],
+            [42,'coches/mclaren/p1_gtr/p1-gtr-03.png',false],
+            [42,'coches/mclaren/p1_gtr/p1-gtr-04.png',false],
+            [42,'coches/mclaren/p1_gtr/p1-gtr-escaparate.png',true],
+            // McLaren Senna (37)
+            [37,'coches/mclaren/senna/senna-01.jpg',false],
+            [37,'coches/mclaren/senna/senna-02.jpg',false],
+            [37,'coches/mclaren/senna/senna-03.jpg',false],
+            [37,'coches/mclaren/senna/senna-04.jpg',false],
+            [37,'coches/mclaren/senna/senna-05.jpg',false],
+            [37,'coches/mclaren/senna/senna-escaparate.jpg',true],
+            // Mercedes AMG E63 (85)
+            [85,'coches/mercedes/amg_e63/amg-e63-01.png',false],
+            [85,'coches/mercedes/amg_e63/amg-e63-02.png',false],
+            [85,'coches/mercedes/amg_e63/amg-e63-03.png',false],
+            [85,'coches/mercedes/amg_e63/amg-e63-04.png',false],
+            [85,'coches/mercedes/amg_e63/amg-e63-05.png',false],
+            [85,'coches/mercedes/amg_e63/amg-e63-06.png',false],
+            [85,'coches/mercedes/amg_e63/amg-e63-escaparate.png',true],
+            // Mercedes AMG G63 (82)
+            [82,'coches/mercedes/amg_g63/amg-g63-01.png',false],
+            [82,'coches/mercedes/amg_g63/amg-g63-02.png',false],
+            [82,'coches/mercedes/amg_g63/amg-g63-03.png',false],
+            [82,'coches/mercedes/amg_g63/amg-g63-04.png',false],
+            [82,'coches/mercedes/amg_g63/amg-g63-05.png',false],
+            [82,'coches/mercedes/amg_g63/amg-g63-06.png',false],
+            [82,'coches/mercedes/amg_g63/amg-g63-escaparate.png',true],
+            // Mercedes AMG GT63 S E Performance (86)
+            [86,'coches/mercedes/amg_gt63_s_e_performance/amg-gt63-s-e-performance-01.png',false],
+            [86,'coches/mercedes/amg_gt63_s_e_performance/amg-gt63-s-e-performance-02.png',false],
+            [86,'coches/mercedes/amg_gt63_s_e_performance/amg-gt63-s-e-performance-03.png',false],
+            [86,'coches/mercedes/amg_gt63_s_e_performance/amg-gt63-s-e-performance-04.png',false],
+            [86,'coches/mercedes/amg_gt63_s_e_performance/amg-gt63-s-e-performance-05.png',false],
+            [86,'coches/mercedes/amg_gt63_s_e_performance/amg-gt63-s-e-performance-escaparate.png',true],
+            // Mercedes AMG GT Black Series (81)
+            [81,'coches/mercedes/amg_gt_black_series/amg-gt-black-series-01.png',false],
+            [81,'coches/mercedes/amg_gt_black_series/amg-gt-black-series-02.png',false],
+            [81,'coches/mercedes/amg_gt_black_series/amg-gt-black-series-03.png',false],
+            [81,'coches/mercedes/amg_gt_black_series/amg-gt-black-series-04.png',false],
+            [81,'coches/mercedes/amg_gt_black_series/amg-gt-black-series-05.png',false],
+            [81,'coches/mercedes/amg_gt_black_series/amg-gt-black-series-escaparate.png',true],
+            // Mercedes AMG ONE (83)
+            [83,'coches/mercedes/amg_one/amg-one-01.png',false],
+            [83,'coches/mercedes/amg_one/amg-one-02.png',false],
+            [83,'coches/mercedes/amg_one/amg-one-03.png',false],
+            [83,'coches/mercedes/amg_one/amg-one-04.png',false],
+            [83,'coches/mercedes/amg_one/amg-one-escaparate.png',true],
+            // Mercedes AMG SL 63 (84)
+            [84,'coches/mercedes/amg_sl_63/amg-sl-63-01.jpg',false],
+            [84,'coches/mercedes/amg_sl_63/amg-sl-63-02.jpg',false],
+            [84,'coches/mercedes/amg_sl_63/amg-sl-63-03.png',false],
+            [84,'coches/mercedes/amg_sl_63/amg-sl-63-04.png',false],
+            [84,'coches/mercedes/amg_sl_63/amg-sl-63-05.png',false],
+            [84,'coches/mercedes/amg_sl_63/amg-sl-63-escaparate.jpg',true],
+            // Nissan 350Z Wide Body (80)
+            [80,'coches/nissan/350z_z30_wide_body/350z-z30-wide-body-01.png',false],
+            [80,'coches/nissan/350z_z30_wide_body/350z-z30-wide-body-02.png',false],
+            [80,'coches/nissan/350z_z30_wide_body/350z-z30-wide-body-03.png',false],
+            [80,'coches/nissan/350z_z30_wide_body/350z-z30-wide-body-04.png',false],
+            [80,'coches/nissan/350z_z30_wide_body/350z-z30-wide-body-05.png',false],
+            [80,'coches/nissan/350z_z30_wide_body/350z-z30-wide-body-escaparate.png',true],
+            // Nissan 370Z (77)
+            [77,'coches/nissan/370z/370z-01.png',false],
+            [77,'coches/nissan/370z/370z-02.png',false],
+            [77,'coches/nissan/370z/370z-03.png',false],
+            [77,'coches/nissan/370z/370z-04.png',false],
+            [77,'coches/nissan/370z/370z-05.png',false],
+            [77,'coches/nissan/370z/370z-escaparate.png',true],
+            // Nissan GT-R R35 (75)
+            [75,'coches/nissan/gt_r_r35/gt-r-r35-01.png',false],
+            [75,'coches/nissan/gt_r_r35/gt-r-r35-02.png',false],
+            [75,'coches/nissan/gt_r_r35/gt-r-r35-03.png',false],
+            [75,'coches/nissan/gt_r_r35/gt-r-r35-04.png',false],
+            [75,'coches/nissan/gt_r_r35/gt-r-r35-05.png',false],
+            [75,'coches/nissan/gt_r_r35/gt-r-r35-escaparate.png',true],
+            // Nissan Silvia S15 (78)
+            [78,'coches/nissan/silvia_s15/silvia-01.png',false],
+            [78,'coches/nissan/silvia_s15/silvia-02.png',false],
+            [78,'coches/nissan/silvia_s15/silvia-03.png',false],
+            [78,'coches/nissan/silvia_s15/silvia-04.png',false],
+            [78,'coches/nissan/silvia_s15/silvia-escaparate.png',true],
+            // Nissan Skyline R32 (79)
+            [79,'coches/nissan/skyline_gt_r_r32/skyline-gt-r-r32-01.png',false],
+            [79,'coches/nissan/skyline_gt_r_r32/skyline-gt-r-r32-02.png',false],
+            [79,'coches/nissan/skyline_gt_r_r32/skyline-gt-r-r32-03.png',false],
+            [79,'coches/nissan/skyline_gt_r_r32/skyline-gt-r-r32-04.png',false],
+            [79,'coches/nissan/skyline_gt_r_r32/skyline-gt-r-r32-05.png',false],
+            [79,'coches/nissan/skyline_gt_r_r32/skyline-gt-r-r32-escaparate.png',true],
+            // Nissan Skyline R34 (76)
+            [76,'coches/nissan/skyline_gt_r_r34/skyline-gt-r-r34-01.png',false],
+            [76,'coches/nissan/skyline_gt_r_r34/skyline-gt-r-r34-02.png',false],
+            [76,'coches/nissan/skyline_gt_r_r34/skyline-gt-r-r34-03.png',false],
+            [76,'coches/nissan/skyline_gt_r_r34/skyline-gt-r-r34-04.png',false],
+            [76,'coches/nissan/skyline_gt_r_r34/skyline-gt-r-r34-05.png',false],
+            [76,'coches/nissan/skyline_gt_r_r34/skyline-gt-r-r34-escaparate.png',true],
+            // Pagani Huayra BC (62)
+            [62,'coches/pagani/huayra_bc/huayra-bc-01.png',false],
+            [62,'coches/pagani/huayra_bc/huayra-bc-02.jpg',false],
+            [62,'coches/pagani/huayra_bc/huayra-bc-03.png',false],
+            [62,'coches/pagani/huayra_bc/huayra-bc-04.png',false],
+            [62,'coches/pagani/huayra_bc/huayra-bc-05.png',false],
+            [62,'coches/pagani/huayra_bc/huayra-bc-06.png',false],
+            [62,'coches/pagani/huayra_bc/huayra-bc-escaparate.png',true],
+            // Pagani Huayra R (58)
+            [58,'coches/pagani/huayra_r/huayra-r-01.png',false],
+            [58,'coches/pagani/huayra_r/huayra-r-02.png',false],
+            [58,'coches/pagani/huayra_r/huayra-r-03.png',false],
+            [58,'coches/pagani/huayra_r/huayra-r-04.png',false],
+            [58,'coches/pagani/huayra_r/huayra-r-05.png',false],
+            [58,'coches/pagani/huayra_r/huayra-r-escaparate.png',true],
+            // Pagani Imola (60)
+            [60,'coches/pagani/imola/imola-01.jpg',false],
+            [60,'coches/pagani/imola/imola-02.jpg',false],
+            [60,'coches/pagani/imola/imola-03.jpg',false],
+            [60,'coches/pagani/imola/imola-04.png',false],
+            [60,'coches/pagani/imola/imola-05.png',false],
+            [60,'coches/pagani/imola/imola-escaparate.jpg',true],
+            // Pagani Utopia (59)
+            [59,'coches/pagani/utopia/utopia-01.jpg',false],
+            [59,'coches/pagani/utopia/utopia-02.jpg',false],
+            [59,'coches/pagani/utopia/utopia-03.jpg',false],
+            [59,'coches/pagani/utopia/utopia-04.jpg',false],
+            [59,'coches/pagani/utopia/utopia-05.jpg',false],
+            [59,'coches/pagani/utopia/utopia-escaparate.jpg',true],
+            // Pagani Zonda R (57)
+            [57,'coches/pagani/zonda_r/zonda-r-01.jpg',false],
+            [57,'coches/pagani/zonda_r/zonda-r-02.png',false],
+            [57,'coches/pagani/zonda_r/zonda-r-03.jpg',false],
+            [57,'coches/pagani/zonda_r/zonda-r-04.png',false],
+            [57,'coches/pagani/zonda_r/zonda-r-05.png',false],
+            [57,'coches/pagani/zonda_r/zonda-r-06.png',false],
+            [57,'coches/pagani/zonda_r/zonda-r-escaparate.jpg',true],
+            // Pagani Zonda Revolucion (61)
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-01.jpg',false],
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-02.jpg',false],
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-03.png',false],
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-04.png',false],
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-05.png',false],
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-06.png',false],
+            [61,'coches/pagani/zonda_revolucion/zonda-revolucion-escaparate.jpg',true],
+            // Porsche 718 Cayman GT4 RS (47)
+            [47,'coches/porsche/718_cayman_gt4_rs/718-cayman-01.png',false],
+            [47,'coches/porsche/718_cayman_gt4_rs/718-cayman-02.png',false],
+            [47,'coches/porsche/718_cayman_gt4_rs/718-cayman-03.png',false],
+            [47,'coches/porsche/718_cayman_gt4_rs/718-cayman-04.png',false],
+            [47,'coches/porsche/718_cayman_gt4_rs/718-cayman-05.png',false],
+            [47,'coches/porsche/718_cayman_gt4_rs/718-cayman-escaparate.png',true],
+            // Porsche 911 964 Turbo (46)
+            [46,'coches/porsche/911_964_turbo/911-964-01.png',false],
+            [46,'coches/porsche/911_964_turbo/911-964-02.png',false],
+            [46,'coches/porsche/911_964_turbo/911-964-03.png',false],
+            [46,'coches/porsche/911_964_turbo/911-964-04.png',false],
+            [46,'coches/porsche/911_964_turbo/911-964-05.png',false],
+            [46,'coches/porsche/911_964_turbo/911-964-escaparate.png',true],
+            // Porsche 911 GT3 RS (45)
+            [45,'coches/porsche/911_gt3_rs/911-gt3-01.png',false],
+            [45,'coches/porsche/911_gt3_rs/911-gt3-02.png',false],
+            [45,'coches/porsche/911_gt3_rs/911-gt3-03.png',false],
+            [45,'coches/porsche/911_gt3_rs/911-gt3-04.png',false],
+            [45,'coches/porsche/911_gt3_rs/911-gt3-escaparate.png',true],
+            // Porsche 918 Spyder (49)
+            [49,'coches/porsche/918_spyder/918-spyder-01.png',false],
+            [49,'coches/porsche/918_spyder/918-spyder-02.png',false],
+            [49,'coches/porsche/918_spyder/918-spyder-03.png',false],
+            [49,'coches/porsche/918_spyder/918-spyder-04.png',false],
+            [49,'coches/porsche/918_spyder/918-spyder-05.png',false],
+            [49,'coches/porsche/918_spyder/918-spyder-06.png',false],
+            [49,'coches/porsche/918_spyder/918-spyder-escaparate.png',true],
+            // Porsche 935 (48)
+            [48,'coches/porsche/935/935-01.png',false],
+            [48,'coches/porsche/935/935-02.png',false],
+            [48,'coches/porsche/935/935-03.png',false],
+            [48,'coches/porsche/935/935-04.png',false],
+            [48,'coches/porsche/935/935-escaparate.png',true],
+            // Porsche Carrera GT (50)
+            [50,'coches/porsche/carrera_gt/carrera-gt-01.png',false],
+            [50,'coches/porsche/carrera_gt/carrera-gt-02.png',false],
+            [50,'coches/porsche/carrera_gt/carrera-gt-03.png',false],
+            [50,'coches/porsche/carrera_gt/carrera-gt-04.png',false],
+            [50,'coches/porsche/carrera_gt/carrera-gt-05.png',false],
+            [50,'coches/porsche/carrera_gt/carrera-gt-06.png',false],
+            [50,'coches/porsche/carrera_gt/carrera-gt-escaparate.png',true],
+            // Toyota Camry (73)
+            [73,'coches/toyota/camry/camry-01.png',false],
+            [73,'coches/toyota/camry/camry-02.png',false],
+            [73,'coches/toyota/camry/camry-03.png',false],
+            [73,'coches/toyota/camry/camry-04.png',false],
+            [73,'coches/toyota/camry/camry-escaparate.jpg',true],
+            // Toyota Century (74)
+            [74,'coches/toyota/century/century-01.png',false],
+            [74,'coches/toyota/century/century-02.png',false],
+            [74,'coches/toyota/century/century-03.png',false],
+            [74,'coches/toyota/century/century-04.png',false],
+            [74,'coches/toyota/century/century-05.png',false],
+            [74,'coches/toyota/century/century-escaparate.png',true],
+            // Toyota GT86 (72)
+            [72,'coches/toyota/gt86/gt86-01.png',false],
+            [72,'coches/toyota/gt86/gt86-02.png',false],
+            [72,'coches/toyota/gt86/gt86-03.png',false],
+            [72,'coches/toyota/gt86/gt86-04.png',false],
+            [72,'coches/toyota/gt86/gt86-05.jpg',false],
+            [72,'coches/toyota/gt86/gt86-escaparate.png',true],
+            // Toyota RAV4 TRD (71)
+            [71,'coches/toyota/rav4_trd_off_road/rav4-01.png',false],
+            [71,'coches/toyota/rav4_trd_off_road/rav4-02.png',false],
+            [71,'coches/toyota/rav4_trd_off_road/rav4-03.png',false],
+            [71,'coches/toyota/rav4_trd_off_road/rav4-04.png',false],
+            [71,'coches/toyota/rav4_trd_off_road/rav4-05.png',false],
+            [71,'coches/toyota/rav4_trd_off_road/rav4-06.png',false],
+            [71,'coches/toyota/rav4_trd_off_road/rav4-escaparate.png',true],
+            // Toyota Supra MK4 (70)
+            [70,'coches/toyota/supra_mk4_hycade_stage_1/supra-mk4-01.png',false],
+            [70,'coches/toyota/supra_mk4_hycade_stage_1/supra-mk4-02.png',false],
+            [70,'coches/toyota/supra_mk4_hycade_stage_1/supra-mk4-03.png',false],
+            [70,'coches/toyota/supra_mk4_hycade_stage_1/supra-mk4-escaparate.png',true],
+            // Toyota Supra MK5 (69)
+            [69,'coches/toyota/supra_mk5/supra-mk5-01.jpg',false],
+            [69,'coches/toyota/supra_mk5/supra-mk5-02.jpg',false],
+            [69,'coches/toyota/supra_mk5/supra-mk5-03.jpg',false],
+            [69,'coches/toyota/supra_mk5/supra-mk5-04.jpg',false],
+            [69,'coches/toyota/supra_mk5/supra-mk5-escaparate.jpg',true],
+            // Bugatti Bolide (87)
+            [87,'coches/bugatti/bolide/bolide-01.jpg',false],
+            [87,'coches/bugatti/bolide/bolide-02.jpg',false],
+            [87,'coches/bugatti/bolide/bolide-03.jpg',false],
+            [87,'coches/bugatti/bolide/bolide-04.png',false],
+            [87,'coches/bugatti/bolide/bolide-05.png',false],
+            [87,'coches/bugatti/bolide/bolide-06.png',false],
+            [87,'coches/bugatti/bolide/bolide-escaparate.jpg',true],
+            // Bugatti Centodieci (92)
+            [92,'coches/bugatti/centodieci/centodieci-01.png',false],
+            [92,'coches/bugatti/centodieci/centodieci-02.png',false],
+            [92,'coches/bugatti/centodieci/centodieci-03.png',false],
+            [92,'coches/bugatti/centodieci/centodieci-04.png',false],
+            [92,'coches/bugatti/centodieci/centodieci-05.jpg',false],
+            [92,'coches/bugatti/centodieci/centodieci-06.png',false],
+            [92,'coches/bugatti/centodieci/centodieci-07.png',false],
+            [92,'coches/bugatti/centodieci/centodieci-escaparate.png',true],
+            // Bugatti Chiron (89)
+            [89,'coches/bugatti/chiron/chiron-01.jpg',false],
+            [89,'coches/bugatti/chiron/chiron-02.jpg',false],
+            [89,'coches/bugatti/chiron/chiron-03.jpg',false],
+            [89,'coches/bugatti/chiron/chiron-04.jpg',false],
+            [89,'coches/bugatti/chiron/chiron-05.jpg',false],
+            [89,'coches/bugatti/chiron/chiron-escaparate.png',true],
+            // Bugatti Chiron Super Sport 300+ (88)
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-01.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-02.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-03.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-04.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-05.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-06.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-07.jpg',false],
+            [88,'coches/bugatti/chiron_super_sport_300/chiron-super-sport-300-escaparate.jpg',true],
+            // Bugatti La Voiture Noire (90)
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-01.png',false],
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-02.png',false],
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-03.png',false],
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-04.png',false],
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-05.png',false],
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-06.jpg',false],
+            [90,'coches/bugatti/la_voiture_noire/la-voiture-noire-escaparate.jpg',true],
+            // Bugatti Veyron La Finale (91)
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-01.png',false],
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-02.png',false],
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-03.png',false],
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-04.png',false],
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-05.png',false],
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-06.png',false],
+            [91,'coches/bugatti/veyron_grand_sport_vitesse_la_finale/veyron-grand-sport-vitesse-escaparate.jpg',true],
+        ];
 
-            if ($nombreModeloDir) {
-                // Limpiamos el nombre para la búsqueda
-                $busquedaLimpia = str_replace(['_', '-'], ' ', $nombreModeloDir);
-                
-                // Buscamos el coche por la primera palabra del directorio
-                $coche = Coche::where('modelo', 'like', "%" . explode(' ', $busquedaLimpia)[0] . "%")->first();
-                
-                if ($coche) {
-                    // Usamos updateOrCreate para evitar duplicados si volvemos a ejecutar el seeder
-                    ImagenVehiculo::updateOrCreate(
-                        ['ruta' => $ruta],
-                        [
-                            'coche_id' => $coche->id,
-                            'es_principal' => Str::contains($ruta, 'escaparate'),
-                        ]
-                    );
-                } else {
-                    $this->command->warn("No se encontró coche para la carpeta: $nombreModeloDir");
-                }
-            }
+        // hacer un map para convertir cada fila en un array asociativo con las claves correctas
+        $rows = array_map(fn($i) => [
+            'coche_id'    => $i[0],
+            'ruta'        => $i[1],
+            'es_principal'=> $i[2],
+            'created_at'  => $now,
+            'updated_at'  => $now,
+        ], $imagenes);
+
+        // Insertar en chunks para evitar límites de MySQL
+        foreach (array_chunk($rows, 50) as $chunk) {
+            DB::table('imagenes_vehiculos')->insert($chunk);
         }
     }
 }

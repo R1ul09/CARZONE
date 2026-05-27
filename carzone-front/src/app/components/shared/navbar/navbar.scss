@@ -21,9 +21,17 @@
         max-width: vars.$navbar-max-width;
         margin: 0 auto;
         height: 100%;
-        padding: vars.$navbar-padding;
+        padding: 0 20px;
         display: flex;
         align-items: center;
+
+        @media (min-width: vars.$screen-md) {
+            padding: 0 40px;
+        }
+
+        @media (min-width: vars.$screen-lg) {
+            padding: vars.$navbar-padding;
+        }
     }
 
     .logo-btn {

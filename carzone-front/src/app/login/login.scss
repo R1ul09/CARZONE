@@ -1,3 +1,4 @@
+@use 'sass:color' as color;
 @use '../../styles/variables' as vars;
 
 .login-page {
@@ -8,7 +9,11 @@
     background-image: url('/assets/image/fondo-login.png');
     background-size: cover;
     background-position: center;
-    padding: 20px;
+    padding: 16px;
+
+    @media (min-width: vars.$screen-md) {
+        padding: 20px;
+    }
 
     .login-card {
         width: 100%;
@@ -16,11 +21,15 @@
         background: rgba(10, 10, 10, 0.40);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 16px;
-        padding: 40px;
+        padding: 28px;
         backdrop-filter: blur(20px);
 
+        @media (min-width: vars.$screen-md) {
+            padding: 40px;
+        }
+
         .heading {
-            font-size: 28px;
+            font-size: clamp(24px, 5vw, 28px);
             font-weight: 800;
             color: vars.$text-color;
             margin-bottom: 6px;
@@ -28,18 +37,27 @@
         }
 
         .subheading {
-            font-size: 13px;
+            font-size: 12px;
             color: vars.$text-secondary;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
+
+            @media (min-width: vars.$screen-md) {
+                font-size: 13px;
+                margin-bottom: 32px;
+            }
         }
 
         .field {
             display: flex;
             flex-direction: column;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
+
+            @media (min-width: vars.$screen-md) {
+                margin-bottom: 16px;
+            }
 
             label {
-                font-size: 11px;
+                font-size: 10px;
                 font-weight: 600;
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
@@ -52,12 +70,17 @@
 
                 .icon {
                     position: absolute;
-                    left: 14px;
+                    left: 12px;
                     top: 50%;
                     transform: translateY(-50%);
-                    font-size: 14px;
+                    font-size: 13px;
                     opacity: 0.5;
                     pointer-events: none;
+
+                    @media (min-width: vars.$screen-md) {
+                        left: 14px;
+                        font-size: 14px;
+                    }
                 }
 
                 input {
@@ -65,11 +88,16 @@
                     background: rgba(255, 255, 255, 0.04);
                     border: 1px solid rgba(255, 255, 255, 0.08);
                     border-radius: 8px;
-                    padding: 12px 14px 12px 40px;
+                    padding: 11px 12px 11px 36px;
                     color: vars.$text-color;
-                    font-size: 14px;
+                    font-size: 13px;
                     outline: none;
                     transition: border-color 0.2s ease, background 0.2s ease;
+
+                    @media (min-width: vars.$screen-md) {
+                        padding: 12px 14px 12px 40px;
+                        font-size: 14px;
+                    }
 
                     &::placeholder {
                         color: rgba(255, 255, 255, 0.80);
@@ -87,16 +115,29 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             margin-top: 4px;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            @media (min-width: vars.$screen-md) {
+                margin-bottom: 24px;
+                flex-wrap: nowrap;
+                gap: 0;
+            }
 
             .check-wrap {
                 display: flex;
                 align-items: center;
-                gap: 8px;
-                font-size: 12px;
+                gap: 6px;
+                font-size: 11px;
                 color: vars.$text-secondary;
                 cursor: pointer;
+
+                @media (min-width: vars.$screen-md) {
+                    gap: 8px;
+                    font-size: 12px;
+                }
 
                 input[type="checkbox"] {
                     width: 14px;
@@ -107,11 +148,15 @@
             }
 
             .forgot {
-                font-size: 12px;
+                font-size: 11px;
                 color: vars.$accent-color-alt;
                 font-weight: bold;
                 text-decoration: none;
                 transition: opacity 0.2s ease;
+
+                @media (min-width: vars.$screen-md) {
+                    font-size: 12px;
+                }
 
                 &:hover {
                     opacity: 1;
@@ -121,28 +166,38 @@
 
         .btn-primary {
             width: 100%;
-            padding: 13px;
+            padding: 12px;
             background: vars.$accent-color;
             border: none;
             border-radius: 8px;
             color: vars.$white;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             cursor: pointer;
             transition: background 0.2s ease;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+
+            @media (min-width: vars.$screen-md) {
+                padding: 13px;
+                font-size: 13px;
+                margin-bottom: 24px;
+            }
 
             &:hover {
-                background: darken(vars.$accent-color, 10%);
+                background: color.adjust(vars.$accent-color, $lightness: -10%);
             }
         }
 
         .register {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             color: vars.$text-secondary-strong;
+
+            @media (min-width: vars.$screen-md) {
+                font-size: 12px;
+            }
 
             a {
                 color: vars.$accent-color-alt;

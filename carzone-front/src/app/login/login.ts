@@ -26,7 +26,6 @@ export class Login implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Si el usuario viene desde el enlace de verificación de email
     const verified = this.route.snapshot.queryParamMap.get('verified');
     const alreadyVerif = this.route.snapshot.queryParamMap.get('already_verified');
 
@@ -56,20 +55,28 @@ export class Login implements OnInit {
   }
 
   private hacerLogin() {
-    // obtener cookie CSRF de Sanctum
     this.authService.getCsrfCookie().subscribe({
       next: () => {
-        // hacer el login (la cookie de sesión se guarda automáticamente)
         this.authService.doLogin(this.email, this.password).subscribe({
           next: (res) => {
             this.cargando = false;
 
             if (!res.email_verified) {
-              this.toastr.warning(
-                'Verifica tu email antes de continuar. Revisa tu bandeja de entrada.',
-                `Hola ${res.user.name}`
-              );
-              // Se queda en login para que el usuario no acceda sin verificar
+              // Reenviar el correo de verificación automáticamente
+              this.authService.reenviarVerificacion().subscribe({
+                next: () => {
+                  this.toastr.warning(
+                    'Te hemos reenviado el enlace de verificación. Revisa tu bandeja de entrada.',
+                    `Hola ${res.user.name}`
+                  );
+                },
+                error: () => {
+                  this.toastr.warning(
+                    'Verifica tu email antes de continuar. Revisa tu bandeja de entrada.',
+                    `Hola ${res.user.name}`
+                  );
+                }
+              });
               return;
             }
 

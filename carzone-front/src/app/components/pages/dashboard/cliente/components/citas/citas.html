@@ -41,7 +41,7 @@
           <select [(ngModel)]="nuevaCita.coche_id">
             <option value="">Sin vehículo específico</option>
             @for (c of coches; track c.id) {
-              <option [value]="c.id">{{ c.marca?.nombre }} {{ c.modelo }}</option>
+              <option [value]="c.id">{{ c.marca.nombre }} {{ c.modelo }}</option>
             }
           </select>
         </div>

@@ -64,7 +64,7 @@
         }
 
         <div class="coche-info">
-          <p class="coche-marca">{{ coche.marca?.nombre }}</p>
+          <p class="coche-marca">{{ coche.marca.nombre }}</p>
           <p class="coche-modelo">{{ coche.modelo }}</p>
           <p class="coche-meta">{{ coche.anio }} · {{ coche.tipo_carroceria }} · {{ coche.combustible }}</p>
           <p class="coche-precio">{{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
@@ -234,7 +234,7 @@
   <div class="modal-overlay" (click)="cerrarImagenes()">
     <div class="modal modal-imagenes" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Imágenes — {{ cocheImagenes.marca?.nombre }} {{ cocheImagenes.modelo }}</h3>
+        <h3>Imágenes — {{ cocheImagenes.marca.nombre }} {{ cocheImagenes.modelo }}</h3>
         <button class="modal-close" (click)="cerrarImagenes()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>

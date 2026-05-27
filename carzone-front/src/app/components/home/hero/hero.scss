@@ -48,7 +48,7 @@
         }
 
         .main-title {
-            font-size: vars.$main-title-size;
+            font-size: clamp(2.5rem, 8vw, 8rem);
             line-height: vars.$hero-line-height;
             font-weight: 800;
             margin: 0;
