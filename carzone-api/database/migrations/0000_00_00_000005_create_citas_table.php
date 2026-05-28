@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('citas', function (Blueprint $table) {
@@ -16,20 +13,16 @@ return new class extends Migration
 
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade');
-
             $table->foreignId('coche_id')->nullable()->constrained('coches')->onDelete('cascade');
 
             $table->date('fecha');
             $table->time('hora');
             $table->string('estado')->default('pendiente');
-            $table->text('mensaje_empleado')->nullable()->after('estado');
+            $table->text('mensaje_empleado')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('citas');

@@ -13,6 +13,7 @@ class UsersSeeder extends Seeder
         User::create([
             'name' => 'Admin CarZone',
             'email' => 'admin@carzone.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('carzone1234'),
             'role_id' => 2,
         ]);
@@ -20,6 +21,7 @@ class UsersSeeder extends Seeder
         User::create([
             'name' => 'Empleado CarZone',
             'email' => 'empleado@carzone.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('carzone1234'),
             'role_id' => 3,
         ]);
@@ -27,6 +29,7 @@ class UsersSeeder extends Seeder
         User::create([
             'name' => 'Cliente Demo',
             'email' => 'cliente@carzone.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('carzone1234'),
             'role_id' => 1,
         ]);

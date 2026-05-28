@@ -18,9 +18,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
-            $table->foreignId('financiacion_id')->nullable()->constrained('financiaciones')->onDelete('cascade');
-            // ahora las citas que en model estan
-            $table->foreignId('cita_id')->nullable()->constrained('citas')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
