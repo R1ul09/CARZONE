@@ -1,6 +1,6 @@
 services:
 
-  # base de datos
+  # ─── BASE DE DATOS ──────────────────────────────────────────────────────────
   db:
     image: mysql:8.0
     container_name: carzone-db
@@ -9,8 +9,6 @@ services:
       MYSQL_DATABASE: carzone
       MYSQL_ROOT_PASSWORD: toor
     healthcheck:
-      # Docker esperará a que MySQL acepte conexiones antes de arrancar la API.
-      # Esto evita errores de "conexión rechazada" al iniciar.
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ptoor"]
       interval: 5s
       retries: 10
@@ -20,15 +18,13 @@ services:
     logging:
       driver: "json-file"
       options:
-        # Limitamos el tamaño de los logs para no llenar el disco
         max-size: "10m"
         max-file: "3"
 
-  # backend
+  # ─── BACKEND (Laravel + Apache) ─────────────────────────────────────────────
   api:
     build: ./carzone-api
     container_name: carzone-api
-    # Esperamos a que MySQL esté REALMENTE listo (no solo arrancado)
     depends_on:
       db:
         condition: service_healthy
@@ -37,37 +33,35 @@ services:
     volumes:
       - ./carzone-api/storage/app/public:/var/www/html/storage/app/public
       - ./entrypoint-api.sh:/entrypoint-api.sh:ro
-    # Este script prepara Laravel (migrations, seeders) antes de arrancar
-    entrypoint: ["/bin/sh", "/entrypoint-api.sh"]
+    # Convertimos saltos de línea y ejecutamos el script
+    # Esto garantiza que funcione aunque el archivo venga de Windows
+    entrypoint: ["/bin/sh", "-c", "sed -i 's/\\r//' /entrypoint-api.sh && sh /entrypoint-api.sh"]
 
-  # fontend
+  # ─── FRONTEND (Angular compilado + Nginx) ───────────────────────────────────
   front:
     build: ./carzone-front
     container_name: carzone-front
     depends_on:
       - api
 
-  # proxy inverso (Nginx)
+  # ─── PROXY INVERSO (Nginx con HTTPS) ────────────────────────────────────────
   proxy:
     image: nginx:alpine
     container_name: carzone-proxy
     ports:
-      # http, redirige automáticamente a https
       - "80:80"
-      # htpps, entrada principal
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/certs:/etc/nginx/certs
       - ./entrypoint-nginx.sh:/entrypoint-nginx.sh:ro
-    # Genera los certificados ssl autofirmados si no existen, luego arranca Nginx
+    # Convertimos saltos de línea antes de ejecutar el script de certificados
     entrypoint: >
-      /bin/sh -c "apk add --no-cache openssl && sh /entrypoint-nginx.sh"
+      /bin/sh -c "apk add --no-cache openssl && sed -i 's/\r//' /entrypoint-nginx.sh && sh /entrypoint-nginx.sh"
     depends_on:
       - api
       - front
 
-# volumenes
+# ─── VOLÚMENES ────────────────────────────────────────────────────────────────
 volumes:
-  # lo dejamos vacio porque MySQL lo llenará automáticamente con los datos de la base de datos
   db_data:
