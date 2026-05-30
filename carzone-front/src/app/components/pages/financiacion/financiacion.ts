@@ -68,9 +68,9 @@ export class Financiacion implements OnInit {
       // Extraemos las marcas únicas de todos los coches para el primer selector
       // basicamente lo que hacemos es mapear cada coche a su marca, 
       // luego creamos un Set para quedarnos solo con las marcas únicas, 
-      // luego filtramos cualquier valor vacío o nulo (en caso de coches sin marca) 
-      this.marcas = [...new Set(coches.map(c => c.marca?.nombre).filter(Boolean) as string[])].sort();
-
+      // luego filtramos cualquier valor vacío o nulo (en caso de coches sin marca)
+      this.marcas = [...new Set(coches.map(c => c.marca?.nombre).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b));
+      
       // Si venimos de ?coche=X en la URL, preseleccionamos ese coche
       const cocheId = this.route.snapshot.queryParamMap.get('coche');
       if (cocheId) {
