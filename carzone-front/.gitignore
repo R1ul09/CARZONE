@@ -43,8 +43,5 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# assets folder
-/src/assets/
-
 # Environment files
 /src/environments/environment*.ts

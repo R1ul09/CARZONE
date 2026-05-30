@@ -18,8 +18,7 @@
 
     <nav class="sidebar-nav">
 
-      <button class="nav-item" [class.active]="seccionActiva === 'resumen'"
-              (click)="setSeccion('resumen')">
+      <button class="nav-item" [class.active]="seccionActiva === 'resumen'" (click)="setSeccion('resumen')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="3" width="7" height="7" rx="1"/>
           <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -29,8 +28,7 @@
         <span>Resumen</span>
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'citas'"
-              (click)="setSeccion('citas')">
+      <button class="nav-item" [class.active]="seccionActiva === 'citas'" (click)="setSeccion('citas')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="4" width="18" height="18" rx="2"/>
           <path d="M16 2v4M8 2v4M3 10h18"/>
@@ -41,8 +39,19 @@
         }
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'coches'"
-              (click)="setSeccion('coches')">
+      <!-- NUEVO: Financiaciones -->
+      <button class="nav-item" [class.active]="seccionActiva === 'financiaciones'" (click)="setSeccion('financiaciones')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <path d="M2 10h20"/>
+        </svg>
+        <span>Financiaciones</span>
+        @if (badgeFinanciaciones > 0) {
+          <span class="nav-badge">{{ badgeFinanciaciones }}</span>
+        }
+      </button>
+
+      <button class="nav-item" [class.active]="seccionActiva === 'coches'" (click)="setSeccion('coches')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5"/>
           <circle cx="15.5" cy="17.5" r="2.5"/>
@@ -54,8 +63,7 @@
         }
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'marcas'"
-              (click)="setSeccion('marcas')">
+      <button class="nav-item" [class.active]="seccionActiva === 'marcas'" (click)="setSeccion('marcas')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
         </svg>
@@ -65,8 +73,7 @@
         }
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'usuarios'"
-              (click)="setSeccion('usuarios')">
+      <button class="nav-item" [class.active]="seccionActiva === 'usuarios'" (click)="setSeccion('usuarios')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
           <circle cx="9" cy="7" r="4"/>
@@ -79,8 +86,7 @@
         }
       </button>
 
-      <button class="nav-item" [class.active]="seccionActiva === 'servicios'"
-              (click)="setSeccion('servicios')">
+      <button class="nav-item" [class.active]="seccionActiva === 'servicios'" (click)="setSeccion('servicios')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.07 4.93A10 10 0 0 1 21 12a10 10 0 0 1-2.93 7.07"/>
@@ -128,6 +134,9 @@
       }
       @if (seccionActiva === 'citas') {
         <app-citas-admin [citas]="citas" (actualizar)="cargarDatos()"/>
+      }
+      @if (seccionActiva === 'financiaciones') {
+        <app-financiaciones-admin [financiaciones]="financiaciones" (actualizar)="cargarDatos()"/>
       }
       @if (seccionActiva === 'coches') {
         <app-coches-admin [coches]="coches" [marcas]="marcas" (actualizar)="cargarDatos()"/>

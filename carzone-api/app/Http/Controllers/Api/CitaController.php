@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CitaMail;
 use App\Models\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 
@@ -37,14 +39,13 @@ class CitaController extends Controller
             return response()->json($validador->errors(), 422);
         }
 
-        $hora = $request->hora;
-        if ($hora < '09:00' || $hora > '20:00') {
+        if ($request->hora < '09:00' || $request->hora > '20:00') {
             return response()->json([
                 'message' => 'El concesionario está cerrado a esa hora. El horario es de 09:00 a 20:00.'
             ], 422);
         }
 
-        // ── NUEVO: evitar que el mismo usuario tenga dos citas a la misma hora el mismo día ──
+        // Verificar que el usuario no tenga otra cita a la misma hora
         $yaTimeCita = Cita::where('user_id', Auth::id())
             ->where('fecha', $request->fecha)
             ->where('hora', $request->hora)
@@ -57,7 +58,6 @@ class CitaController extends Controller
             ], 409);
         }
 
-        // Comprobar también que el coche no está ocupado a esa hora
         if ($request->coche_id) {
             $cocheOcupado = Cita::where('coche_id', $request->coche_id)
                 ->where('fecha', $request->fecha)
@@ -80,6 +80,12 @@ class CitaController extends Controller
             'hora' => $request->hora,
             'estado' => 'pendiente',
         ]);
+
+        // Cargar relaciones necesarias para el email
+        $cita->load(['user', 'servicio', 'coche.marca']);
+
+        // Enviar correo de confirmación al cliente
+        Mail::to($cita->user->email)->send(new CitaMail($cita, 'creada'));
 
         return response()->json($cita->load(['servicio', 'coche.marca']), 201);
     }
@@ -133,31 +139,41 @@ class CitaController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if ($request->has('hora')) {
-            $hora = $request->hora;
-            if ($hora < '09:00' || $hora > '20:00') {
-                return response()->json([
-                    'message' => 'Fuera del horario (09:00-20:00).'
-                ], 422);
-            }
+        if ($request->has('hora') && ($request->hora < '09:00' || $request->hora > '20:00')) {
+            return response()->json(['message' => 'Fuera del horario (09:00-20:00).'], 422);
         }
 
-        // Los clientes solo pueden cancelar su propia cita
         if (!$esAdminOEmpleado && $request->has('estado') && $request->estado !== 'cancelada') {
             return response()->json([
                 'message' => 'Solo un empleado o administrador puede cambiar el estado a ' . $request->estado
             ], 403);
         }
 
-        // Los clientes no pueden escribir el campo de mensaje
         if (!$esAdminOEmpleado && $request->has('mensaje_empleado')) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
+
+        // Guardamos el estado anterior para saber qué correo enviar
+        $estadoAnterior = $cita->estado;
 
         $cita->update($request->only([
             'servicio_id', 'coche_id', 'fecha', 'hora',
             'estado', 'mensaje_empleado',
         ]));
+
+        // Cargar relaciones necesarias para el email
+        $cita->load(['user', 'servicio', 'coche.marca']);
+
+        // Enviamos el correo según lo que ha cambiado
+        $nuevoEstado = $cita->estado;
+
+        if ($nuevoEstado === 'cancelada' && $estadoAnterior !== 'cancelada') {
+            Mail::to($cita->user->email)->send(new CitaMail($cita, 'cancelada'));
+        } elseif ($nuevoEstado === 'confirmada' && $estadoAnterior !== 'confirmada') {
+            Mail::to($cita->user->email)->send(new CitaMail($cita, 'confirmada'));
+        } elseif ($nuevoEstado !== $estadoAnterior || $request->has('fecha') || $request->has('hora')) {
+            Mail::to($cita->user->email)->send(new CitaMail($cita, 'modificada'));
+        }
 
         return response()->json([
             'message' => 'Cita actualizada correctamente',
@@ -174,12 +190,16 @@ class CitaController extends Controller
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
 
-        $user = Auth::user();
+        $user      = Auth::user();
         $rolNombre = $user->rol?->nombre;
 
         if (!in_array($rolNombre, ['admin', 'empleado']) && $cita->user_id !== $user->id) {
             return response()->json(['message' => 'No tienes permiso para eliminar esta cita'], 403);
         }
+
+        // Avisamos al cliente antes de borrar
+        $cita->load(['user', 'servicio', 'coche.marca']);
+        Mail::to($cita->user->email)->send(new CitaMail($cita, 'cancelada'));
 
         $cita->delete();
 

@@ -14,7 +14,8 @@ class Financiacion extends Model
         'meses',
         'cuota_mensual',
         'entrada',
-        'interes'
+        'interes',
+        'estado',
     ];
 
     // La financiación pertenece a un coche

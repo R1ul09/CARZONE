@@ -8,6 +8,10 @@ import { FinanciacionService } from '../../../services/financiacion';
 import { Auth } from '../../../services/auth';
 import { Coche } from '../../../interfaces/coche.interface';
 
+// Clave usada para guardar los datos de la calculadora en sessionStorage
+// mientras el usuario va a loguearse y vuelve
+const STORAGE_KEY = 'financiacion_pendiente';
+
 @Component({
   selector: 'app-financiacion',
   templateUrl: './financiacion.html',
@@ -17,6 +21,16 @@ import { Coche } from '../../../interfaces/coche.interface';
 export class Financiacion implements OnInit {
 
   coches: Coche[] = [];
+
+  // Lista de marcas únicas extraídas de los coches (para el primer selector)
+  marcas: string[] = [];
+
+  // Marca seleccionada en el primer selector
+  marcaSeleccionada: string = '';
+
+  // Coches filtrados según la marca seleccionada
+  cochesFiltrados: Coche[] = [];
+
   cocheSeleccionadoId: number | string = '';
   cocheSeleccionado: Coche | null = null;
 
@@ -48,22 +62,53 @@ export class Financiacion implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cocheService.getTodosLosCoches().subscribe(data => {
-      this.coches = data;
+    this.cocheService.getTodosLosCoches().subscribe(coches => {
+      this.coches = coches;
+
+      // Extraemos las marcas únicas de todos los coches para el primer selector
+      // basicamente lo que hacemos es mapear cada coche a su marca, 
+      // luego creamos un Set para quedarnos solo con las marcas únicas, 
+      // luego filtramos cualquier valor vacío o nulo (en caso de coches sin marca) 
+      this.marcas = [...new Set(coches.map(c => c.marca?.nombre).filter(Boolean) as string[])].sort();
+
+      // Si venimos de ?coche=X en la URL, preseleccionamos ese coche
       const cocheId = this.route.snapshot.queryParamMap.get('coche');
       if (cocheId) {
         this.cocheSeleccionadoId = Number(cocheId);
-        this.onCocheChange();
+        this.aplicarCocheSeleccionado();
       }
+
+      // Si el usuario acaba de loguearse y tenía una financiación pendiente,
+      // la recuperamos del sessionStorage y la enviamos automáticamente
+      this.enviarFinanciacionPendienteSiExiste();
     });
+
     this.calcular();
   }
 
+  // Cuando cambia la marca, filtramos los coches y reseteamos la selección
+  onMarcaChange() {
+    this.cochesFiltrados = this.coches.filter(c => c.marca?.nombre === this.marcaSeleccionada);
+    this.cocheSeleccionadoId = '';
+    this.cocheSeleccionado = null;
+  }
+
+  // Cuando cambia el coche dentro de la marca seleccionada
   onCocheChange() {
+    this.aplicarCocheSeleccionado();
+  }
+
+  // Busca el coche seleccionado y actualiza el precio y la entrada inicial
+  private aplicarCocheSeleccionado() {
     this.cocheSeleccionado = this.coches.find(
       c => c.id === Number(this.cocheSeleccionadoId)
     ) ?? null;
+
     if (this.cocheSeleccionado) {
+      // Preseleccionamos la marca en el selector si venimos de URL directa
+      this.marcaSeleccionada = this.cocheSeleccionado.marca?.nombre ?? '';
+      this.cochesFiltrados = this.coches.filter(c => c.marca?.nombre === this.marcaSeleccionada);
+
       this.precioVehiculo = this.cocheSeleccionado.precio;
       this.entrada = Math.round(this.cocheSeleccionado.precio * 0.2);
       this.calcular();
@@ -78,8 +123,10 @@ export class Financiacion implements OnInit {
   calcular() {
     const capital = this.precioVehiculo - this.entrada;
     const tasaMensual = this.interes / 100 / 12;
+    // n es el número total de pagos (meses)
     const n = this.plazoSeleccionado;
     if (capital <= 0) { this.cuotaMensual = 0; return; }
+    // la formula es simplemente un redondeo del resultado de la fórmula estándar de amortización francesa
     this.cuotaMensual = Math.round(
       (capital * tasaMensual * Math.pow(1 + tasaMensual, n)) /
       (Math.pow(1 + tasaMensual, n) - 1)
@@ -87,23 +134,60 @@ export class Financiacion implements OnInit {
   }
 
   solicitar() {
+    // Si no está logueado, guardamos los datos actuales en sessionStorage
+    // y lo mandamos al login. Al volver, ngOnInit los recuperará automáticamente
     if (!this.authService.estaLogueado()) {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        coche_id: Number(this.cocheSeleccionadoId),
+        meses: this.plazoSeleccionado,
+        cuota_mensual: this.cuotaMensual,
+        entrada: this.entrada,
+        interes: this.interes,
+      }));
       this.router.navigate(['/login']);
       return;
     }
+
     if (!this.cocheSeleccionadoId || !this.formData.nombre || !this.formData.email) {
       this.toastr.error('Por favor rellena todos los campos obligatorios');
       return;
     }
-    this.financiacionService.solicitarFinanciacion({
+
+    this.enviarSolicitud({
       coche_id: Number(this.cocheSeleccionadoId),
       meses: this.plazoSeleccionado,
       cuota_mensual: this.cuotaMensual,
       entrada: this.entrada,
-      interes: this.interes
-    }).subscribe({
+      interes: this.interes,
+    });
+  }
+
+  // Si hay una financiación guardada en sessionStorage (venimos del login),
+  // la enviamos automáticamente sin que el usuario tenga que repetir nada
+  private enviarFinanciacionPendienteSiExiste() {
+    const guardada = sessionStorage.getItem(STORAGE_KEY);
+    if (!guardada || !this.authService.estaLogueado()) return;
+
+    const datos = JSON.parse(guardada);
+    // La borramos para que no se reenvíe
+    sessionStorage.removeItem(STORAGE_KEY);
+
+    // Restauramos los valores en la calculadora para que el usuario vea lo que se envía
+    this.cocheSeleccionadoId = datos.coche_id;
+    this.plazoSeleccionado = datos.meses;
+    this.entrada = datos.entrada;
+    this.interes = datos.interes;
+    this.aplicarCocheSeleccionado();
+
+    this.toastr.info('Enviando tu solicitud de financiación...');
+    this.enviarSolicitud(datos);
+  }
+
+  // Método que hace el envío real al backend
+  private enviarSolicitud(datos: any) {
+    this.financiacionService.solicitarFinanciacion(datos).subscribe({
       next: () => {
-        this.toastr.success('Solicitud enviada correctamente. Nos pondremos en contacto contigo.');
+        this.toastr.success('Solicitud enviada. Nos pondremos en contacto contigo pronto.');
         this.router.navigate(['/dashboard'], { queryParams: { section: 'financiaciones' } });
       },
       error: () => this.toastr.error('Ha ocurrido un error. Inténtalo de nuevo.')

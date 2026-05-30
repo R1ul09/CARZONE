@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('cuota_mensual', 8, 2);
             $table->decimal('entrada', 8, 2)->nullable();
             $table->decimal('interes', 5, 2)->nullable();
+            $table->string('estado')->default('pendiente');
 
             $table->timestamps();
         });

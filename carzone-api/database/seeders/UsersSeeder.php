@@ -14,7 +14,7 @@ class UsersSeeder extends Seeder
             'name' => 'Admin CarZone',
             'email' => 'admin@carzone.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('carzone1234'),
+            'password' => Hash::make('Carzone1234.'),
             'role_id' => 2,
         ]);
 
@@ -22,7 +22,7 @@ class UsersSeeder extends Seeder
             'name' => 'Empleado CarZone',
             'email' => 'empleado@carzone.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('carzone1234'),
+            'password' => Hash::make('Carzone1234.'),
             'role_id' => 3,
         ]);
 
@@ -30,7 +30,7 @@ class UsersSeeder extends Seeder
             'name' => 'Cliente Demo',
             'email' => 'cliente@carzone.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('carzone1234'),
+            'password' => Hash::make('Carzone1234.'),
             'role_id' => 1,
         ]);
     }

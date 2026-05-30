@@ -1,4 +1,4 @@
-# CarZone 🚗
+# CarZone
 
 Concesionario virtual de vehículos de alta gama desarrollado como Trabajo de Fin de Grado.
 
@@ -77,9 +77,9 @@ Abre tu navegador y ve a **https://localhost**
 
 | Rol | Email | Contraseña |
 |---|---|---|
-| Administrador | admin@carzone.com | carzone1234 |
-| Empleado | empleado@carzone.com | carzone1234 |
-| Cliente | cliente@carzone.com | carzone1234 |
+| Administrador | admin@carzone.com | Carzone1234. |
+| Empleado | empleado@carzone.com | Carzone1234. |
+| Cliente | cliente@carzone.com | Carzone1234. |
 
 ---
 
@@ -119,10 +119,13 @@ docker compose down
 docker compose down -v
 ```
 
+> Usa `docker compose down -v` si quieres que la base de datos se inicialice desde cero la próxima vez que levantes el proyecto.
+ 
 ---
-
+ 
 ## Notas
-
-- La base de datos se inicializa automáticamente la primera vez que se levanta el proyecto. No es necesario ejecutar ningún comando de migrations o seeders manualmente.
+ 
+- La base de datos se inicializa automáticamente la primera vez. No es necesario ejecutar ningún comando de migrations ni seeders.
 - Las imágenes de los vehículos están incluidas en el repositorio dentro de `carzone-api/storage/app/public/`.
 - El certificado SSL es autofirmado, válido únicamente para entorno de desarrollo local.
+- Si al entrar después de reiniciar Docker aparece un error de sesión, cierra sesión y vuelve a entrar — es el comportamiento normal al reiniciar la base de datos.
