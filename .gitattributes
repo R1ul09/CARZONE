@@ -1,0 +1,26 @@
+# Forzamos saltos de línea Unix (LF) en todos los archivos de script
+# para que funcionen correctamente en Linux/Docker independientemente
+# del sistema operativo desde el que se haya clonado el repo
+
+# Scripts de shell — siempre LF
+*.sh text eol=lf
+
+# Archivos de configuración — siempre LF
+*.conf    text eol=lf
+nginx.conf text eol=lf
+*.env     text eol=lf
+*.example text eol=lf
+
+# PHP y TypeScript — LF
+*.php text eol=lf
+*.ts  text eol=lf
+*.html text eol=lf
+*.scss text eol=lf
+
+# Docker
+Dockerfile    text eol=lf
+docker-compose.yml text eol=lf
+
+# Python
+*.py  text eol=lf
+*.ini text eol=lf
