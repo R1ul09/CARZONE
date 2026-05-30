@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { CurrencyPipe, UpperCasePipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { CocheService } from '../../../../../../services/coche';
 import { Coche } from '../../../../../../interfaces/coche.interface';
@@ -7,7 +7,7 @@ import { Coche } from '../../../../../../interfaces/coche.interface';
 @Component({
   selector: 'app-coches-empleado',
   standalone: true,
-  imports: [CurrencyPipe, UpperCasePipe],
+  imports: [CurrencyPipe],
   templateUrl: './coches.html',
   styleUrl: './coches.scss'
 })

@@ -1,6 +1,107 @@
+@use './variables' as vars;
+
+// ============================================================================
+// FLEXBOX MIXINS
+// ============================================================================
+
 @mixin flex-center($direction: row) {
   display: flex;
   flex-direction: $direction;
   align-items: center;
   justify-content: center;
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN MIXINS
+// ============================================================================
+
+// Mobile-first approach - usar min-width para agregar estilos en pantallas más grandes
+@mixin mobile-only {
+  @media (max-width: 575px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: vars.$screen-md) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: vars.$screen-md) and (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: vars.$screen-lg) {
+    @content;
+  }
+}
+
+@mixin large-desktop {
+  @media (min-width: vars.$screen-xl) {
+    @content;
+  }
+}
+
+@mixin hide-mobile {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+@mixin hide-desktop {
+  @media (min-width: vars.$screen-lg) {
+    display: none;
+  }
+}
+
+// ============================================================================
+// LAYOUT MIXINS
+// ============================================================================
+
+@mixin responsive-grid($cols-mobile: 1, $cols-tablet: 2, $cols-desktop: 3) {
+  display: grid;
+  grid-template-columns: repeat($cols-mobile, 1fr);
+  
+  @media (min-width: vars.$screen-md) {
+    grid-template-columns: repeat($cols-tablet, 1fr);
+  }
+  
+  @media (min-width: vars.$screen-lg) {
+    grid-template-columns: repeat($cols-desktop, 1fr);
+  }
+}
+
+@mixin responsive-padding($mobile: vars.$padding-sm, $tablet: vars.$padding-md, $desktop: vars.$padding-lg) {
+  padding-left: $mobile;
+  padding-right: $mobile;
+  
+  @media (min-width: vars.$screen-md) {
+    padding-left: $tablet;
+    padding-right: $tablet;
+  }
+  
+  @media (min-width: vars.$screen-lg) {
+    padding-left: $desktop;
+    padding-right: $desktop;
+  }
+}
+
+// ============================================================================
+// ANIMATION MIXINS
+// ============================================================================
+
+@mixin smooth-transition($property: all, $duration: 0.3s) {
+  transition: $property $duration ease;
+}
+
+@mixin hover-transform($scale: 1.05, $duration: 0.3s) {
+  transition: transform $duration ease, box-shadow $duration ease;
+  
+  &:hover {
+    transform: scale($scale);
+  }
 }

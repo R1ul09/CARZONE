@@ -3,7 +3,7 @@ FROM php:8.4-apache
 
 # instalamos las dependencias necesarias para Laravel y sus extensiones
 RUN apt-get update && apt-get install -y \
-    libpng-dev zlib1g-dev libxml2-dev libzip-dev \
+    libpng-dev zlib1g-dev libxml2-dev libzip-dev default-mysql-client \
     && docker-php-ext-install pdo_mysql zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

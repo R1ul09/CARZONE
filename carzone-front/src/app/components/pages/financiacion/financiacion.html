@@ -1,6 +1,5 @@
 <div class="financiacion-page">
 
-  <!-- HERO -->
   <section class="fin-hero">
     <div class="fin-hero-content" data-aos="fade-up">
       <p class="subtitle">SIN COMPLICACIONES</p>
@@ -9,14 +8,11 @@
     </div>
   </section>
 
-  <!-- CONTENIDO PRINCIPAL -->
   <section class="fin-contenido">
     <div class="fin-contenido-inner">
 
-      <!-- COLUMNA IZQUIERDA -->
       <div class="fin-izquierda" data-aos="fade-right">
 
-        <!-- Ventajas -->
         <div class="ventajas">
           @for (ventaja of ventajas; track ventaja.texto) {
             <div class="ventaja-item">
@@ -29,27 +25,40 @@
         <div class="calculadora">
           <p class="calculadora-titulo">CALCULADORA DE CUOTA</p>
 
-          <!-- Selector de coche -->
+          <!-- Selector de MARCA -->
           <div class="calc-field">
-            <label>VEHÍCULO</label>
-            <select [(ngModel)]="cocheSeleccionadoId" (change)="onCocheChange()">
-              <option value="">Selecciona un vehículo</option>
-              @for (coche of coches; track coche.id) {
-                <option [value]="coche.id">
-                    {{ coche.modelo }} — {{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}
-                </option>
+            <label>MARCA</label>
+            <select [(ngModel)]="marcaSeleccionada" (change)="onMarcaChange()">
+              <option value="">Selecciona una marca</option>
+              @for (marca of marcas; track marca) {
+                <option [value]="marca">{{ marca }}</option>
               }
             </select>
           </div>
+
+          <!-- Selector de VEHÍCULO -->
+          @if (marcaSeleccionada) {
+            <div class="calc-field">
+              <label>VEHÍCULO</label>
+              <select [(ngModel)]="cocheSeleccionadoId" (change)="onCocheChange()">
+                <option value="">Selecciona un vehículo</option>
+                @for (coche of cochesFiltrados; track coche.id) {
+                  <option [value]="coche.id">
+                    {{ coche.modelo }} — {{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}
+                  </option>
+                }
+              </select>
+            </div>
+          }
 
           @if (cocheSeleccionadoId) {
 
             <!-- Precio del vehículo -->
             <div class="calc-field">
-                <div class="calc-field-header">
-                    <label>PRECIO DEL VEHÍCULO</label>
-                    <span class="calc-valor">{{ precioVehiculo | currency:'EUR':'symbol':'1.0-0' }}</span>
-                </div>
+              <div class="calc-field-header">
+                <label>PRECIO DEL VEHÍCULO</label>
+                <span class="calc-valor">{{ precioVehiculo | currency:'EUR':'symbol':'1.0-0' }}</span>
+              </div>
             </div>
 
             <!-- Entrada -->
@@ -59,7 +68,7 @@
                 <span class="calc-valor">{{ entrada | currency:'EUR':'symbol':'1.0-0' }}</span>
               </div>
               <input type="range" [min]="0" [max]="precioVehiculo * 0.5" [step]="1000"
-                     [(ngModel)]="entrada" (input)="calcular()">
+                    [(ngModel)]="entrada" (input)="calcular()">
             </div>
 
             <!-- Plazo -->
@@ -90,14 +99,13 @@
 
       </div>
 
-      <!-- COLUMNA DERECHA: formulario -->
       <div class="fin-derecha" data-aos="fade-left">
         <div class="fin-form">
           <p class="form-titulo">SOLICITAR FINANCIACIÓN</p>
 
-          @if (!cocheSeleccionadoId) {
+          @if (!marcaSeleccionada) {
             <div class="form-aviso">
-              <p>Selecciona un vehículo en la calculadora para continuar</p>
+              <p>Selecciona una marca y un vehículo en la calculadora para continuar</p>
             </div>
           }
 
@@ -111,7 +119,7 @@
                     (error)="$event.target.style.display='none'">
               }
               <div>
-                <p class="resumen-nombre"> {{ cocheSeleccionado?.modelo }}</p>
+                <p class="resumen-nombre">{{ cocheSeleccionado?.modelo }}</p>
                 <p class="resumen-precio">{{ precioVehiculo | currency:'EUR':'symbol':'1.0-0' }}</p>
               </div>
             </div>

@@ -6,12 +6,20 @@
 
     // ── HERO ──────────────────────────────────────────
     .fin-hero {
-        padding: calc(vars.$navbar-height + 60px) 60px 60px;
+        padding: calc(vars.$navbar-height + 40px) 20px 40px;
         text-align: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         background-image: url('../../../../assets/image/financiacion-hero.jpg' );
         background-size: cover;
         background-position: 50% 25%;
+
+        @media (min-width: vars.$screen-md) {
+            padding: calc(vars.$navbar-height + 60px) 40px 60px;
+        }
+
+        @media (min-width: vars.$screen-lg) {
+            padding: calc(vars.$navbar-height + 60px) 60px 60px;
+        }
 
         .subtitle {
             font-size: vars.$subtitle-font-size;
@@ -31,24 +39,41 @@
         }
 
         .description {
-            font-size: 16px;
+            font-size: 14px;
             color: vars.$text-muted;
             max-width: 500px;
             margin: 0 auto;
+
+            @media (min-width: vars.$screen-md) {
+                font-size: 16px;
+            }
         }
     }
 
     // ── CONTENIDO ─────────────────────────────────────
     .fin-contenido {
-        padding: 60px;
+        padding: 40px 20px;
+
+        @media (min-width: vars.$screen-md) {
+            padding: 60px 40px;
+        }
+
+        @media (min-width: vars.$screen-lg) {
+            padding: 60px;
+        }
 
         .fin-contenido-inner {
             max-width: vars.$navbar-max-width;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
+            grid-template-columns: 1fr;
+            gap: 32px;
             align-items: start;
+
+            @media (min-width: vars.$screen-lg) {
+                grid-template-columns: 1fr 1fr;
+                gap: 48px;
+            }
         }
     }
 
@@ -216,8 +241,12 @@
 
     // ── DERECHA ───────────────────────────────────────
     .fin-derecha {
-        position: sticky;
-        top: calc(vars.$navbar-height + 20px);
+        position: static;
+
+        @media (min-width: vars.$screen-lg) {
+            position: sticky;
+            top: calc(vars.$navbar-height + 20px);
+        }
 
         .fin-form {
             background: #111;

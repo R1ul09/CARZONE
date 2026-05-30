@@ -13,16 +13,28 @@
         .galeria {
             max-width: vars.$navbar-max-width;
             margin: 0 auto;
-            padding: 20px 15px 0;
+            padding: 15px 20px 0;
+
+            @media (min-width: vars.$screen-md) {
+                padding: 20px 40px 0;
+            }
+
+            @media (min-width: vars.$screen-lg) {
+                padding: 20px 60px 0;
+            }
 
             .galeria-principal {
                 position: relative;
-                height: 650px;
+                height: 320px;
                 border-radius: 12px;
                 overflow: hidden;
 
-                @media (max-width: 768px) {
-                    height: 300px; 
+                @media (min-width: vars.$screen-md) {
+                    height: 450px;
+                }
+
+                @media (min-width: vars.$screen-lg) {
+                    height: 650px;
                 }
 
                 img {
@@ -50,18 +62,21 @@
                     z-index: 1;
 
                     .coche-nombre {
-                        font-size: 2.5rem;
+                        font-size: clamp(1.5rem, 5vw, 2.5rem);
                         font-weight: 900;
                         color: vars.$text-color;
                         line-height: 0.95;
                         margin: 0;
-                        @media (max-width: 768px) { font-size: 1.8rem; }
                     }
 
                     .coche-meta {
-                        font-size: 14px;
+                        font-size: 12px;
                         color: vars.$text-muted;
                         letter-spacing: 0.05em;
+
+                        @media (min-width: vars.$screen-md) {
+                            font-size: 14px;
+                        }
                     }
                 }
 
@@ -69,14 +84,19 @@
                     position: absolute;
                     top: 20px;
                     right: 20px;
-                    padding: 6px 14px;
-                    font-size: 11px;
+                    padding: 6px 12px;
+                    font-size: 10px;
                     font-weight: 700;
                     letter-spacing: 0.08em;
                     border-radius: 4px;
                     background: vars.$accent-color;
                     color: vars.$white;
                     z-index: 1;
+
+                    @media (min-width: vars.$screen-md) {
+                        padding: 6px 14px;
+                        font-size: 11px;
+                    }
 
                     &.reservado {
                         background: rgba(255, 255, 255, 0.1);
@@ -121,15 +141,28 @@
 
     // ── CONTENIDO ─────────────────────────────────────
     .coche-contenido {
-        padding: 60px 60px 80px;
+        padding: 40px 20px 60px;
+
+        @media (min-width: vars.$screen-md) {
+            padding: 60px 40px 80px;
+        }
+
+        @media (min-width: vars.$screen-lg) {
+            padding: 60px 60px 80px;
+        }
 
         .coche-contenido-inner {
             max-width: vars.$navbar-max-width;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            grid-template-columns: 1fr;
+            gap: 32px;
             align-items: start;
+
+            @media (min-width: vars.$screen-lg) {
+                grid-template-columns: 1fr 1fr;
+                gap: 60px;
+            }
         }
 
         .specs-titulo {
@@ -270,27 +303,6 @@
                         color: vars.$text-color;
                     }
                 }
-            }
-        }
-    }
-
-    @media (max-width: vars.$screen-md) {
-        .coche-hero .galeria {
-            padding: 20px 20px 0;
-
-            .galeria-principal { height: 320px; }
-        }
-
-        .coche-contenido {
-            padding: 40px 20px 60px;
-
-            .coche-contenido-inner {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-
-            .coche-info {
-                position: static;
             }
         }
     }

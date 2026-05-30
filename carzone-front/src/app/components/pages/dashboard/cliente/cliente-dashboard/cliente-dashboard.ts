@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { CitaService } from '../../../../../services/cita';
@@ -20,7 +20,7 @@ import { Perfil as PerfilComponent } from '../components/perfil/perfil';
 @Component({
   selector: 'app-cliente-dashboard',
   standalone: true,
-  imports: [RouterLink, ResumenComponent, CitasComponent, FinanciacionesComponent, PerfilComponent],
+  imports: [ResumenComponent, CitasComponent, FinanciacionesComponent, PerfilComponent],
   templateUrl: './cliente-dashboard.html',
   styleUrl: './cliente-dashboard.scss'
 })

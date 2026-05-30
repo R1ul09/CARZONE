@@ -3,40 +3,41 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\BienvenidaMail;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Http\Request; // Cambiamos a Request normal
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use App\Models\User; // Importamos el modelo User
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 class VerifyEmailController extends Controller
 {
-    /**
-     * El usuario hace clic en el enlace del email
-     */
     public function __invoke(Request $request): RedirectResponse
     {
         $frontendUrl = env('FRONTEND_URL', 'http://localhost:4200');
 
-        // 1. Buscamos al usuario manualmente usando el ID que viene en la URL
+        // buscamos al usuario usando el ID que viene en la URL
         $user = User::findOrFail($request->route('id'));
 
-        // 2. Verificamos que el hash de la URL sea correcto para ese usuario
+        // verificamos que el hash de la URL sea correcto para ese usuario
         if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
-            // Si el enlace está corrupto o es falso, lo mandamos al login con error
             return redirect("{$frontendUrl}/login?error=invalid_hash");
         }
 
-        // 3. Comprobamos si ya estaba verificado
+        // comprobamos si ya estaba verificado
         if ($user->hasVerifiedEmail()) {
             return redirect("{$frontendUrl}/login?already_verified=1");
         }
 
-        // 4. Lo marcamos como verificado y disparamos el evento
+        // lo marcamos como verificado y disparamos el evento de Laravel
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
+
+            // enviamos el correo de bienvenida ahora que ya es cliente oficial
+            Mail::to($user->email)->send(new BienvenidaMail($user));
         }
 
-        // 5. Redirigimos al front con el parámetro ?verified=1
+        // redirigimos al front
         return redirect("{$frontendUrl}/login?verified=1");
     }
 }

@@ -1,0 +1,86 @@
+<div class="financiaciones-admin">
+
+  <div class="seccion-header">
+    <div>
+      <p class="seccion-subtitulo">GESTIÓN</p>
+      <h2 class="seccion-titulo">Financiaciones</h2>
+    </div>
+    <span class="total-badge">{{ financiacionesFiltradas.length }} solicitudes</span>
+  </div>
+
+  <!-- FILTROS DE ESTADO -->
+  <div class="filtros">
+    <div class="filtros-estado">
+      <button class="filtro-btn" [class.active]="filtroEstado === 'todas'" (click)="filtroEstado = 'todas'">Todas</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'pendiente'" (click)="filtroEstado = 'pendiente'">Pendientes</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'aceptada'" (click)="filtroEstado = 'aceptada'">Aceptadas</button>
+      <button class="filtro-btn" [class.active]="filtroEstado === 'denegada'" (click)="filtroEstado = 'denegada'">Denegadas</button>
+    </div>
+  </div>
+
+  <!-- ESTADO VACÍO -->
+  @if (financiacionesFiltradas.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M2 10h20"/>
+      </svg>
+      <p>No hay financiaciones con estos filtros</p>
+    </div>
+  }
+
+  <!-- LISTA DE FINANCIACIONES -->
+  <div class="lista">
+    @for (fin of financiacionesFiltradas; track fin.id) {
+      <div class="fin-card">
+
+        <!-- Info del cliente y vehículo -->
+        <div class="fin-info">
+          <p class="fin-cliente">{{ fin.user?.name }}</p>
+          <p class="fin-email">{{ fin.user?.email }}</p>
+          <p class="fin-coche">{{ fin.coche?.marca?.nombre }} {{ fin.coche?.modelo }}</p>
+        </div>
+
+        <!-- Datos de la financiación -->
+        <div class="fin-datos">
+          <div class="dato">
+            <span class="dato-label">Entrada</span>
+            <span class="dato-valor">{{ fin.entrada | currency:'EUR':'symbol':'1.0-0' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Plazo</span>
+            <span class="dato-valor">{{ fin.meses }} meses</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Cuota</span>
+            <span class="dato-valor">{{ fin.cuota_mensual | currency:'EUR':'symbol':'1.0-0' }}/mes</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">TAE</span>
+            <span class="dato-valor">{{ fin.interes }}%</span>
+          </div>
+        </div>
+
+        <!-- Estado y acciones -->
+        <div class="fin-acciones">
+          <div class="fin-estado" [class]="fin.estado">{{ fin.estado }}</div>
+
+          <!-- Botones de aceptar/denegar solo si está pendiente -->
+          @if (fin.estado === 'pendiente') {
+            <button class="btn-aceptar" (click)="responder(fin, 'aceptada')">Aceptar</button>
+            <button class="btn-denegar" (click)="responder(fin, 'denegada')">Denegar</button>
+          }
+
+          <button class="btn-delete" (click)="eliminar(fin)" title="Eliminar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    }
+  </div>
+
+</div>

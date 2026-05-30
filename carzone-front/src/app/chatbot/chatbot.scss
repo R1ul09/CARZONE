@@ -3,17 +3,22 @@
 // ── Wrapper ─────────────────────────────────────────────────────────────────
 .chatbot-wrapper {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 16px;
+  right: 16px;
   z-index: 9999;
   font-family: 'Segoe UI', system-ui, sans-serif;
+
+  @media (min-width: vars.$screen-md) {
+    bottom: 28px;
+    right: 28px;
+  }
 }
 
 // ── FAB (botón flotante) ─────────────────────────────────────────────────────
 .chatbot-fab {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: vars.$rojo;
   border: none;
@@ -24,6 +29,11 @@
   box-shadow: 0 4px 20px rgba(vars.$rojo, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.2s;
   outline: none;
+
+  @media (min-width: vars.$screen-md) {
+    width: 60px;
+    height: 60px;
+  }
 
   &:hover {
     background: vars.$rojo-dark;
@@ -36,10 +46,15 @@
 
 .fab-icon {
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   color: vars.$blanco;
   transition: opacity 0.25s ease, transform 0.25s ease;
+
+  @media (min-width: vars.$screen-md) {
+    width: 26px;
+    height: 26px;
+  }
 
   svg { width: 100%; height: 100%; }
 }
@@ -68,10 +83,11 @@
 
 // ── Ventana del chat ─────────────────────────────────────────────────────────
 .chatbot-window {
-  position: absolute;
-  bottom: 76px;
-  right: 0;
-  width: 360px;
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  max-width: 360px;
+  height: 500px;
   border-radius: 16px;
   background: vars.$gris-oscuro;
   border: 1px solid vars.$gris-claro;
@@ -85,6 +101,15 @@
   transform: translateY(16px) scale(0.97);
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
+
+  @media (min-width: vars.$screen-md) {
+    position: absolute;
+    bottom: 76px;
+    right: 0;
+    left: auto;
+    height: auto;
+    min-width: 360px;
+  }
 
   &.visible {
     opacity: 1;
@@ -331,7 +356,8 @@
   }
 
   .chatbot-window {
-    width: calc(100vw - 32px);
-    right: -16px;
+    width: min(calc(100vw - 32px), 360px);
+    left: auto;
+    right: 16px;
   }
 }

@@ -76,8 +76,32 @@ $blanco:#ffffff;
 // BREAKPOINTS - Puntos de quiebre responsive
 // ============================================================================
 
-$screen-sm: 576px !default;
-$screen-md: 768px !default;
+// Mobile-first breakpoints
+$screen-xs: 0px !default;
+$screen-sm: 576px !default;       // Tablets pequeños y landscape phones
+$screen-md: 768px !default;       // Tablets
+$screen-lg: 992px !default;       // Tablets grandes y desktops pequeños
+$screen-xl: 1200px !default;      // Desktops
+$screen-xxl: 1400px !default;     // Desktops grandes
+
+// ============================================================================
+// PADDING RESPONSIVE - Espaciado adaptativo
+// ============================================================================
+
+// Padding horizontal para secciones
+$padding-xs: 12px !default;
+$padding-sm: 20px !default;
+$padding-md: 40px !default;
+$padding-lg: 60px !default;
+$padding-xl: 100px !default;
+
+// ============================================================================
+// RESPONSIVE FONT SIZES - Tamaños de fuente adaptables
+// ============================================================================
+
+$main-title-tablet-size: 5rem !default;
+$main-title-small-mobile: 2.5rem !default;
+$subtitle-font-size-tablet: 14px !default;
 
 // ============================================================================
 // GRADIENTS - Gradientes reutilizables

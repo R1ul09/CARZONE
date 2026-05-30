@@ -11,10 +11,9 @@ use App\Http\Controllers\Api\ChatbotController;
 use App\Http\Controllers\Api\ImagenVehiculoController;
 use Illuminate\Support\Facades\Route;
 
-// Incluir rutas de autenticación
 require __DIR__.'/auth.php';
 
-// RUTAS PÚBLICAS (No requieren autenticación)
+// RUTAS PÚBLICAS
 Route::get('/marcas', [MarcaController::class, 'index']);
 Route::get('/marcas/{id}', [MarcaController::class, 'show']);
 Route::get('/coches', [CocheController::class, 'index']);
@@ -23,10 +22,10 @@ Route::get('/servicios', [ServicioController::class, 'index']);
 Route::post('/chatbot', [ChatbotController::class, 'procesarMensaje']);
 Route::get('/citas/horas-ocupadas', [CitaController::class, 'horasOcupadas']);
 
-// RUTAS PROTEGIDAS (Requieren Token/Estar logueado)
+// RUTAS PROTEGIDAS
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    // Rutas de Citas
+    // Citas
     Route::get('/citas/todas', [CitaController::class, 'todas'])
         ->middleware('role:empleado,admin');
 
@@ -36,14 +35,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/citas/{id}', [CitaController::class, 'update']);
     Route::delete('/citas/{id}', [CitaController::class, 'destroy']);
 
-    // Rutas para Financiaciones
+    Route::get('/financiaciones/todas', [FinanciacionController::class, 'todas'])
+        ->middleware('role:empleado,admin');
+    Route::patch('/financiaciones/{id}/responder', [FinanciacionController::class, 'responder'])
+        ->middleware('role:empleado,admin');
+
     Route::apiResource('financiaciones', FinanciacionController::class);
 
-    // Rutas para Imagenes de Vehiculos
+    // Imágenes de vehículos
     Route::get('imagenes-vehiculos', [ImagenVehiculoController::class, 'index']);
     Route::post('imagenes-vehiculos', [ImagenVehiculoController::class, 'store']);
     Route::delete('imagenes-vehiculos/{id}', [ImagenVehiculoController::class, 'destroy']);
 
+    // Solo admin
     Route::middleware('role:admin')->group(function () {
         Route::post('/users/empleado', [UserController::class, 'crearEmpleado']);
         Route::apiResource('users', UserController::class);
@@ -65,5 +69,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/coches/{id}/disponibilidad', [CocheController::class, 'cambiarDisponibilidad'])
         ->middleware('role:empleado,admin');
 });
-
-require __DIR__.'/auth.php';
