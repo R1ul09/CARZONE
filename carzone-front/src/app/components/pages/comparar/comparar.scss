@@ -127,21 +127,53 @@ $yellow   : #eab308;
 
     select {
       width: 100%;
-      background: #111;
+      appearance: none; 
+      background-color: #151515; 
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 14px 40px 14px 16px; 
       color: vars.$text-color;
-      font-size: 13px;
+      font-size: 14px; 
+      font-family: inherit;
       outline: none;
       cursor: pointer;
-      transition: border-color 0.2s ease;
-      appearance: auto; // mantiene la flecha nativa
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s ease, background-color 0.3s ease;
 
-      @media (min-width: vars.$screen-md) { font-size: 14px; }
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.15);
+        background-color: #1a1a1a;
+      }
 
-      &:focus { border-color: rgba(vars.$accent-color, 0.5); }
-      option { background: #111; }
+      &:focus {
+        border-color: vars.$accent-color;
+      }
+
+      option {
+        background-color: #151515;
+        color: vars.$text-color;
+        font-size: 14px;
+        padding: 12px;
+        
+        &:hover, &:focus, &:active, &:checked {
+          background: rgba(vars.$accent-color, 0.2) !important;
+          color: vars.$accent-color !important;
+        }
+      }
+
+      @media (min-width: vars.$screen-md) {
+        font-size: 15px;
+        padding: 16px 44px 16px 20px;
+        background-position: right 16px center;
+        
+        option {
+          font-size: 15px;
+        }
+      }
     }
 
     .coche-preview {
