@@ -79,18 +79,75 @@
                 }
 
                 input, select {
-                    background: rgba(255, 255, 255, 0.04);
+                    width: 100%;
+                    background-color: rgba(255, 255, 255, 0.04);
                     border: 1px solid rgba(255, 255, 255, 0.08);
                     border-radius: 8px;
-                    padding: 11px 14px;
                     color: vars.$text-color;
                     font-size: 14px;
+                    font-family: inherit;
                     outline: none;
-                    transition: border-color 0.2s ease;
-                    font-family: vars.$font-family-base;
+                    transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 
-                    &:focus { border-color: rgba(vars.$accent-color, 0.5); }
-                    option { background: #0d0d0d; }
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.06);
+                        border-color: rgba(255, 255, 255, 0.15);
+                    }
+
+                    &:focus {
+                        border-color: vars.$accent-color;
+                        background-color: rgba(255, 255, 255, 0.06);
+                        box-shadow: 0 0 0 1px rgba(vars.$accent-color, 0.2);
+                    }
+                }
+
+                select {
+                    appearance: none;
+                    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: right 14px center;
+                    background-size: 16px;
+                    padding: 14px 40px 14px 16px;
+                    cursor: pointer;
+
+                    option {
+                        background-color: #111;
+                        color: vars.$text-color;
+                        padding: 12px;
+                    }
+
+                    @media (min-width: vars.$screen-md) {
+                        font-size: 15px;
+                        padding: 16px 44px 16px 20px;
+                        background-position: right 16px center;
+                        background-size: 18px;
+                    }
+                }
+
+                input[type="date"] {
+                    padding: 14px 16px;
+                    cursor: pointer;
+                    
+                    color-scheme: dark; 
+
+                    &::-webkit-calendar-picker-indicator {
+                        background-color: transparent;
+                        padding: 4px;
+                        cursor: pointer;
+                        border-radius: 4px;
+                        opacity: 0.6;
+                        transition: opacity 0.2s ease, background-color 0.2s ease;
+
+                        &:hover {
+                            opacity: 1;
+                            background-color: rgba(255, 255, 255, 0.1);
+                        }
+                    }
+
+                    @media (min-width: vars.$screen-md) {
+                        font-size: 15px;
+                        padding: 16px 20px;
+                    }
                 }
             }
         }

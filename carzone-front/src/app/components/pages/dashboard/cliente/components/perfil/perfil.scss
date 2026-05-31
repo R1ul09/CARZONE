@@ -57,17 +57,45 @@
                 }
 
                 input {
-                    background: rgba(255, 255, 255, 0.04);
+                    width: 100%;
+                    background-color: rgba(255, 255, 255, 0.04);
                     border: 1px solid rgba(255, 255, 255, 0.08);
                     border-radius: 8px;
-                    padding: 11px 14px;
+                    padding: 14px 16px;
                     color: vars.$text-color;
                     font-size: 14px;
+                    font-family: inherit;
                     outline: none;
-                    transition: border-color 0.2s ease;
-                    font-family: vars.$font-family-base;
+                    transition: all 0.3s ease;
 
-                    &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+                    &::placeholder {
+                        color: rgba(255, 255, 255, 0.3);
+                        font-weight: 400;
+                    }
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.06);
+                        border-color: rgba(255, 255, 255, 0.15);
+                    }
+
+                    &:focus {
+                        border-color: vars.$accent-color;
+                        background-color: rgba(255, 255, 255, 0.06);
+                        box-shadow: 0 0 0 1px rgba(vars.$accent-color, 0.2);
+                    }
+
+                    &:-webkit-autofill,
+                    &:-webkit-autofill:hover, 
+                    &:-webkit-autofill:focus {
+                        -webkit-text-fill-color: vars.$text-color;
+                        -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+                        transition: background-color 5000s ease-in-out 0s;
+                    }
+
+                    @media (min-width: vars.$screen-md) {
+                        font-size: 15px;
+                        padding: 16px 20px;
+                    }
                 }
             }
         }
