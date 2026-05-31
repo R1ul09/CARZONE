@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Mail\RecuperacionPasswordMail;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -31,6 +33,17 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
         ];
+    }
+
+    // Sobreescribimos el método de Laravel para enviar nuestro
+    // propio correo de recuperación de contraseña en vez del de por defecto
+    public function sendPasswordResetNotification($token): void
+    {
+        $url = config('app.frontend_url') . "/reset-password?token={$token}&email={$this->getEmailForPasswordReset()}";
+
+        Mail::to($this->email)->send(
+            new RecuperacionPasswordMail($this->name ?? '', $url)
+        );
     }
 
     public function rol()
