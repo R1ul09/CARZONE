@@ -7,6 +7,7 @@ use App\Mail\CitaMail;
 use App\Models\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
@@ -45,7 +46,6 @@ class CitaController extends Controller
             ], 422);
         }
 
-        // Verificar que el usuario no tenga otra cita a la misma hora
         $yaTimeCita = Cita::where('user_id', Auth::id())
             ->where('fecha', $request->fecha)
             ->where('hora', $request->hora)
@@ -73,19 +73,22 @@ class CitaController extends Controller
         }
 
         $cita = Cita::create([
-            'user_id' => Auth::id(),
+            'user_id'     => Auth::id(),
             'servicio_id' => $request->servicio_id,
-            'coche_id' => $request->coche_id,
-            'fecha' => $request->fecha,
-            'hora' => $request->hora,
-            'estado' => 'pendiente',
+            'coche_id'    => $request->coche_id,
+            'fecha'       => $request->fecha,
+            'hora'        => $request->hora,
+            'estado'      => 'pendiente',
         ]);
 
-        // Cargar relaciones necesarias para el email
         $cita->load(['user', 'servicio', 'coche.marca']);
 
-        // Enviar correo de confirmación al cliente
-        Mail::to($cita->user->email)->send(new CitaMail($cita, 'creada'));
+        // Si el email falla (ej. rate limit de Mailtrap), la cita se crea igual
+        try {
+            Mail::to($cita->user->email)->send(new CitaMail($cita, 'creada'));
+        } catch (\Exception $e) {
+            Log::warning('Email de cita no enviado: ' . $e->getMessage());
+        }
 
         return response()->json($cita->load(['servicio', 'coche.marca']), 201);
     }
@@ -99,7 +102,7 @@ class CitaController extends Controller
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
 
-        $user = Auth::user();
+        $user      = Auth::user();
         $rolNombre = $user->rol?->nombre;
 
         if (!in_array($rolNombre, ['admin', 'empleado']) && $cita->user_id !== $user->id) {
@@ -118,8 +121,8 @@ class CitaController extends Controller
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
 
-        $user = Auth::user();
-        $rolNombre = $user->rol?->nombre;
+        $user             = Auth::user();
+        $rolNombre        = $user->rol?->nombre;
         $esAdminOEmpleado = in_array($rolNombre, ['admin', 'empleado']);
 
         if (!$esAdminOEmpleado && $cita->user_id !== $user->id) {
@@ -153,7 +156,6 @@ class CitaController extends Controller
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        // Guardamos el estado anterior para saber qué correo enviar
         $estadoAnterior = $cita->estado;
 
         $cita->update($request->only([
@@ -161,18 +163,21 @@ class CitaController extends Controller
             'estado', 'mensaje_empleado',
         ]));
 
-        // Cargar relaciones necesarias para el email
         $cita->load(['user', 'servicio', 'coche.marca']);
 
-        // Enviamos el correo según lo que ha cambiado
         $nuevoEstado = $cita->estado;
 
-        if ($nuevoEstado === 'cancelada' && $estadoAnterior !== 'cancelada') {
-            Mail::to($cita->user->email)->send(new CitaMail($cita, 'cancelada'));
-        } elseif ($nuevoEstado === 'confirmada' && $estadoAnterior !== 'confirmada') {
-            Mail::to($cita->user->email)->send(new CitaMail($cita, 'confirmada'));
-        } elseif ($nuevoEstado !== $estadoAnterior || $request->has('fecha') || $request->has('hora')) {
-            Mail::to($cita->user->email)->send(new CitaMail($cita, 'modificada'));
+        // Si el email falla (ej. rate limit de Mailtrap), la actualización se guarda igual
+        try {
+            if ($nuevoEstado === 'cancelada' && $estadoAnterior !== 'cancelada') {
+                Mail::to($cita->user->email)->send(new CitaMail($cita, 'cancelada'));
+            } elseif ($nuevoEstado === 'confirmada' && $estadoAnterior !== 'confirmada') {
+                Mail::to($cita->user->email)->send(new CitaMail($cita, 'confirmada'));
+            } elseif ($nuevoEstado !== $estadoAnterior || $request->has('fecha') || $request->has('hora')) {
+                Mail::to($cita->user->email)->send(new CitaMail($cita, 'modificada'));
+            }
+        } catch (\Exception $e) {
+            Log::warning('Email de cita no enviado: ' . $e->getMessage());
         }
 
         return response()->json([
@@ -190,16 +195,20 @@ class CitaController extends Controller
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
 
-        $user      = Auth::user();
+        $user = Auth::user();
         $rolNombre = $user->rol?->nombre;
 
         if (!in_array($rolNombre, ['admin', 'empleado']) && $cita->user_id !== $user->id) {
             return response()->json(['message' => 'No tienes permiso para eliminar esta cita'], 403);
         }
 
-        // Avisamos al cliente antes de borrar
         $cita->load(['user', 'servicio', 'coche.marca']);
-        Mail::to($cita->user->email)->send(new CitaMail($cita, 'cancelada'));
+
+        try {
+            Mail::to($cita->user->email)->send(new CitaMail($cita, 'cancelada'));
+        } catch (\Exception $e) {
+            Log::warning('Email de cita no enviado: ' . $e->getMessage());
+        }
 
         $cita->delete();
 

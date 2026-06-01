@@ -8,6 +8,7 @@ use App\Mail\FinanciacionRespondidaMail;
 use App\Models\Financiacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class FinanciacionController extends Controller
@@ -29,7 +30,7 @@ class FinanciacionController extends Controller
         $request->validate([
             'coche_id' => 'required|exists:coches,id',
             'meses' => 'required|integer',
-            'cuota_mensual'=> 'required|numeric',
+            'cuota_mensual' => 'required|numeric',
             'entrada' => 'required|numeric',
             'interes' => 'required|numeric',
         ]);
@@ -38,18 +39,20 @@ class FinanciacionController extends Controller
             'user_id' => $request->user()->id,
             'coche_id' => $request->coche_id,
             'meses' => $request->meses,
-            'cuota_mensual'=> $request->cuota_mensual,
+            'cuota_mensual' => $request->cuota_mensual,
             'entrada' => $request->entrada,
             'interes' => $request->interes,
             'estado' => 'pendiente',
         ]);
 
-        // Cargamos las relaciones necesarias para el email
         $financiacion->load(['user', 'coche.marca']);
 
-        // Avisamos al cliente de que su solicitud ha llegado
-        Mail::to($financiacion->user->email)
-            ->send(new FinanciacionSolicitadaMail($financiacion));
+        try {
+            Mail::to($financiacion->user->email)
+                ->send(new FinanciacionSolicitadaMail($financiacion));
+        } catch (\Exception $e) {
+            Log::warning('Email de financiación no enviado: ' . $e->getMessage());
+        }
 
         return response()->json($financiacion, 201);
     }
@@ -82,9 +85,12 @@ class FinanciacionController extends Controller
         $financiacion->update(['estado' => $request->estado]);
         $financiacion->load(['user', 'coche.marca']);
 
-        // Avisamos al cliente con la respuesta
-        Mail::to($financiacion->user->email)
-            ->send(new FinanciacionRespondidaMail($financiacion));
+        try {
+            Mail::to($financiacion->user->email)
+                ->send(new FinanciacionRespondidaMail($financiacion));
+        } catch (\Exception $e) {
+            Log::warning('Email de respuesta de financiación no enviado: ' . $e->getMessage());
+        }
 
         return response()->json([
             'message' => 'Financiación ' . $request->estado . ' correctamente',
@@ -98,7 +104,7 @@ class FinanciacionController extends Controller
         $financiacion = Financiacion::find($id);
         if (!$financiacion) return response()->json(['message' => 'No encontrado'], 404);
 
-        $user = Auth::user();
+        $user      = Auth::user();
         $rolNombre = $user->rol?->nombre;
 
         if ($financiacion->user_id !== $user->id && !in_array($rolNombre, ['admin'])) {

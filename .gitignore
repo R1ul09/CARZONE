@@ -1,2 +1,5 @@
 nginx/certs/*.crt
 nginx/certs/*.key
+tests/informe.html
+tests/.pytest_cache/
+tests/__pycache__/

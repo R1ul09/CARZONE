@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\TokenLoginController;
 use Illuminate\Support\Facades\Route;
 
 // RUTAS PÚBLICAS (sin sesión)
@@ -16,6 +17,11 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
+
+// Login con token — usado exclusivamente por los tests automatizados (pytest)
+// El frontend Angular usa el login normal con cookies SPA
+Route::post('/login-token', [TokenLoginController::class, 'store'])
+    ->middleware('guest');
 
 // Recuperación de contraseña
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
