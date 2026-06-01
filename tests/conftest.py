@@ -1,9 +1,17 @@
 """
 conftest.py — Configuración global y fixtures compartidas para todos los tests.
+
+El frontend Angular usa cookies SPA (Sanctum stateful).
+Los tests usan tokens de API (Sanctum stateless) porque corren fuera del navegador
+y las cookies HttpOnly no funcionan correctamente en clientes externos como requests.
+Ambos métodos coexisten sin problema — son rutas independientes.
 """
 
 import pytest
 import requests
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BASE_URL = "https://localhost/api"
 
@@ -18,23 +26,24 @@ CLIENTE_PASSWORD = "Carzone1234."
 
 
 def hacer_sesion() -> requests.Session:
-    """Crea una sesión con las cabeceras necesarias para Sanctum SPA."""
+    """Crea una sesión base sin autenticar."""
     sesion = requests.Session()
     sesion.verify = False
     sesion.headers.update({
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Referer": "https://localhost",
-        "Origin": "https://localhost",
     })
     return sesion
 
 
-def login(sesion: requests.Session, email: str, password: str) -> dict:
-    """Obtiene el cookie CSRF y hace login. Devuelve los datos del usuario."""
-    sesion.get("https://localhost/sanctum/csrf-cookie", verify=False)
+def login_con_token(email: str, password: str) -> requests.Session:
+    """
+    Hace login obteniendo un token de API de Sanctum.
+    Devuelve una sesión con el token en la cabecera Authorization.
+    """
+    sesion = hacer_sesion()
 
-    respuesta = sesion.post(f"{BASE_URL}/login", json={
+    respuesta = sesion.post(f"{BASE_URL}/login-token", json={
         "email": email,
         "password": password,
     })
@@ -43,39 +52,37 @@ def login(sesion: requests.Session, email: str, password: str) -> dict:
         f"Login fallido para {email}: {respuesta.status_code} — {respuesta.text}"
     )
 
-    return respuesta.json()
+    token = respuesta.json().get("token")
+    assert token, f"No se recibió token para {email}"
+
+    sesion.headers.update({"Authorization": f"Bearer {token}"})
+    return sesion
 
 
 # ── FIXTURES ──────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="session")
 def sesion_anonima():
-    """Sesión sin autenticar — para testear rutas públicas."""
+    """Sesión sin autenticar."""
     return hacer_sesion()
 
 
 @pytest.fixture(scope="session")
 def sesion_cliente():
-    """Sesión autenticada como cliente."""
-    sesion = hacer_sesion()
-    login(sesion, CLIENTE_EMAIL, CLIENTE_PASSWORD)
-    return sesion
+    """Sesión autenticada como cliente con token."""
+    return login_con_token(CLIENTE_EMAIL, CLIENTE_PASSWORD)
 
 
 @pytest.fixture(scope="session")
 def sesion_empleado():
-    """Sesión autenticada como empleado."""
-    sesion = hacer_sesion()
-    login(sesion, EMPLEADO_EMAIL, EMPLEADO_PASSWORD)
-    return sesion
+    """Sesión autenticada como empleado con token."""
+    return login_con_token(EMPLEADO_EMAIL, EMPLEADO_PASSWORD)
 
 
 @pytest.fixture(scope="session")
 def sesion_admin():
-    """Sesión autenticada como administrador."""
-    sesion = hacer_sesion()
-    login(sesion, ADMIN_EMAIL, ADMIN_PASSWORD)
-    return sesion
+    """Sesión autenticada como administrador con token."""
+    return login_con_token(ADMIN_EMAIL, ADMIN_PASSWORD)
 
 
 @pytest.fixture(scope="session")
