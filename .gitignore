@@ -3,3 +3,4 @@ nginx/certs/*.key
 tests/informe.html
 tests/.pytest_cache/
 tests/__pycache__/
+REPORTE-SEGURIDAD-ZAP.html
