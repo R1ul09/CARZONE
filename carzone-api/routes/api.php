@@ -42,6 +42,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('financiaciones', FinanciacionController::class);
 
+    // Ruta para que cualquier usuario autenticado edite su propio perfil
+    Route::put('/perfil', [UserController::class, 'updatePerfil']);
+
     // Imágenes de vehículos
     Route::get('imagenes-vehiculos', [ImagenVehiculoController::class, 'index']);
     Route::post('imagenes-vehiculos', [ImagenVehiculoController::class, 'store']);

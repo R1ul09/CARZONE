@@ -1,11 +1,11 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .resumen {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1200px;
 
     .seccion-header {
-        margin-bottom: 36px;
+        margin-bottom: 28px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -16,7 +16,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -27,18 +27,18 @@
     // ── STATS ─────────────────────────────────────────
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-        margin-bottom: 24px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
 
         .stat-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             transition: all 0.25s ease;
 
             &:hover {
@@ -57,9 +57,9 @@
             }
 
             .stat-icono {
-                width: 40px;
-                height: 40px;
-                min-width: 40px;
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
                 background: rgba(vars.$accent-color, 0.1);
                 border-radius: 8px;
                 display: flex;
@@ -67,8 +67,8 @@
                 justify-content: center;
 
                 svg {
-                    width: 18px;
-                    height: 18px;
+                    width: 16px;
+                    height: 16px;
                     stroke: vars.$accent-color;
                 }
             }
@@ -80,7 +80,7 @@
                 overflow: hidden;
 
                 .stat-valor {
-                    font-size: 20px;
+                    font-size: 18px;
                     font-weight: 800;
                     color: vars.$text-color;
                     letter-spacing: -0.02em;
@@ -102,21 +102,21 @@
         background: linear-gradient(135deg, rgba(vars.$accent-color, 0.12), rgba(vars.$accent-color, 0.04));
         border: 1px solid rgba(vars.$accent-color, 0.25);
         border-radius: 12px;
-        padding: 24px 28px;
+        padding: 18px 16px;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 32px;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
 
         .banner-izq {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
 
             svg {
-                width: 30px;
-                height: 30px;
-                min-width: 30px;
+                width: 26px;
+                height: 26px;
+                min-width: 26px;
                 stroke: vars.$accent-color;
             }
 
@@ -128,7 +128,7 @@
             }
 
             .banner-servicio {
-                font-size: 16px;
+                font-size: 15px;
                 font-weight: 700;
                 color: vars.$text-color;
                 margin-bottom: 3px;
@@ -144,13 +144,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            align-self: flex-start;
             background: rgba(vars.$accent-color, 0.15);
             border: 1px solid rgba(vars.$accent-color, 0.3);
             border-radius: 10px;
-            padding: 12px 20px;
+            padding: 10px 18px;
 
             .countdown-valor {
-                font-size: 32px;
+                font-size: 28px;
                 font-weight: 900;
                 color: vars.$text-color;
                 line-height: 1;
@@ -167,21 +168,21 @@
     // ── BOTTOM GRID ───────────────────────────────────
     .bottom-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .widget {
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px;
-        padding: 24px;
+        padding: 20px 16px;
 
         .widget-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .widget-titulo {
@@ -334,18 +335,9 @@
                     border-radius: 20px;
                     white-space: nowrap;
 
-                    &.pendiente {
-                        background: rgba(234, 179, 8, 0.1);
-                        color: #eab308;
-                    }
-                    &.confirmada {
-                        background: rgba(34, 197, 94, 0.1);
-                        color: #22c55e;
-                    }
-                    &.cancelada {
-                        background: rgba(239, 68, 68, 0.1);
-                        color: #ef4444;
-                    }
+                    &.pendiente  { background: rgba(234, 179, 8, 0.1); color: #eab308; }
+                    &.confirmada { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+                    &.cancelada  { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
                 }
 
                 .actividad-vacia {
@@ -358,10 +350,52 @@
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
 
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        .bottom-grid { grid-template-columns: 1fr; }
+        .seccion-header { margin-bottom: 36px; }
+        .seccion-titulo { font-size: 28px; }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+
+            .stat-card {
+                padding: 20px;
+                gap: 14px;
+
+                .stat-icono { width: 40px; height: 40px; min-width: 40px; svg { width: 18px; height: 18px; } }
+                .stat-info .stat-valor { font-size: 20px; }
+            }
+        }
+
+        .banner-cita {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px;
+            margin-bottom: 32px;
+
+            .banner-izq svg { width: 30px; height: 30px; min-width: 30px; }
+            .banner-izq { gap: 16px; }
+            .banner-servicio { font-size: 16px; }
+
+            .banner-countdown {
+                align-self: auto;
+                padding: 12px 20px;
+                .countdown-valor { font-size: 32px; }
+            }
+        }
+
+        .bottom-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .widget {
+            padding: 24px;
+            .widget-header { margin-bottom: 20px; }
+        }
     }
 }

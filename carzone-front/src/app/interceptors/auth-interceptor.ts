@@ -2,13 +2,10 @@ import { HttpInterceptorFn } from '@angular/common/http';
 
 /**
  * Interceptor para autenticación SPA con cookies HttpOnly (Sanctum)
- * Ya no añadimos "Authorization: Bearer ..." porque no hay token en el cliente.
- * En su lugar:
- *  1. `withCredentials: true` → el navegador envía automáticamente la cookie
- *     de sesión en cada petición al mismo dominio.
- *  2. `X-XSRF-TOKEN` → el navegador lo toma de la cookie XSRF-TOKEN (no HttpOnly)
- *     que Laravel setea. Angular HttpClient lo añade solo cuando detecta esa cookie,
- *     pero siendo explícitos aquí lo garantizamos.
+ * 1.`withCredentials: true` → el navegador envía automáticamente la cookie
+ * de sesión en cada petición al mismo dominio.
+ * 2. X-XSRF-TOKEN` → el navegador lo toma de la cookie XSRF-TOKEN (no HttpOnly)
+ * que Laravel setea. Angular HttpClient lo añade solo cuando detecta esa cookie,
  */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 

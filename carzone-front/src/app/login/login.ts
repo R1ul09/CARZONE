@@ -26,6 +26,13 @@ export class Login implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Si ya está logueado, redirigir a home
+    if (this.authService.user()) {
+      this.toastr.info('Ya estás logueado', 'Información');
+      this.router.navigate(['/']);
+      return;
+    }
+
     const verified = this.route.snapshot.queryParamMap.get('verified');
     const alreadyVerif = this.route.snapshot.queryParamMap.get('already_verified');
 

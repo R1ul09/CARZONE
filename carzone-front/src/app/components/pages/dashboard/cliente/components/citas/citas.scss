@@ -1,14 +1,14 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .citas {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 900px;
 
     .seccion-header {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        margin-bottom: 36px;
+        margin-bottom: 28px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -19,7 +19,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -31,7 +31,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 20px;
+        padding: 10px 16px;
         background: vars.$accent-color;
         border: none;
         border-radius: 6px;
@@ -41,6 +41,7 @@
         cursor: pointer;
         transition: background 0.2s ease;
         text-decoration: none;
+        white-space: nowrap;
 
         svg { width: 16px; height: 16px; min-width: 16px; stroke: currentColor; }
         &:hover { background: vars.$accent-color-alt; }
@@ -50,20 +51,20 @@
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px;
-        padding: 28px;
-        margin-bottom: 28px;
+        padding: 20px 16px;
+        margin-bottom: 20px;
 
         .form-titulo {
             font-size: 10px;
             letter-spacing: vars.$subtitle-letter-spacing;
             color: vars.$accent-color;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 16px;
             margin-bottom: 20px;
 
@@ -127,8 +128,7 @@
                 input[type="date"] {
                     padding: 14px 16px;
                     cursor: pointer;
-                    
-                    color-scheme: dark; 
+                    color-scheme: dark;
 
                     &::-webkit-calendar-picker-indicator {
                         background-color: transparent;
@@ -170,7 +170,7 @@
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 48px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -191,15 +191,15 @@
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 10px;
-        padding: 20px 24px;
+        padding: 16px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 20px;
+        gap: 14px;
         transition: border-color 0.2s ease;
 
         &:hover { border-color: rgba(255, 255, 255, 0.12); }
 
-        // Tarjeta especial para hora_ocupada
         &.hora-ocupada-card {
             border-color: rgba(vars.$hora-ocupada, 0.3);
             background: rgba(vars.$hora-ocupada, 0.03);
@@ -223,10 +223,9 @@
             flex: 1;
             min-width: 0;
 
-            .cita-servicio { font-size: 15px; font-weight: 600; color: vars.$text-color; margin-bottom: 4px; }
+            .cita-servicio { font-size: 14px; font-weight: 600; color: vars.$text-color; margin-bottom: 4px; }
             .cita-meta     { font-size: 12px; color: vars.$text-muted; }
 
-            // Bloque del mensaje del empleado
             .mensaje-empleado {
                 display: flex;
                 align-items: flex-start;
@@ -289,9 +288,34 @@
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
-        .form-grid { grid-template-columns: 1fr; }
-        .cita-card { flex-wrap: wrap; }
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header { margin-bottom: 36px; }
+        .seccion-titulo { font-size: 28px; }
+
+        .btn-accion { padding: 10px 20px; }
+
+        .form-card {
+            padding: 28px;
+            margin-bottom: 28px;
+
+            .form-titulo { margin-bottom: 24px; }
+
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+                margin-bottom: 20px;
+            }
+        }
+
+        .empty-state { padding: 60px 20px; }
+
+        .cita-card {
+            flex-wrap: nowrap;
+            padding: 20px 24px;
+            gap: 20px;
+
+            .cita-info .cita-servicio { font-size: 15px; }
+        }
     }
 }

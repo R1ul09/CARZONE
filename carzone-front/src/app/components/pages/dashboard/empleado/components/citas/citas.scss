@@ -1,130 +1,266 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .citas-empleado {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1000px;
 
     .seccion-header {
-        display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 24px;
+
         .seccion-subtitulo { font-size: 11px; letter-spacing: vars.$subtitle-letter-spacing; color: vars.$accent-color; font-weight: 600; margin-bottom: 8px; }
-        .seccion-titulo { font-size: 28px; font-weight: 800; color: vars.$text-color; margin: 0; letter-spacing: -0.02em; }
-        .total-badge { padding: 6px 14px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; font-size: 12px; color: vars.$text-muted; }
+        .seccion-titulo    { font-size: 22px; font-weight: 800; color: vars.$text-color; margin: 0; letter-spacing: -0.02em; }
+        .total-badge       { padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; font-size: 12px; color: vars.$text-muted; }
     }
 
     .filtros {
-        display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+
         .filtros-estado { display: flex; gap: 8px; flex-wrap: wrap; }
+
         .filtro-btn {
-            padding: 8px 16px; background: transparent; border: 1px solid rgba(255,255,255,.1); border-radius: 6px;
-            color: vars.$text-muted; font-size: 12px; cursor: pointer; transition: all .2s;
-            &:hover { border-color: rgba(255,255,255,.3); color: vars.$text-color; }
-            &.active { background: vars.$accent-color; border-color: vars.$accent-color; color: vars.$white; }
-            &.ho:hover { border-color: vars.$hora-ocupada; color: vars.$hora-ocupada; }
-            &.ho.active { background: vars.$hora-ocupada; border-color: vars.$hora-ocupada; color: vars.$white; }
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            color: vars.$text-muted;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover      { border-color: rgba(255,255,255,0.3); color: vars.$text-color; }
+            &.active     { background: vars.$accent-color; border-color: vars.$accent-color; color: vars.$white; }
+            &.ho:hover   { border-color: vars.$hora-ocupada; color: vars.$hora-ocupada; }
+            &.ho.active  { background: vars.$hora-ocupada; border-color: vars.$hora-ocupada; color: vars.$white; }
         }
-        .filtro-fecha { width: auto; }
+
+        .filtro-fecha { width: 100%; }
     }
 
     .empty-state {
-        text-align: center; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; color: vars.$text-tertiary;
-        svg { width: 48px; height: 48px; stroke: rgba(255,255,255,.08); } p { font-size: 14px; }
+        text-align: center;
+        padding: 48px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        color: vars.$text-tertiary;
+
+        svg { width: 48px; height: 48px; stroke: rgba(255,255,255,0.08); }
+        p { font-size: 14px; }
     }
 
     .lista { display: flex; flex-direction: column; gap: 8px; }
 
     // ── TARJETA ──
     .cita-card {
-        background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06); border-radius: 10px;
-        padding: 18px 24px; display: flex; align-items: center; gap: 20px; transition: border-color .2s;
-        &:hover { border-color: rgba(255,255,255,.1); }
-        &.hora-ocupada-card { border-color: rgba(vars.$hora-ocupada,.25); background: rgba(vars.$hora-ocupada,.03); }
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        transition: border-color 0.2s;
+
+        &:hover { border-color: rgba(255,255,255,0.1); }
+        &.hora-ocupada-card { border-color: rgba(vars.$hora-ocupada, 0.25); background: rgba(vars.$hora-ocupada, 0.03); }
 
         .cita-fecha {
-            display: flex; flex-direction: column; align-items: center;
-            background: rgba(vars.$accent-color,.08); border: 1px solid rgba(vars.$accent-color,.15); border-radius: 8px; padding: 10px 14px; min-width: 54px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(vars.$accent-color, 0.08);
+            border: 1px solid rgba(vars.$accent-color, 0.15);
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 54px;
+
             .fecha-dia { font-size: 20px; font-weight: 800; color: vars.$text-color; line-height: 1; }
-            .fecha-mes { font-size: 9px; color: vars.$accent-color; font-weight: 600; letter-spacing: .05em; }
+            .fecha-mes { font-size: 9px; color: vars.$accent-color; font-weight: 600; letter-spacing: 0.05em; }
         }
 
         .cita-info {
-            flex: 1; min-width: 0;
-            .cita-cliente  { font-size: 15px; font-weight: 700; color: vars.$text-color; margin-bottom: 1px; }
+            flex: 1;
+            min-width: 0;
+
+            .cita-cliente  { font-size: 14px; font-weight: 700; color: vars.$text-color; margin-bottom: 1px; }
             .cita-email    { font-size: 11px; color: vars.$text-tertiary; margin-bottom: 4px; }
             .cita-servicio { font-size: 13px; color: vars.$text-secondary; margin-bottom: 2px; }
             .cita-meta     { font-size: 12px; color: vars.$text-muted; }
+
             .mensaje-preview {
-                display: flex; align-items: flex-start; gap: 6px; margin-top: 8px;
-                font-size: 12px; color: vars.$hora-ocupada; background: rgba(vars.$hora-ocupada,.06); border: 1px solid rgba(vars.$hora-ocupada,.15); border-radius: 6px; padding: 6px 10px; font-style: italic;
+                display: flex;
+                align-items: flex-start;
+                gap: 6px;
+                margin-top: 8px;
+                font-size: 12px;
+                color: vars.$hora-ocupada;
+                background: rgba(vars.$hora-ocupada, 0.06);
+                border: 1px solid rgba(vars.$hora-ocupada, 0.15);
+                border-radius: 6px;
+                padding: 6px 10px;
+                font-style: italic;
+
                 svg { width: 13px; height: 13px; stroke: currentColor; flex-shrink: 0; margin-top: 1px; }
             }
         }
 
         .cita-acciones {
-            display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            flex-shrink: 0;
 
             .cita-estado {
-                padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 700; letter-spacing: .06em; white-space: nowrap;
-                &.pendiente    { background: rgba(234,179,8,.1);  color: #eab308; border: 1px solid rgba(234,179,8,.2); }
-                &.confirmada   { background: rgba(34,197,94,.1);  color: #22c55e; border: 1px solid rgba(34,197,94,.2); }
-                &.cancelada    { background: rgba(239,68,68,.1);  color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
-                &.realizada    { background: rgba(99,102,241,.1); color: #6366f1; border: 1px solid rgba(99,102,241,.2); }
-                &.hora_ocupada { background: rgba(vars.$hora-ocupada,.12); color: vars.$hora-ocupada; border: 1px solid rgba(vars.$hora-ocupada,.25); }
+                padding: 3px 10px;
+                border-radius: 20px;
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 0.06em;
+                white-space: nowrap;
+
+                &.pendiente    { background: rgba(234,179,8,0.1);  color: #eab308; border: 1px solid rgba(234,179,8,0.2);  }
+                &.confirmada   { background: rgba(34,197,94,0.1);  color: #22c55e; border: 1px solid rgba(34,197,94,0.2);  }
+                &.cancelada    { background: rgba(239,68,68,0.1);  color: #ef4444; border: 1px solid rgba(239,68,68,0.2);  }
+                &.realizada    { background: rgba(99,102,241,0.1); color: #6366f1; border: 1px solid rgba(99,102,241,0.2); }
+                &.hora_ocupada { background: rgba(vars.$hora-ocupada, 0.12); color: vars.$hora-ocupada; border: 1px solid rgba(vars.$hora-ocupada, 0.25); }
             }
 
-            // El select hereda estilos globales de _forms.scss; aquí solo le damos ancho fijo
             select { width: 140px; font-size: 12px; padding: 6px 30px 6px 10px; }
 
             .btn-mensaje {
-                display: flex; align-items: center; gap: 6px; padding: 6px 12px;
-                background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 6px;
-                color: vars.$text-muted; font-size: 11px; cursor: pointer; transition: all .2s;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                background: rgba(255,255,255,0.04);
+                border: 1px solid rgba(255,255,255,0.08);
+                border-radius: 6px;
+                color: vars.$text-muted;
+                font-size: 11px;
+                cursor: pointer;
+                transition: all 0.2s;
+
                 svg { width: 13px; height: 13px; stroke: currentColor; }
-                &:hover { color: vars.$text-color; border-color: rgba(255,255,255,.2); }
-                &.activo { background: rgba(vars.$hora-ocupada,.1); border-color: rgba(vars.$hora-ocupada,.3); color: vars.$hora-ocupada; }
+
+                &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); }
+                &.activo { background: rgba(vars.$hora-ocupada, 0.1); border-color: rgba(vars.$hora-ocupada, 0.3); color: vars.$hora-ocupada; }
             }
         }
     }
 
     // ── PANEL DE MENSAJE ──
     .mensaje-panel {
-        background: rgba(vars.$hora-ocupada,.04); border: 1px solid rgba(vars.$hora-ocupada,.2); border-radius: 10px;
-        padding: 18px 20px; margin-top: -4px;
+        background: rgba(vars.$hora-ocupada, 0.04);
+        border: 1px solid rgba(vars.$hora-ocupada, 0.2);
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: -4px;
 
         .panel-header {
-            display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; color: vars.$text-secondary;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: vars.$text-secondary;
+
             svg { width: 16px; height: 16px; stroke: vars.$hora-ocupada; flex-shrink: 0; }
             strong { color: vars.$text-color; }
+
             .btn-cerrar-panel {
-                margin-left: auto; background: none; border: none; cursor: pointer; color: vars.$text-tertiary; padding: 2px;
+                margin-left: auto;
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: vars.$text-tertiary;
+                padding: 2px;
+
                 &:hover { color: vars.$text-color; }
                 svg { width: 15px; height: 15px; stroke: currentColor; display: block; }
             }
         }
 
-        // textarea hereda de _forms.scss
         textarea { margin-bottom: 10px; }
 
         .panel-footer {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+
             .char-count { font-size: 11px; color: vars.$text-tertiary; }
+
             .panel-btns { display: flex; gap: 8px; }
+
             .btn-cancelar {
-                padding: 8px 16px; background: none; border: 1px solid rgba(255,255,255,.1); border-radius: 7px;
-                color: vars.$text-muted; font-size: 12px; cursor: pointer; transition: all .2s;
-                &:hover { border-color: rgba(255,255,255,.2); color: vars.$text-color; }
+                padding: 8px 16px;
+                background: none;
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 7px;
+                color: vars.$text-muted;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &:hover { border-color: rgba(255,255,255,0.2); color: vars.$text-color; }
             }
+
             .btn-guardar {
-                padding: 8px 20px; background: vars.$hora-ocupada; border: none; border-radius: 7px;
-                color: vars.$white; font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity .2s;
-                &:hover { opacity: .85; }
-                &:disabled { opacity: .5; cursor: not-allowed; }
+                padding: 8px 20px;
+                background: vars.$hora-ocupada;
+                border: none;
+                border-radius: 7px;
+                color: vars.$white;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: opacity 0.2s;
+
+                &:hover    { opacity: 0.85; }
+                &:disabled { opacity: 0.5; cursor: not-allowed; }
             }
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
-        .filtros { flex-direction: column; align-items: flex-start; }
-        .cita-card { flex-wrap: wrap; }
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            flex-wrap: nowrap;
+            margin-bottom: 32px;
+            .seccion-titulo { font-size: 28px; }
+        }
+
+        .filtros {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+
+            .filtro-fecha { width: auto; }
+        }
+
+        .cita-card {
+            flex-wrap: nowrap;
+            padding: 18px 24px;
+            gap: 20px;
+
+            .cita-info .cita-cliente { font-size: 15px; }
+        }
+
+        .mensaje-panel { padding: 18px 20px; }
     }
 }

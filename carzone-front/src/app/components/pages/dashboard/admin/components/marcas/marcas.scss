@@ -1,12 +1,13 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .marcas-admin {
-    padding: 48px 60px;
+    padding: 24px 16px;
 
     .seccion-header {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: flex-start;
         margin-bottom: 28px;
 
         .seccion-subtitulo { 
@@ -38,6 +39,9 @@
             font-weight: 600; 
             cursor: pointer; 
             transition: opacity 0.2s;
+            margin-top: 12px;
+            width: 100%;
+            justify-content: center;
 
             svg { 
                 width: 16px; 
@@ -108,7 +112,7 @@
 
     .marcas-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr;
         gap: 20px;
 
         .marca-card {
@@ -252,11 +256,23 @@
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .btn-crear {
+            margin-top: 0;
+            width: auto;
+            justify-content: flex-start;
+        }
 
         .marcas-grid { 
-            grid-template-columns: 1fr; 
+            grid-template-columns: repeat(3, 1fr);
         }
     }
 }

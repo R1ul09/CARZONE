@@ -71,7 +71,6 @@
     }
 }
 
-// (mismo patrón que el resto de modales del dashboard)
 .modal-overlay {
     position: fixed; inset: 0; z-index: 1000;
     background: rgba(0,0,0,.75); backdrop-filter: blur(4px);
@@ -105,15 +104,12 @@
     }
 }
 
-// Grupos de formulario dentro del modal
-// Los inputs/selects/textareas heredan estilos de _forms.scss — aquí solo añadimos label y layout
 .form-group {
     display: flex; flex-direction: column; gap: 6px;
     label {
         font-size: 12px; color: vars.$text-muted; font-weight: 500;
         .req { color: vars.$accent-color; margin-left: 2px; }
     }
-    // El textarea hereda height del rows="3" y resize de _forms.scss
 }
 
 .form-row { display: flex; gap: 14px; .form-group { flex: 1; } }
