@@ -38,6 +38,7 @@
     .hero-content {
         text-align: center;
         z-index: 10;
+        padding: 0 20px;
 
         .subtitle {
             font-size: vars.$subtitle-font-size;
@@ -48,7 +49,7 @@
         }
 
         .main-title {
-            font-size: clamp(2.5rem, 8vw, 8rem);
+            font-size: vars.$main-title-mobile-size;
             line-height: vars.$hero-line-height;
             font-weight: 800;
             margin: 0;
@@ -71,48 +72,48 @@
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 40px;
+        bottom: 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: vars.$hero-line-gap;
+        gap: vars.$hero-line-mobile-gap;
 
         span {
-            font-size: vars.$hero-scroll-font-size;
-            letter-spacing: vars.$scroll-letter-spacing;
+            font-size: vars.$hero-scroll-mobile-font-size;
+            letter-spacing: vars.$scroll-mobile-letter-spacing;
             opacity: 0.6;
         }
 
         .line {
             width: vars.$hero-line-size;
-            height: vars.$hero-line-height-size;
+            height: vars.$hero-line-mobile-height;
             background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.1) 100%);
             animation: parpadeo 2s infinite;
         }
     }
 }
 
-// Ajuste para pantallas pequeñas
-@media (max-width: vars.$screen-md) {
+// Ajuste para pantallas grandes
+@media (min-width: vars.$screen-md) {
     .hero .hero-content {
-        padding: 0 20px;
+        padding: 0;
     }
 
     .hero .hero-content .main-title {
-        font-size: vars.$main-title-mobile-size;
+        font-size: clamp(2.5rem, 8vw, 8rem);
     }
 
     .hero .scroll-indicator {
-        bottom: 24px;
-        gap: vars.$hero-line-mobile-gap;
+        bottom: 40px;
+        gap: vars.$hero-line-gap;
 
         span {
-            font-size: vars.$hero-scroll-mobile-font-size;
-            letter-spacing: vars.$scroll-mobile-letter-spacing;
+            font-size: vars.$hero-scroll-font-size;
+            letter-spacing: vars.$scroll-letter-spacing;
         }
 
         .line {
-            height: vars.$hero-line-mobile-height;
+            height: vars.$hero-line-height-size;
         }
     }
 }

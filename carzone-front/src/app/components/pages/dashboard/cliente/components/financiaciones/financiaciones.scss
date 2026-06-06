@@ -1,14 +1,14 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .financiaciones {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1100px;
 
     .seccion-header {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        margin-bottom: 36px;
+        margin-bottom: 28px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -19,7 +19,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -31,7 +31,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 20px;
+        padding: 10px 16px;
         background: vars.$accent-color;
         border: none;
         border-radius: 6px;
@@ -41,6 +41,7 @@
         cursor: pointer;
         transition: background 0.2s ease;
         text-decoration: none;
+        white-space: nowrap;
 
         svg { width: 16px; height: 16px; min-width: 16px; stroke: currentColor; }
         &:hover { background: vars.$accent-color-alt; }
@@ -48,7 +49,7 @@
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 48px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -69,17 +70,18 @@
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 10px;
-        padding: 20px 24px;
+        padding: 16px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 20px;
+        gap: 14px;
         transition: border-color 0.2s ease;
 
         &:hover { border-color: rgba(255, 255, 255, 0.12); }
 
         .fin-img {
-            width: 100px;
-            height: 66px;
+            width: 100%;
+            height: 160px;
             object-fit: cover;
             border-radius: 8px;
             flex-shrink: 0;
@@ -89,7 +91,7 @@
             flex: 1;
 
             .fin-coche {
-                font-size: 15px;
+                font-size: 14px;
                 font-weight: 600;
                 color: vars.$text-color;
                 margin-bottom: 6px;
@@ -108,7 +110,7 @@
             flex-shrink: 0;
 
             .fin-valor {
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: 800;
                 color: vars.$accent-color;
                 letter-spacing: -0.02em;
@@ -119,14 +121,77 @@
                 color: vars.$text-tertiary;
             }
         }
+
+        .btn-eliminar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            color: vars.$text-tertiary;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+            svg {
+                width: 15px;
+                height: 15px;
+                stroke: currentColor;
+                flex-shrink: 0;
+            }
+
+            &:hover {
+                background: rgba(vars.$accent-color, 0.12);
+                border-color: vars.$accent-color;
+                color: vars.$accent-color;
+            }
+        }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            margin-bottom: 36px;
+
+            .seccion-titulo {
+                font-size: 28px;
+            }
+        }
+
+        .btn-accion {
+            padding: 10px 20px;
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+        }
 
         .fin-card {
-            flex-wrap: wrap;
-            .fin-img { width: 100%; height: 160px; }
+            flex-wrap: nowrap;
+            padding: 20px 24px;
+            gap: 20px;
+
+            .fin-img {
+                width: 100px;
+                height: 66px;
+            }
+
+            .fin-info {
+                .fin-coche {
+                    font-size: 15px;
+                }
+            }
+
+            .fin-cuota {
+                .fin-valor {
+                    font-size: 22px;
+                }
+            }
         }
     }
 }

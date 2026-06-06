@@ -1,14 +1,16 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .clientes-empleado {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1100px;
 
     .seccion-header {
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-start;
         justify-content: space-between;
-        margin-bottom: 32px;
+        gap: 12px;
+        margin-bottom: 24px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -19,7 +21,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -40,7 +42,7 @@
 
     .buscador {
         position: relative;
-        margin-bottom: 24px;
+        margin-bottom: 20px;
 
         svg {
             position: absolute;
@@ -54,8 +56,8 @@
 
         input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 8px;
             padding: 12px 14px 12px 42px;
             color: vars.$text-color;
@@ -64,14 +66,14 @@
             transition: border-color 0.2s ease;
             font-family: vars.$font-family-base;
 
-            &::placeholder { color: rgba(255, 255, 255, 0.2); }
+            &::placeholder { color: rgba(255,255,255,0.2); }
             &:focus { border-color: rgba(vars.$accent-color, 0.5); }
         }
     }
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 48px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -89,16 +91,16 @@
     }
 
     .cliente-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
         border-radius: 10px;
-        padding: 18px 24px;
+        padding: 14px 16px;
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 14px;
         transition: border-color 0.2s ease;
 
-        &:hover { border-color: rgba(255, 255, 255, 0.12); }
+        &:hover { border-color: rgba(255,255,255,0.12); }
 
         .cliente-avatar {
             width: 42px;
@@ -111,26 +113,29 @@
             align-items: center;
             justify-content: center;
 
-            svg {
-                width: 18px;
-                height: 18px;
-                stroke: vars.$accent-color;
-            }
+            svg { width: 18px; height: 18px; stroke: vars.$accent-color; }
         }
 
         .cliente-info {
             flex: 1;
+            min-width: 0;
 
             .cliente-nombre {
-                font-size: 15px;
+                font-size: 14px;
                 font-weight: 600;
                 color: vars.$text-color;
                 margin-bottom: 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .cliente-email {
                 font-size: 12px;
                 color: vars.$text-muted;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -139,22 +144,29 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
+            flex-shrink: 0;
 
-            .id-label {
-                font-size: 9px;
-                letter-spacing: 0.1em;
-                color: vars.$text-tertiary;
-            }
-
-            .id-valor {
-                font-size: 13px;
-                font-weight: 700;
-                color: vars.$text-muted;
-            }
+            .id-label { font-size: 9px; letter-spacing: 0.1em; color: vars.$text-tertiary; }
+            .id-valor  { font-size: 13px; font-weight: 700; color: vars.$text-muted; }
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            flex-wrap: nowrap;
+            margin-bottom: 32px;
+            .seccion-titulo { font-size: 28px; }
+        }
+
+        .buscador { margin-bottom: 24px; }
+
+        .cliente-card {
+            padding: 18px 24px;
+            gap: 16px;
+
+            .cliente-info .cliente-nombre { font-size: 15px; }
+        }
     }
 }

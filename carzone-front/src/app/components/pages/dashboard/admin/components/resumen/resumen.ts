@@ -37,7 +37,7 @@ export class ResumenAdmin implements OnChanges {
   }
 
   get ingresosPotenciales(): number {
-    return this.coches.reduce((sum, coche) => sum + (coche.precio || 0), 0);
+    return this.coches?.reduce((sum, coche) => sum + (Number(coche.precio) || 0), 0) ?? 0;
   }
 
   get proximasCitas(): Cita[] {

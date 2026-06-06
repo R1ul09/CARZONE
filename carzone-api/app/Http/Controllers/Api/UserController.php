@@ -117,4 +117,22 @@ class UserController extends Controller
             'user' => $empleado,
         ], 201);
     }
+
+    public function updatePerfil(Request $request)
+{
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'name'  => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user->update($request->only('name', 'email'));
+
+        return response()->json($user, 200);
+    }
 }

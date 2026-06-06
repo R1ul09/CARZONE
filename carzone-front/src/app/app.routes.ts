@@ -14,6 +14,7 @@ import { clienteGuard } from './guards/cliente-guard';
 import { empleadoGuard } from './guards/empleado-guard';
 import { adminGuard } from './guards/admin-guard';
 import { AdminDashboard } from './components/pages/dashboard/admin/admin-dashboard/admin-dashboard';
+import { OauthCallback } from './oauth-callback/oauth-callback';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'register', component: Register, data: { noLayout: true } },
   { path: 'forgot-password', component: ForgotPassword, data: { noLayout: true } },
   { path: 'reset-password', component: ResetPassword, data: { noLayout: true } },
+  { path: 'oauth/callback', component: OauthCallback },
 
   // Páginas públicas
   { path: 'marcas/:id', component: MarcaDetail },

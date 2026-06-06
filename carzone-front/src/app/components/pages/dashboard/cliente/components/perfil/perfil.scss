@@ -1,11 +1,11 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .perfil {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 700px;
 
     .seccion-header {
-        margin-bottom: 36px;
+        margin-bottom: 28px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -16,7 +16,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -28,22 +28,22 @@
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px;
-        padding: 28px;
-        margin-bottom: 20px;
+        padding: 20px 16px;
+        margin-bottom: 16px;
 
         .card-titulo {
             font-size: 10px;
             letter-spacing: vars.$subtitle-letter-spacing;
             color: vars.$accent-color;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
 
             .form-field {
                 display: flex;
@@ -85,7 +85,7 @@
                     }
 
                     &:-webkit-autofill,
-                    &:-webkit-autofill:hover, 
+                    &:-webkit-autofill:hover,
                     &:-webkit-autofill:focus {
                         -webkit-text-fill-color: vars.$text-color;
                         -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
@@ -151,8 +151,22 @@
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
-        .form-grid { grid-template-columns: 1fr; }
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header { margin-bottom: 36px; }
+        .seccion-titulo { font-size: 28px; }
+
+        .perfil-card {
+            padding: 28px;
+            margin-bottom: 20px;
+
+            .card-titulo { margin-bottom: 24px; }
+
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+                margin-bottom: 24px;
+            }
+        }
     }
 }

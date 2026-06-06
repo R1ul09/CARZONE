@@ -1,11 +1,11 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .coches-empleado {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1200px;
 
     .seccion-header {
-        margin-bottom: 32px;
+        margin-bottom: 24px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -16,7 +16,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -27,34 +27,27 @@
     .filtros {
         display: flex;
         gap: 8px;
-        margin-bottom: 28px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
 
         .filtro-btn {
-            padding: 8px 18px;
+            padding: 8px 14px;
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 6px;
             color: vars.$text-muted;
             font-size: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
 
-            &:hover {
-                border-color: rgba(255, 255, 255, 0.3);
-                color: vars.$text-color;
-            }
-
-            &.active {
-                background: vars.$accent-color;
-                border-color: vars.$accent-color;
-                color: vars.$white;
-            }
+            &:hover { border-color: rgba(255,255,255,0.3); color: vars.$text-color; }
+            &.active { background: vars.$accent-color; border-color: vars.$accent-color; color: vars.$white; }
         }
     }
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 48px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -67,22 +60,22 @@
 
     .coches-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        grid-template-columns: 1fr;
+        gap: 16px;
 
         .coche-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             overflow: hidden;
             transition: border-color 0.2s ease;
             position: relative;
 
-            &:hover { border-color: rgba(255, 255, 255, 0.12); }
+            &:hover { border-color: rgba(255,255,255,0.12); }
 
             &.reservado {
-                border-color: rgba(239, 68, 68, 0.15);
-                background: rgba(239, 68, 68, 0.02);
+                border-color: rgba(239,68,68,0.15);
+                background: rgba(239,68,68,0.02);
             }
 
             .coche-badge {
@@ -94,38 +87,34 @@
                 font-size: 9px;
                 font-weight: 700;
                 letter-spacing: 0.08em;
-                background: rgba(34, 197, 94, 0.15);
+                background: rgba(34,197,94,0.15);
                 color: #22c55e;
-                border: 1px solid rgba(34, 197, 94, 0.3);
+                border: 1px solid rgba(34,197,94,0.3);
                 z-index: 1;
 
                 &.reservado {
-                    background: rgba(239, 68, 68, 0.15);
+                    background: rgba(239,68,68,0.15);
                     color: #ef4444;
-                    border-color: rgba(239, 68, 68, 0.3);
+                    border-color: rgba(239,68,68,0.3);
                 }
             }
 
             .coche-img {
                 width: 100%;
-                height: 160px;
+                height: 180px;
                 object-fit: cover;
                 display: block;
             }
 
             .coche-img-placeholder {
                 width: 100%;
-                height: 160px;
-                background: rgba(255, 255, 255, 0.02);
+                height: 180px;
+                background: rgba(255,255,255,0.02);
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
-                svg {
-                    width: 40px;
-                    height: 40px;
-                    stroke: rgba(255, 255, 255, 0.1);
-                }
+                svg { width: 40px; height: 40px; stroke: rgba(255,255,255,0.1); }
             }
 
             .coche-info {
@@ -166,9 +155,9 @@
                 align-items: center;
                 justify-content: center;
                 gap: 8px;
-                background: rgba(34, 197, 94, 0.08);
+                background: rgba(34,197,94,0.08);
                 border: none;
-                border-top: 1px solid rgba(34, 197, 94, 0.15);
+                border-top: 1px solid rgba(34,197,94,0.15);
                 color: #22c55e;
                 font-size: 12px;
                 font-weight: 600;
@@ -177,21 +166,38 @@
 
                 svg { width: 15px; height: 15px; stroke: currentColor; }
 
-                &:hover { background: rgba(34, 197, 94, 0.15); }
+                &:hover { background: rgba(34,197,94,0.15); }
 
                 &.reservado {
-                    background: rgba(239, 68, 68, 0.08);
-                    border-top-color: rgba(239, 68, 68, 0.15);
+                    background: rgba(239,68,68,0.08);
+                    border-top-color: rgba(239,68,68,0.15);
                     color: #ef4444;
 
-                    &:hover { background: rgba(239, 68, 68, 0.15); }
+                    &:hover { background: rgba(239,68,68,0.15); }
                 }
             }
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
-        .coches-grid { grid-template-columns: 1fr; }
+    @media (min-width: vars.$screen-sm) {
+        .coches-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            margin-bottom: 32px;
+            .seccion-titulo { font-size: 28px; }
+        }
+
+        .filtros {
+            flex-wrap: nowrap;
+            margin-bottom: 28px;
+
+            .filtro-btn { padding: 8px 18px; }
+        }
+
+        .coches-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     }
 }

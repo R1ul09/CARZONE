@@ -1,14 +1,16 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .financiaciones-empleado {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1100px;
 
     .seccion-header {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: flex-end;
-        margin-bottom: 32px;
+        gap: 12px;
+        margin-bottom: 24px;
 
         .seccion-subtitulo {
             font-size: 11px;
@@ -19,7 +21,7 @@
         }
 
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -37,7 +39,7 @@
     }
 
     .filtros {
-        margin-bottom: 28px;
+        margin-bottom: 20px;
 
         .filtros-estado {
             display: flex;
@@ -55,22 +57,14 @@
             cursor: pointer;
             transition: all 0.2s;
 
-            &:hover {
-                border-color: rgba(255,255,255,0.3);
-                color: vars.$text-color;
-            }
-
-            &.active {
-                background: vars.$accent-color;
-                border-color: vars.$accent-color;
-                color: vars.$white;
-            }
+            &:hover { border-color: rgba(255,255,255,0.3); color: vars.$text-color; }
+            &.active { background: vars.$accent-color; border-color: vars.$accent-color; color: vars.$white; }
         }
     }
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 48px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -91,16 +85,18 @@
         background: rgba(255,255,255,0.02);
         border: 1px solid rgba(255,255,255,0.06);
         border-radius: 10px;
-        padding: 18px 24px;
+        padding: 16px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 24px;
+        gap: 16px;
         transition: border-color 0.2s;
 
         &:hover { border-color: rgba(255,255,255,0.1); }
 
         .fin-info {
             flex: 1;
+            min-width: 0;
 
             .fin-cliente { font-size: 15px; font-weight: 700; color: vars.$text-color; margin-bottom: 1px; }
             .fin-email   { font-size: 11px; color: vars.$text-tertiary; margin-bottom: 4px; }
@@ -109,7 +105,8 @@
 
         .fin-datos {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
 
             .dato {
                 display: flex;
@@ -134,9 +131,9 @@
                 font-weight: 700;
                 letter-spacing: 0.08em;
 
-                &.pendiente { background: rgba(234,179,8,0.1);  color: #eab308; border: 1px solid rgba(234,179,8,0.2);  }
-                &.aceptada  { background: rgba(34,197,94,0.1);  color: #22c55e; border: 1px solid rgba(34,197,94,0.2);  }
-                &.denegada  { background: rgba(239,68,68,0.1);  color: #ef4444; border: 1px solid rgba(239,68,68,0.2);  }
+                &.pendiente { background: rgba(234,179,8,0.1);  color: #eab308; border: 1px solid rgba(234,179,8,0.2); }
+                &.aceptada  { background: rgba(34,197,94,0.1);  color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+                &.denegada  { background: rgba(239,68,68,0.1);  color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
             }
 
             .btn-aceptar, .btn-denegar {
@@ -165,12 +162,23 @@
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            flex-wrap: nowrap;
+            margin-bottom: 32px;
+            .seccion-titulo { font-size: 28px; }
+        }
+
+        .filtros { margin-bottom: 28px; }
 
         .fin-card {
-            flex-wrap: wrap;
-            .fin-datos { flex-wrap: wrap; gap: 12px; }
+            flex-wrap: nowrap;
+            padding: 18px 24px;
+            gap: 24px;
+
+            .fin-datos { flex-wrap: nowrap; gap: 20px; }
         }
     }
 }

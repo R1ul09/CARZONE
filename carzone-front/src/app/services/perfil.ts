@@ -15,7 +15,7 @@ export class PerfilService {
   }
 
   updatePerfil(data: { name: string, email: string }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/users/${this.getUserId()}`, data, { withCredentials: true });
+    return this.http.put(`${this.apiUrl}/perfil`, data, { withCredentials: true });
   }
 
   private getUserId(): number {

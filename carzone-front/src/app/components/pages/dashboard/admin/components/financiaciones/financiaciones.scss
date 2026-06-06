@@ -1,13 +1,14 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .financiaciones-admin {
-    padding: 48px 60px;
+    padding: 24px 16px;
     max-width: 1100px;
 
     .seccion-header {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: flex-start;
         margin-bottom: 32px;
 
         .seccion-subtitulo {
@@ -33,6 +34,7 @@
             border-radius: 20px;
             font-size: 12px;
             color: vars.$text-muted;
+            margin-top: 12px;
         }
     }
 
@@ -101,6 +103,7 @@
         border-radius: 10px;
         padding: 18px 24px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: 24px;
         transition: border-color 0.2s;
@@ -110,6 +113,7 @@
         // Cliente y vehículo
         .fin-info {
             flex: 1;
+            width: 100%;
 
             .fin-cliente { font-size: 15px; font-weight: 700; color: vars.$text-color; margin-bottom: 1px; }
             .fin-email   { font-size: 11px; color: vars.$text-tertiary; margin-bottom: 4px; }
@@ -119,7 +123,9 @@
         // Datos económicos en fila
         .fin-datos {
             display: flex;
-            gap: 20px;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
 
             .dato {
                 display: flex;
@@ -135,8 +141,9 @@
         .fin-acciones {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
+            align-items: center;
             gap: 8px;
+            width: 100%;
 
             .fin-estado {
                 padding: 3px 10px;
@@ -158,6 +165,7 @@
                 font-weight: 600;
                 cursor: pointer;
                 transition: opacity 0.2s;
+                width: 100%;
 
                 &:hover { opacity: 0.8; }
             }
@@ -190,13 +198,44 @@
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .total-badge {
+            margin-top: 0;
+        }
 
         .fin-card {
-            flex-wrap: wrap;
+            flex-direction: row;
+            align-items: center;
+            gap: 24px;
 
-            .fin-datos { flex-wrap: wrap; gap: 12px; }
+            .fin-info {
+                width: auto;
+            }
+
+            .fin-datos {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+                width: auto;
+            }
+
+            .fin-acciones {
+                flex-direction: column;
+                align-items: flex-end;
+                width: auto;
+            }
+
+            .btn-aceptar, .btn-denegar {
+                width: auto;
+            }
         }
     }
 }

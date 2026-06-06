@@ -1,34 +1,37 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .coches-admin {
-    padding: 48px 60px;
+    padding: 24px 16px;
 
     .seccion-header {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: flex-end;
-        margin-bottom: 32px;
+        gap: 12px;
+        margin-bottom: 24px;
 
-        .seccion-subtitulo { 
-            font-size: 11px; 
-            letter-spacing: vars.$subtitle-letter-spacing; 
-            color: vars.$accent-color; 
-            font-weight: 600; 
-            margin-bottom: 8px; 
+        .seccion-subtitulo {
+            font-size: 11px;
+            letter-spacing: vars.$subtitle-letter-spacing;
+            color: vars.$accent-color;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
-        .seccion-titulo { 
-            font-size: 28px; 
-            font-weight: 800; 
-            color: vars.$text-color; 
-            margin: 0; 
-            letter-spacing: -0.02em; 
+
+        .seccion-titulo {
+            font-size: 22px;
+            font-weight: 800;
+            color: vars.$text-color;
+            margin: 0;
+            letter-spacing: -0.02em;
         }
 
         .btn-crear {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 11px 20px;
+            padding: 10px 16px;
             background: vars.$accent-color;
             border: none;
             border-radius: 8px;
@@ -37,34 +40,27 @@
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
+            white-space: nowrap;
 
-            svg { 
-                width: 16px; 
-                height: 16px; 
-                stroke: currentColor; 
-            }
-
-            &:hover { 
-                opacity: 0.85; 
-            }
+            svg { width: 16px; height: 16px; stroke: currentColor; }
+            &:hover { opacity: 0.85; }
         }
     }
 
     .filtros {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 28px;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
 
-        .filtros-estado { 
-            display: flex; 
-            gap: 8px; 
+        .filtros-estado {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .filtro-btn {
-            padding: 8px 16px;
+            padding: 8px 14px;
             background: transparent;
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 6px;
@@ -73,16 +69,8 @@
             cursor: pointer;
             transition: all 0.2s;
 
-            &:hover { 
-                border-color: rgba(255,255,255,0.3); 
-                color: vars.$text-color; 
-            }
-
-            &.active { 
-                background: vars.$accent-color; 
-                border-color: vars.$accent-color; 
-                color: vars.$white; 
-            }
+            &:hover  { border-color: rgba(255,255,255,0.3); color: vars.$text-color; }
+            &.active { background: vars.$accent-color; border-color: vars.$accent-color; color: vars.$white; }
         }
 
         .buscador {
@@ -93,58 +81,42 @@
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 8px;
             padding: 8px 14px;
-            min-width: 260px;
+            width: 100%;
 
-            svg { 
-                width: 16px; 
-                height: 16px; 
-                stroke: vars.$text-tertiary; 
-                flex-shrink: 0; 
+            svg { width: 16px; height: 16px; stroke: vars.$text-tertiary; flex-shrink: 0; }
+
+            input {
+                background: none;
+                border: none;
+                color: vars.$text-color;
+                font-size: 13px;
+                outline: none;
+                width: 100%;
+
+                &::placeholder { color: vars.$text-tertiary; }
             }
 
-            input { 
-                background: none; 
-                border: none; 
-                color: vars.$text-color; 
-                font-size: 13px; 
-                outline: none; 
-                width: 100%; 
-                
-                &::placeholder { 
-                    color: vars.$text-tertiary; 
-                } 
-            }
-
-            &:focus-within { 
-                border-color: rgba(vars.$accent-color, 0.4); 
-            }
+            &:focus-within { border-color: rgba(vars.$accent-color, 0.4); }
         }
     }
 
     .empty-state {
-        text-align: center; 
-        padding: 80px 20px;
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        gap: 16px; 
+        text-align: center;
+        padding: 60px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
         color: vars.$text-tertiary;
 
-        svg { 
-            width: 48px; 
-            height: 48px; 
-            stroke: rgba(255,255,255,0.08); 
-        }
-
-        p { 
-            font-size: 14px; 
-        }
+        svg { width: 48px; height: 48px; stroke: rgba(255,255,255,0.08); }
+        p { font-size: 14px; }
     }
 
     .coches-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        grid-template-columns: 1fr;
+        gap: 16px;
 
         .coche-card {
             background: rgba(255,255,255,0.02);
@@ -154,105 +126,69 @@
             transition: border-color 0.2s;
             position: relative;
 
-            &:hover { 
-                border-color: rgba(255,255,255,0.12); 
-            }
-
-            &.reservado { 
-                border-color: rgba(239,68,68,0.15); 
-                background: rgba(239,68,68,0.02); 
-            }
+            &:hover { border-color: rgba(255,255,255,0.12); }
+            &.reservado { border-color: rgba(239,68,68,0.15); background: rgba(239,68,68,0.02); }
 
             .coche-badges {
-                position: absolute; 
-                top: 12px; 
-                left: 0; 
+                position: absolute;
+                top: 12px;
+                left: 0;
                 right: 0;
-                display: flex; 
-                gap: 6px; 
-                padding: 0 12px; 
+                display: flex;
+                gap: 6px;
+                padding: 0 12px;
                 z-index: 2;
                 flex-wrap: wrap;
             }
 
             .badge-estado {
-                padding: 4px 8px; 
-                border-radius: 4px; 
-                font-size: 9px; 
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 9px;
                 font-weight: 700;
                 letter-spacing: 0.08em;
-                background: rgba(34,197,94,0.15); 
-                color: #22c55e; 
+                background: rgba(34,197,94,0.15);
+                color: #22c55e;
                 border: 1px solid rgba(34,197,94,0.3);
 
-                &.reservado { 
-                    background: rgba(239,68,68,0.15); 
-                    color: #ef4444; 
-                    border-color: rgba(239,68,68,0.3); 
-                }
+                &.reservado { background: rgba(239,68,68,0.15); color: #ef4444; border-color: rgba(239,68,68,0.3); }
             }
 
             .badge-destacado {
-                padding: 4px 8px; 
-                border-radius: 4px; 
-                font-size: 9px; 
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 9px;
                 font-weight: 700;
-                background: rgba(234,179,8,0.15); 
-                color: #eab308; 
+                background: rgba(234,179,8,0.15);
+                color: #eab308;
                 border: 1px solid rgba(234,179,8,0.3);
             }
 
-            .coche-img { 
-                width: 100%; 
-                height: 150px; 
-                object-fit: cover; 
-                display: block; 
+            .coche-img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+                display: block;
             }
 
             .coche-img-placeholder {
-                width: 100%; 
-                height: 150px; 
+                width: 100%;
+                height: 180px;
                 background: rgba(255,255,255,0.02);
-                display: flex; 
-                align-items: center; 
+                display: flex;
+                align-items: center;
                 justify-content: center;
 
-                svg { 
-                    width: 36px; 
-                    height: 36px; 
-                    stroke: rgba(255,255,255,0.08); 
-                }
+                svg { width: 36px; height: 36px; stroke: rgba(255,255,255,0.08); }
             }
 
             .coche-info {
                 padding: 14px 16px;
 
-                .coche-marca { 
-                    font-size: 10px; 
-                    letter-spacing: 0.1em; 
-                    color: vars.$accent-color; 
-                    font-weight: 600; 
-                    margin-bottom: 3px; 
-                }
-
-                .coche-modelo { 
-                    font-size: 15px; 
-                    font-weight: 700; 
-                    color: vars.$text-color; 
-                    margin-bottom: 3px; 
-                }
-
-                .coche-meta { 
-                    font-size: 11px; 
-                    color: vars.$text-muted; 
-                    margin-bottom: 6px; 
-                }
-
-                .coche-precio { 
-                    font-size: 15px; 
-                    font-weight: 700; 
-                    color: vars.$accent-color; 
-                }
+                .coche-marca  { font-size: 10px; letter-spacing: 0.1em; color: vars.$accent-color; font-weight: 600; margin-bottom: 3px; }
+                .coche-modelo { font-size: 15px; font-weight: 700; color: vars.$text-color; margin-bottom: 3px; }
+                .coche-meta   { font-size: 11px; color: vars.$text-muted; margin-bottom: 6px; }
+                .coche-precio { font-size: 15px; font-weight: 700; color: vars.$accent-color; }
             }
 
             .coche-acciones {
@@ -271,75 +207,54 @@
                     justify-content: center;
                     transition: all 0.2s;
 
-                    svg { 
-                        width: 14px; 
-                        height: 14px; 
-                        stroke: currentColor; 
-                    }
+                    svg { width: 14px; height: 14px; stroke: currentColor; }
 
-                    &.img {
-                        background: rgba(99,102,241,0.08);
-                        border-color: rgba(99,102,241,0.15);
-                        color: #6366f1;
-
-                        &:hover { 
-                            background: rgba(99,102,241,0.15); 
-                        }
-                    }
-
-                    &.edit {
-                        background: rgba(255,255,255,0.04);
-                        border-color: rgba(255,255,255,0.08);
-                        color: vars.$text-muted;
-
-                        &:hover { 
-                            color: vars.$text-color; 
-                            border-color: rgba(255,255,255,0.2); 
-                        }
-                    }
-
-                    &.delete {
-                        background: rgba(239,68,68,0.06);
-                        border-color: rgba(239,68,68,0.1);
-                        color: rgba(239,68,68,0.6);
-
-                        &:hover { 
-                            background: rgba(239,68,68,0.12); 
-                            color: #ef4444; 
-                        }
-                    }
+                    &.img  { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15); color: #6366f1; &:hover { background: rgba(99,102,241,0.15); } }
+                    &.edit { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: vars.$text-muted; &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); } }
+                    &.delete { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.1); color: rgba(239,68,68,0.6); &:hover { background: rgba(239,68,68,0.12); color: #ef4444; } }
                 }
             }
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
+    @media (min-width: vars.$screen-sm) {
+        .coches-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
-        .coches-grid { 
-            grid-template-columns: 1fr; 
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header {
+            flex-wrap: nowrap;
+            margin-bottom: 32px;
+            .seccion-titulo { font-size: 28px; }
+            .btn-crear { padding: 11px 20px; }
         }
 
-        .filtros { 
-            flex-direction: column; 
-            align-items: flex-start; 
-            
-            .buscador { 
-                min-width: 100%; 
-            } 
+        .filtros {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+
+            .buscador { width: auto; min-width: 260px; }
         }
+
+        .coches-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     }
 }
 
 // ── MODAL COMPARTIDO ──────────────────────────────────────────────
 .modal-overlay {
-    position: fixed; inset: 0; z-index: 1000;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
     background: rgba(0,0,0,0.75);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 16px;
 }
 
 .modal {
@@ -352,61 +267,59 @@
     display: flex;
     flex-direction: column;
 
-    &.modal-imagenes { 
-        max-width: 560px; 
-    }
+    &.modal-imagenes { max-width: 560px; }
 
     .modal-header {
-        padding: 24px 28px 20px;
+        padding: 20px 20px 16px;
         border-bottom: 1px solid rgba(255,255,255,0.06);
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-shrink: 0;
 
-        h3 { 
-            font-size: 18px; 
-            font-weight: 700; 
-            color: vars.$text-color; 
-        }
+        h3 { font-size: 16px; font-weight: 700; color: vars.$text-color; }
 
         .modal-close {
             background: none; border: none; cursor: pointer; color: vars.$text-tertiary;
             padding: 4px; border-radius: 6px; transition: color 0.2s;
 
-            svg { 
-                width: 18px; 
-                height: 18px; 
-                stroke: currentColor; 
-                display: block; 
-            }
-
-            &:hover { 
-                color: vars.$text-color; 
-            }
+            svg { width: 18px; height: 18px; stroke: currentColor; display: block; }
+            &:hover { color: vars.$text-color; }
         }
     }
 
     .modal-body {
-        padding: 24px 28px;
+        padding: 20px;
         overflow-y: auto;
         flex: 1;
     }
 
     .modal-footer {
-        padding: 20px 28px;
+        padding: 16px 20px;
         border-top: 1px solid rgba(255,255,255,0.06);
         display: flex;
         justify-content: flex-end;
         gap: 12px;
         flex-shrink: 0;
     }
+
+    @media (min-width: vars.$screen-md) {
+        .modal-header { padding: 24px 28px 20px; h3 { font-size: 18px; } }
+        .modal-body   { padding: 24px 28px; }
+        .modal-footer { padding: 20px 28px; }
+    }
 }
 
 .form-row {
     display: flex;
+    flex-direction: column;
     gap: 16px;
     margin-bottom: 16px;
+
+    @media (min-width: vars.$screen-sm) {
+        flex-direction: row;
+        .form-group { flex: 1; }
+    }
 }
 
 .form-group {
@@ -415,19 +328,14 @@
     flex-direction: column;
     gap: 6px;
 
-    &.full { 
-        width: 100%; 
-    }
+    &.full { width: 100%; }
 
     label {
         font-size: 12px;
         color: vars.$text-muted;
         font-weight: 500;
 
-        .required { 
-            color: vars.$accent-color; 
-            margin-left: 2px; 
-        }
+        .required { color: vars.$accent-color; margin-left: 2px; }
     }
 
     input, select, textarea {
@@ -441,31 +349,19 @@
         transition: border-color 0.2s;
         font-family: inherit;
 
-        &:focus { 
-            border-color: rgba(vars.$accent-color, 0.5); 
-        }
-
-        &::placeholder { 
-            color: vars.$text-tertiary; 
-        }
-
-        option { 
-            background: #111; 
-        }
+        &:focus       { border-color: rgba(vars.$accent-color, 0.5); }
+        &::placeholder { color: vars.$text-tertiary; }
+        option { background: #111; }
     }
 
-    textarea { 
-        resize: vertical; 
-    }
-
-    select { 
-        cursor: pointer; 
-    }
+    textarea { resize: vertical; }
+    select   { cursor: pointer; }
 }
 
 .form-checks {
     display: flex;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
     margin-top: 8px;
 
     .check-item {
@@ -476,12 +372,7 @@
         font-size: 13px;
         color: vars.$text-secondary;
 
-        input[type="checkbox"] { 
-            width: 16px; 
-            height: 16px; 
-            cursor: pointer; 
-            accent-color: vars.$accent-color; 
-        }
+        input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: vars.$accent-color; }
     }
 }
 
@@ -495,10 +386,7 @@
     cursor: pointer;
     transition: all 0.2s;
 
-    &:hover { 
-        color: vars.$text-color; 
-        border-color: rgba(255,255,255,0.2); 
-    }
+    &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); }
 }
 
 .btn-guardar {
@@ -512,22 +400,20 @@
     cursor: pointer;
     transition: opacity 0.2s;
 
-    &:hover { 
-        opacity: 0.85; 
-    }
-
-    &:disabled { 
-        opacity: 0.5; 
-        cursor: not-allowed; 
-    }
+    &:hover    { opacity: 0.85; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
 // ── IMÁGENES ──
 .imagenes-actuales {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 24px;
+
+    @media (min-width: vars.$screen-sm) {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
     .img-item {
         position: relative;
@@ -536,16 +422,9 @@
         border: 1px solid rgba(255,255,255,0.08);
         aspect-ratio: 16/9;
 
-        &.principal { 
-            border-color: vars.$accent-color; 
-        }
+        &.principal { border-color: vars.$accent-color; }
 
-        img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block; 
-        }
+        img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .img-badge {
             position: absolute; bottom: 6px; left: 6px;
@@ -572,7 +451,7 @@
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 10px;
-    padding: 18px;
+    padding: 16px;
 
     .add-titulo {
         font-size: 10px;
@@ -584,8 +463,14 @@
 
     .add-btns {
         display: flex;
+        flex-direction: column;
         gap: 10px;
         margin-top: 14px;
+
+        @media (min-width: vars.$screen-sm) {
+            flex-direction: row;
+            align-items: center;
+        }
 
         .btn-add-img {
             flex: 1;
@@ -598,25 +483,148 @@
             cursor: pointer;
             transition: all 0.2s;
 
-            &:hover { 
-                color: vars.$text-color; 
-                border-color: rgba(255,255,255,0.2); 
+            &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); }
+
+            &.principal {
+                background: rgba(vars.$accent-color, 0.1);
+                border-color: rgba(vars.$accent-color, 0.25);
+                color: vars.$accent-color;
+
+                &:hover { background: rgba(vars.$accent-color, 0.18); }
             }
 
-            &.principal { 
-                background: rgba(vars.$accent-color, 0.1); 
-                border-color: rgba(vars.$accent-color, 0.25); 
-                color: vars.$accent-color; 
-                
-                &:hover { 
-                    background: rgba(vars.$accent-color, 0.18); 
-                } 
-            }
-
-            &:disabled { 
-                opacity: 0.5; 
-                cursor: not-allowed; 
-            }
+            &:disabled { opacity: 0.5; cursor: not-allowed; }
         }
     }
+
+    .modo-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+
+    .modo-tab {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        color: vars.$text-muted;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        svg { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; }
+
+        &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.15); }
+        &.active {
+            background: rgba(vars.$accent-color, 0.1);
+            border-color: rgba(vars.$accent-color, 0.3);
+            color: vars.$accent-color;
+        }
+    }
+}
+
+.drop-zone {
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    min-height: 140px;
+
+    svg { width: 32px; height: 32px; stroke: rgba(255,255,255,0.15); }
+
+    p    { font-size: 13px; color: vars.$text-muted; margin: 0; }
+    span { font-size: 11px; color: vars.$text-tertiary; }
+
+    &:hover { border-color: rgba(vars.$accent-color, 0.3); background: rgba(vars.$accent-color, 0.03); }
+
+    &.tiene-archivo {
+        border-color: rgba(vars.$accent-color, 0.3);
+        background: rgba(vars.$accent-color, 0.04);
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .archivo-preview {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+
+        img {
+            width: 56px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .archivo-info {
+            flex: 1;
+            text-align: left;
+
+            p    { font-size: 12px; color: vars.$text-color; margin: 0 0 2px; word-break: break-all; }
+            span { font-size: 11px; color: vars.$text-tertiary; }
+        }
+
+        .btn-quitar-archivo {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.15);
+            border-radius: 6px;
+            color: rgba(239,68,68,0.6);
+            padding: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+
+            svg { width: 14px; height: 14px; stroke: currentColor; display: block; }
+            &:hover { background: rgba(239,68,68,0.15); color: #ef4444; }
+        }
+    }
+}
+
+.check-principal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: vars.$text-muted;
+    white-space: nowrap;
+
+    input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        accent-color: vars.$accent-color;
+    }
+}
+
+.img-delete {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 6px;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    svg { width: 12px; height: 12px; stroke: #fff; display: block; }
+}
+
+.img-item:hover .img-delete { opacity: 1; }
 }

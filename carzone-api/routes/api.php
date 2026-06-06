@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ChatbotController;
 use App\Http\Controllers\Api\ImagenVehiculoController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 require __DIR__.'/auth.php';
 
@@ -24,6 +25,14 @@ Route::get('/citas/horas-ocupadas', [CitaController::class, 'horasOcupadas']);
 
 // RUTAS PROTEGIDAS
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::get('/user', function (Request $request) {
+        return response()->json([
+            'user' => $request->user(),
+            'email_verified' => $request->user()->email_verified_at !== null,
+            'message' => 'Sesión activa',
+        ]);
+    });
 
     // Citas
     Route::get('/citas/todas', [CitaController::class, 'todas'])
@@ -41,6 +50,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->middleware('role:empleado,admin');
 
     Route::apiResource('financiaciones', FinanciacionController::class);
+
+    // Ruta para que cualquier usuario autenticado edite su propio perfil
+    Route::put('/perfil', [UserController::class, 'updatePerfil']);
 
     // Imágenes de vehículos
     Route::get('imagenes-vehiculos', [ImagenVehiculoController::class, 'index']);
