@@ -31,7 +31,7 @@ export class Auth {
     private router: Router
   ) {}
 
-  // ── CSRF ──────────────────────────────────────────────────────────────────
+  // CSRF
   // Sanctum SPA requiere obtener el cookie CSRF antes de cualquier mutación.
   // La URL /sanctum/csrf-cookie es fija de Laravel Sanctum.
   getCsrfCookie(): Observable<void> {
@@ -41,7 +41,7 @@ export class Auth {
     });
   }
 
-  // ── REGISTRO ──────────────────────────────────────────────────────────────
+  // REGISTRO
   register(name: string, email: string, password: string): Observable<AuthResponse> {
     return this.getCsrfCookie().pipe(
       switchMap(() => this.doRegister(name, email, password))
@@ -133,6 +133,12 @@ export class Auth {
         )
       )
     );
+  }
+
+  // Redirige al backend, que redirige a Google
+  loginConGoogle(): void {
+    // Guardamos la ruta actual para poder volver después si quisiéramos
+    window.location.href = '/auth/google/redirect';
   }
 
   // HELPERS

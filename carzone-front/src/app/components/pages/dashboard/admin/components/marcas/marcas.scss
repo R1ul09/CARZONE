@@ -159,15 +159,6 @@
                     inset: 0;
                     background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
                 }
-
-                .marca-logo {
-                    width: 36px; height: 36px;
-                    object-fit: contain;
-                    filter: brightness(0) invert(1);
-                    opacity: 0.9;
-                    position: relative;
-                    z-index: 1;
-                }
             }
 
             .marca-info {
@@ -260,8 +251,7 @@
         padding: 48px 60px;
 
         .seccion-header {
-            flex-direction: row;
-            align-items: flex-end;
+            flex-direction: column;
             justify-content: space-between;
         }
 
@@ -465,5 +455,105 @@
     &:disabled { 
         opacity: 0.5; 
         cursor: not-allowed; 
+    }
+}
+
+.imagen-upload-group {
+    margin-bottom: 16px;
+
+    .imagen-preview {
+        position: relative;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.08);
+        display: inline-flex;
+
+        &.logo-preview {
+            width: 80px;
+            height: 80px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                background: rgba(255,255,255,0.04);
+                padding: 8px;
+            }
+        }
+
+        &.hero-preview {
+            width: 100%;
+            height: 120px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .btn-quitar-imagen {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.7);
+            border: none;
+            border-radius: 6px;
+            padding: 5px;
+            cursor: pointer;
+            color: #fff;
+            transition: background 0.2s;
+
+            svg { width: 12px; height: 12px; stroke: currentColor; display: block; }
+            &:hover { background: rgba(239,68,68,0.8); }
+        }
+    }
+
+    .upload-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        .btn-upload {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: vars.$text-muted;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+
+            svg { width: 14px; height: 14px; stroke: currentColor; }
+            &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); }
+        }
+
+        .upload-or {
+            font-size: 11px;
+            color: vars.$text-tertiary;
+            flex-shrink: 0;
+        }
+
+        .upload-url-input {
+            flex: 1;
+            min-width: 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 9px 14px;
+            color: vars.$text-color;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+
+            &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+            &::placeholder { color: vars.$text-tertiary; }
+        }
     }
 }

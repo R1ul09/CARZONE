@@ -1,10 +1,11 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .resumen-admin {
-    padding: 48px 60px;
+    padding: 24px 16px;
 
     .seccion-header {
-        margin-bottom: 36px;
+        margin-bottom: 28px;
+
         .seccion-subtitulo {
             font-size: 11px;
             letter-spacing: vars.$subtitle-letter-spacing;
@@ -12,8 +13,9 @@
             font-weight: 600;
             margin-bottom: 8px;
         }
+
         .seccion-titulo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             color: vars.$text-color;
             margin: 0;
@@ -23,58 +25,35 @@
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-bottom: 32px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             transition: all 0.25s ease;
 
-            &:hover {
-                border-color: rgba(vars.$accent-color, 0.2);
-                transform: translateY(-2px);
-            }
-
-            &.accent {
-                border-color: rgba(vars.$accent-color, 0.25);
-                background: rgba(vars.$accent-color, 0.06);
-            }
-
-            &.warning {
-                border-color: rgba(234, 179, 8, 0.2);
-                background: rgba(234, 179, 8, 0.04);
-
-                .stat-icono { 
-                    background: rgba(234, 179, 8, 0.1); 
-
-                    svg { 
-                        stroke: #eab308; 
-                    } 
-                }
-            }
+            &:hover { border-color: rgba(vars.$accent-color, 0.2); transform: translateY(-2px); }
+            &.accent  { border-color: rgba(vars.$accent-color, 0.25); background: rgba(vars.$accent-color, 0.06); }
+            &.warning { border-color: rgba(234,179,8,0.2); background: rgba(234,179,8,0.04); .stat-icono { background: rgba(234,179,8,0.1); svg { stroke: #eab308; } } }
 
             .stat-icono {
-                width: 42px;
-                height: 42px;
-                min-width: 42px;
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
                 background: rgba(vars.$accent-color, 0.1);
                 border-radius: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
-                svg { 
-                    width: 18px; 
-                    height: 18px; 
-                    stroke: vars.$accent-color; 
-                }
+                svg { width: 16px; height: 16px; stroke: vars.$accent-color; }
             }
 
             .stat-info {
@@ -84,7 +63,7 @@
                 min-width: 0;
 
                 .stat-valor {
-                    font-size: 22px;
+                    font-size: 20px;
                     font-weight: 800;
                     color: vars.$text-color;
                     letter-spacing: -0.02em;
@@ -103,21 +82,21 @@
 
     .widgets-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        grid-template-columns: 1fr;
+        gap: 16px;
 
         .widget {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px 16px;
 
             .widget-titulo {
                 font-size: 10px;
                 letter-spacing: vars.$subtitle-letter-spacing;
                 color: vars.$text-tertiary;
                 font-weight: 600;
-                margin-bottom: 20px;
+                margin-bottom: 16px;
             }
 
             .empty-state {
@@ -129,40 +108,24 @@
                 gap: 10px;
                 color: vars.$text-tertiary;
 
-                svg { 
-                    width: 36px; 
-                    height: 36px; 
-                    stroke: rgba(255,255,255,0.08); 
-                }
-
-                p { 
-                    font-size: 13px; 
-                }
+                svg { width: 36px; height: 36px; stroke: rgba(255,255,255,0.08); }
+                p   { font-size: 13px; }
             }
 
-            .lista {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
+            .lista { display: flex; flex-direction: column; gap: 8px; }
 
             .cita-item {
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                padding: 12px 14px;
+                padding: 12px;
                 border-radius: 8px;
-                background: rgba(255, 255, 255, 0.02);
-                border: 1px solid rgba(255, 255, 255, 0.04);
+                background: rgba(255,255,255,0.02);
+                border: 1px solid rgba(255,255,255,0.04);
                 transition: border-color 0.2s;
 
-                &:hover { 
-                    border-color: rgba(255,255,255,0.08); 
-                }
-
-                &.pendiente-item { 
-                    border-color: rgba(234, 179, 8, 0.08); 
-                }
+                &:hover          { border-color: rgba(255,255,255,0.08); }
+                &.pendiente-item { border-color: rgba(234,179,8,0.08); }
 
                 .cita-fecha {
                     display: flex;
@@ -173,43 +136,18 @@
                     border-radius: 6px;
                     padding: 6px 8px;
                     min-width: 40px;
+                    flex-shrink: 0;
 
-                    .fecha-dia { 
-                        font-size: 14px; 
-                        font-weight: 800; 
-                        color: vars.$text-color; 
-                        line-height: 1; 
-                    }
-
-                    .fecha-mes { 
-                        font-size: 8px; 
-                        color: vars.$accent-color; 
-                        font-weight: 600; 
-                        text-transform: uppercase; 
-                    }
+                    .fecha-dia { font-size: 14px; font-weight: 800; color: vars.$text-color; line-height: 1; }
+                    .fecha-mes { font-size: 8px; color: vars.$accent-color; font-weight: 600; text-transform: uppercase; }
                 }
 
                 .cita-info {
                     flex: 1;
                     min-width: 0;
 
-                    .cita-cliente { 
-                        font-size: 13px; 
-                        font-weight: 600; 
-                        color: vars.$text-color; 
-                        margin-bottom: 2px; 
-                        white-space: nowrap; 
-                        overflow: hidden; 
-                        text-overflow: ellipsis; 
-                    }
-
-                    .cita-servicio { 
-                        font-size: 11px; 
-                        color: vars.$text-muted; 
-                        white-space: nowrap; 
-                        overflow: hidden; 
-                        text-overflow: ellipsis; 
-                    }
+                    .cita-cliente  { font-size: 13px; font-weight: 600; color: vars.$text-color; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                    .cita-servicio { font-size: 11px; color: vars.$text-muted; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
                 }
 
                 .cita-estado {
@@ -219,38 +157,40 @@
                     font-weight: 700;
                     letter-spacing: 0.08em;
                     white-space: nowrap;
+                    flex-shrink: 0;
 
-                    &.pendiente { 
-                        background: rgba(234,179,8,0.1); 
-                        color: #eab308; 
-                        border: 1px solid rgba(234,179,8,0.2); 
-                    }
-
-                    &.confirmada { 
-                        background: rgba(34,197,94,0.1); 
-                        color: #22c55e; 
-                        border: 1px solid rgba(34,197,94,0.2); 
-                    }
-
-                    &.cancelada { 
-                        background: rgba(239,68,68,0.1); 
-                        color: #ef4444; 
-                        border: 1px solid rgba(239,68,68,0.2); 
-                    }
-
-                    &.realizada { 
-                        background: rgba(99,102,241,0.1); 
-                        color: #6366f1; 
-                        border: 1px solid rgba(99,102,241,0.2); 
-                    }
+                    &.pendiente  { background: rgba(234,179,8,0.1);  color: #eab308; border: 1px solid rgba(234,179,8,0.2);  }
+                    &.confirmada { background: rgba(34,197,94,0.1);  color: #22c55e; border: 1px solid rgba(34,197,94,0.2);  }
+                    &.cancelada  { background: rgba(239,68,68,0.1);  color: #ef4444; border: 1px solid rgba(239,68,68,0.2);  }
+                    &.realizada  { background: rgba(99,102,241,0.1); color: #6366f1; border: 1px solid rgba(99,102,241,0.2); }
                 }
             }
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        .widgets-row { grid-template-columns: 1fr; }
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header { margin-bottom: 36px; .seccion-titulo { font-size: 28px; } }
+
+        .stats-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+
+            .stat-card {
+                padding: 20px;
+                gap: 14px;
+                .stat-icono { width: 42px; height: 42px; min-width: 42px; svg { width: 18px; height: 18px; } }
+                .stat-info .stat-valor { font-size: 22px; }
+            }
+        }
+
+        .widgets-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+
+            .widget { padding: 24px; .widget-titulo { margin-bottom: 20px; } }
+        }
     }
 }

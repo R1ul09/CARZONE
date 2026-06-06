@@ -1,128 +1,264 @@
 @use '../../../../../../../styles/variables' as vars;
 
 .servicios-admin {
-    padding: 48px 60px;
+    padding: 24px 16px;
 
     .seccion-header {
-        display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 24px;
+
         .seccion-subtitulo { font-size: 11px; letter-spacing: vars.$subtitle-letter-spacing; color: vars.$accent-color; font-weight: 600; margin-bottom: 8px; }
-        .seccion-titulo { font-size: 28px; font-weight: 800; color: vars.$text-color; margin: 0; letter-spacing: -0.02em; }
+        .seccion-titulo    { font-size: 22px; font-weight: 800; color: vars.$text-color; margin: 0; letter-spacing: -0.02em; }
+
         .btn-crear {
-            display: flex; align-items: center; gap: 8px; padding: 11px 20px;
-            background: vars.$accent-color; border: none; border-radius: 8px;
-            color: vars.$white; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: vars.$accent-color;
+            border: none;
+            border-radius: 8px;
+            color: vars.$white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+
             svg { width: 16px; height: 16px; stroke: currentColor; }
-            &:hover { opacity: .85; }
+            &:hover { opacity: 0.85; }
         }
     }
 
     .empty-state {
-        text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; color: vars.$text-tertiary;
-        svg { width: 48px; height: 48px; stroke: rgba(255,255,255,.08); } p { font-size: 14px; }
+        text-align: center;
+        padding: 60px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        color: vars.$text-tertiary;
+
+        svg { width: 48px; height: 48px; stroke: rgba(255,255,255,0.08); }
+        p   { font-size: 14px; }
     }
 
     .servicios-grid {
-        display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
 
         .servicio-card {
-            background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06); border-radius: 12px;
-            padding: 20px; display: flex; align-items: center; gap: 16px; transition: border-color .2s;
-            &:hover { border-color: rgba(vars.$accent-color,.2); }
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: border-color 0.2s;
+
+            &:hover { border-color: rgba(vars.$accent-color, 0.2); }
 
             .servicio-icono {
-                width: 44px; height: 44px; min-width: 44px; border-radius: 10px;
-                background: rgba(vars.$accent-color,.08); border: 1px solid rgba(vars.$accent-color,.15);
-                display: flex; align-items: center; justify-content: center;
-                svg { width: 20px; height: 20px; stroke: vars.$accent-color; }
+                width: 42px;
+                height: 42px;
+                min-width: 42px;
+                border-radius: 10px;
+                background: rgba(vars.$accent-color, 0.08);
+                border: 1px solid rgba(vars.$accent-color, 0.15);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                svg { width: 18px; height: 18px; stroke: vars.$accent-color; }
             }
 
             .servicio-info {
-                flex: 1; min-width: 0;
-                .servicio-nombre { font-size: 15px; font-weight: 700; color: vars.$text-color; margin-bottom: 4px; }
-                .servicio-desc { font-size: 12px; color: vars.$text-muted; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-                .servicio-meta { display: flex; gap: 10px; }
+                flex: 1;
+                min-width: 0;
+
+                .servicio-nombre { font-size: 14px; font-weight: 700; color: vars.$text-color; margin-bottom: 4px; }
+                .servicio-desc   { font-size: 12px; color: vars.$text-muted; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                .servicio-meta   { display: flex; gap: 10px; }
                 .servicio-precio { font-size: 14px; font-weight: 700; color: vars.$accent-color; }
             }
 
             .servicio-acciones {
-                display: flex; gap: 8px; flex-shrink: 0;
+                display: flex;
+                gap: 8px;
+                flex-shrink: 0;
 
                 button {
-                    width: 32px; height: 32px; border-radius: 7px; border: 1px solid transparent;
-                    cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 7px;
+                    border: 1px solid transparent;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s;
+
                     svg { width: 14px; height: 14px; stroke: currentColor; }
                 }
 
-                .btn-edit {
-                    background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); color: vars.$text-muted;
-                    &:hover { color: vars.$text-color; border-color: rgba(255,255,255,.2); }
-                }
-                .btn-delete {
-                    background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.1); color: rgba(239,68,68,.5);
-                    &:hover { background: rgba(239,68,68,.12); color: #ef4444; }
-                }
+                .btn-edit   { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: vars.$text-muted; &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); } }
+                .btn-delete { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.1); color: rgba(239,68,68,0.5); &:hover { background: rgba(239,68,68,0.12); color: #ef4444; } }
             }
         }
     }
 
-    @media (max-width: vars.$screen-md) {
-        padding: 24px 16px;
-        .servicios-grid { grid-template-columns: 1fr; }
+    @media (min-width: vars.$screen-sm) {
+        .servicios-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: vars.$screen-md) {
+        padding: 48px 60px;
+
+        .seccion-header { flex-wrap: nowrap; margin-bottom: 36px; .seccion-titulo { font-size: 28px; } .btn-crear { padding: 11px 20px; } }
+
+        .servicios-grid { gap: 14px; }
     }
 }
 
+// ── MODAL ──────────────────────────────────────────────────────────
 .modal-overlay {
-    position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,.75); backdrop-filter: blur(4px);
-    display: flex; align-items: center; justify-content: center; padding: 20px;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
 }
 
 .modal {
-    background: #111; border: 1px solid rgba(255,255,255,.1);
-    border-radius: 16px; width: 100%; max-width: 500px;
-    display: flex; flex-direction: column; max-height: 90vh;
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
 
     .modal-header {
-        padding: 24px 28px 20px; border-bottom: 1px solid rgba(255,255,255,.06);
-        display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
-        h3 { font-size: 18px; font-weight: 700; color: vars.$text-color; }
+        padding: 20px 20px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+
+        h3 { font-size: 16px; font-weight: 700; color: vars.$text-color; }
+
         .modal-close {
-            background: none; border: none; cursor: pointer; color: vars.$text-tertiary; padding: 4px; border-radius: 6px; transition: color .2s;
+            background: none; border: none; cursor: pointer; color: vars.$text-tertiary;
+            padding: 4px; border-radius: 6px; transition: color 0.2s;
             svg { width: 18px; height: 18px; stroke: currentColor; display: block; }
             &:hover { color: vars.$text-color; }
         }
     }
 
     .modal-body {
-        padding: 24px 28px; overflow-y: auto; flex: 1;
-        display: flex; flex-direction: column; gap: 16px;
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
     .modal-footer {
-        padding: 20px 28px; border-top: 1px solid rgba(255,255,255,.06);
-        display: flex; justify-content: flex-end; gap: 12px; flex-shrink: 0;
+        padding: 16px 20px;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+
+    @media (min-width: vars.$screen-md) {
+        .modal-header { padding: 24px 28px 20px; h3 { font-size: 18px; } }
+        .modal-body   { padding: 24px 28px; }
+        .modal-footer { padding: 20px 28px; }
     }
 }
 
 .form-group {
-    display: flex; flex-direction: column; gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
     label {
-        font-size: 12px; color: vars.$text-muted; font-weight: 500;
+        font-size: 12px;
+        color: vars.$text-muted;
+        font-weight: 500;
+
         .req { color: vars.$accent-color; margin-left: 2px; }
+    }
+
+    input, select, textarea {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: vars.$text-color;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+        font-family: inherit;
+
+        &:focus        { border-color: rgba(vars.$accent-color, 0.5); }
+        &::placeholder { color: vars.$text-tertiary; }
+        option { background: #111; }
+    }
+
+    textarea { resize: vertical; }
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media (min-width: vars.$screen-sm) {
+        flex-direction: row;
+        .form-group { flex: 1; }
     }
 }
 
-.form-row { display: flex; gap: 14px; .form-group { flex: 1; } }
-
 .btn-cancelar {
-    padding: 10px 20px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-    border-radius: 8px; color: vars.$text-muted; font-size: 13px; cursor: pointer; transition: all .2s;
-    &:hover { color: vars.$text-color; border-color: rgba(255,255,255,.2); }
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: vars.$text-muted;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover { color: vars.$text-color; border-color: rgba(255,255,255,0.2); }
 }
 
 .btn-guardar {
-    padding: 10px 24px; background: vars.$accent-color; border: none; border-radius: 8px;
-    color: vars.$white; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .2s;
-    &:hover { opacity: .85; }
-    &:disabled { opacity: .5; cursor: not-allowed; }
+    padding: 10px 24px;
+    background: vars.$accent-color;
+    border: none;
+    border-radius: 8px;
+    color: vars.$white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover    { opacity: 0.85; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
 }

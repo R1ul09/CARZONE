@@ -24,7 +24,7 @@ Navegador
     │
     ├──► [Angular / Nginx]   → Interfaz de usuario
     │
-    └──► [Laravel / Apache]  → API REST
+    └──► [Laravel / Apache]  → API REST + OAuth con Google
                 │
                 ▼
            [MySQL 8]         → Base de datos
@@ -45,6 +45,7 @@ El proxy Nginx recibe todas las peticiones. Las que van a `/api/` las reenvía a
 | Contenedores | Docker + Docker Compose |
 | Tests | Python + Pytest |
 | IA | Google Gemini API |
+| Autenticación | Google OAuth |
 
 ---
 
@@ -69,7 +70,7 @@ git config --global core.autocrlf false
 ### 2. Clona el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/carzone.git
+git clone https://github.com/R1ul09/CARZONE.git
 cd carzone
 ```
 
@@ -86,6 +87,9 @@ MAIL_USERNAME=       # Tu usuario de Mailtrap (mailtrap.io — gratis)
 MAIL_PASSWORD=       # Tu contraseña de Mailtrap
 
 GEMINI_API_KEY=      # Tu API key de Gemini (aistudio.google.com — gratis)
+
+GOOGLE_CLIENT_ID=      # Tu Client ID de Google OAuth (console.cloud.google.com)
+GOOGLE_CLIENT_SECRET=  # Tu Client Secret de Google OAuth
 ```
 
 > El resto de variables ya están configuradas para Docker. No tocar nada más.

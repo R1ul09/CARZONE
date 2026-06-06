@@ -112,4 +112,8 @@ export class Login implements OnInit {
       }
     });
   }
+
+  loginConGoogle(): void {
+    this.authService.loginConGoogle();
+  }
 }

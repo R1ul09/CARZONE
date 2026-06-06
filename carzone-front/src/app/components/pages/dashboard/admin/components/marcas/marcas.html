@@ -43,10 +43,6 @@
               </svg>
             </div>
           }
-          @if (marca.logo) {
-            <img class="marca-logo" [src]="marca.logo" [alt]="marca.nombre + ' logo'"
-                 (error)="$any($event.target).style.display='none'">
-          }
         </div>
 
         <div class="marca-info">
@@ -87,7 +83,7 @@
 
 </div>
 
-<!-- ═══════════════ MODAL ═══════════════ -->
+<!-- MODAL -->
 @if (modalAbierto) {
   <div class="modal-overlay" (click)="cerrarModal()">
     <div class="modal" (click)="$event.stopPropagation()">
@@ -128,10 +124,10 @@
           <label>Logo de la marca</label>
 
           <!-- Preview actual -->
-          @if (logoPreview) {
+          @if (logoPreview && !logoPreview.startsWith('https://localhost/storage/log')) {
             <div class="imagen-preview logo-preview">
               <img [src]="logoPreview" alt="Logo preview"
-                   (error)="$any($event.target).style.display='none'">
+                  (error)="$any($event.target).style.display='none'">
               <button class="btn-quitar-imagen" (click)="logoFile = null; logoPreview = form.logo = ''"
                       type="button" title="Quitar imagen">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
