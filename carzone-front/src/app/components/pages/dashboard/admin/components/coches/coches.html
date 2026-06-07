@@ -244,7 +244,7 @@
           <div class="imagenes-actuales">
             @for (img of cocheImagenes.imagenes; track img.id) {
               <div class="img-item" [class.principal]="img.es_principal">
-                <img [src]="img.ruta" [alt]="'imagen'"
+                <img [src]="img.ruta" alt="Imagen del vehículo"
                      (error)="$any($event.target).style.display='none'">
                 @if (img.es_principal) {
                   <span class="img-badge">PRINCIPAL</span>
@@ -284,10 +284,14 @@
           </div>
 
           @if (modoImagen === 'archivo') {
+            <!-- drop-zone -->
             <div class="drop-zone" [class.tiene-archivo]="archivoSeleccionado"
-                 (click)="inputArchivoCoche.click()"
-                 (dragover)="$event.preventDefault()"
-                 (drop)="onDropCoche($event)">
+                (click)="inputArchivoCoche.click()"
+                (keydown.enter)="inputArchivoCoche.click()"
+                role="button"
+                tabindex="0"
+                (dragover)="$event.preventDefault()"
+                (drop)="onDropCoche($event)">
               <input #inputArchivoCoche type="file" accept="image/*"
                      style="display:none"
                      (change)="onArchivoSeleccionado($event)">
