@@ -123,6 +123,14 @@
                     margin-bottom: 10px;
                 }
 
+                .calc-label {
+                    font-size: 10px;
+                    letter-spacing: 0.1em;
+                    color: vars.$text-tertiary;
+                    display: block;
+                    margin-bottom: 10px;
+                }
+
                 .calc-field-header {
                     display: flex;
                     justify-content: space-between;
@@ -130,6 +138,7 @@
                     margin-bottom: 10px;
 
                     label { margin-bottom: 0; }
+                    .calc-label { margin-bottom: 0; }
 
                     .calc-valor {
                         font-size: 15px;
@@ -353,6 +362,14 @@
                 margin-bottom: 14px;
 
                 label {
+                    display: block;
+                    font-size: 10px;
+                    letter-spacing: 0.1em;
+                    color: vars.$text-tertiary;
+                    margin-bottom: 8px;
+                }
+
+                .calc-label {
                     display: block;
                     font-size: 10px;
                     letter-spacing: 0.1em;

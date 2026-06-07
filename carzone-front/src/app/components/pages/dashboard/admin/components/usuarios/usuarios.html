@@ -96,8 +96,10 @@
   </div>
 
   @if (modalAbierto) {
-    <div class="modal-overlay" (click)="cerrarModal()">
-      <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-overlay" (click)="cerrarModal()"
+        (keydown.enter)="cerrarModal()" role="button" tabindex="0">
+      <div class="modal-box" (click)="$event.stopPropagation()"
+          (keydown.enter)="$event.stopPropagation()" role="dialog" tabindex="-1">
 
         <div class="modal-header">
           <h3>Crear nuevo empleado</h3>
