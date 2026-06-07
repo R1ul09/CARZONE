@@ -76,11 +76,4 @@ export class ClienteDashboard implements OnInit {
   setSeccion(seccion: string) {
     this.seccionActiva = seccion;
   }
-
-  logout() {
-    this.authService.logout().subscribe({
-      complete: () => this.router.navigate(['/'])
-    });
-    this.toastr.info('Sesión cerrada');
-  }
 }

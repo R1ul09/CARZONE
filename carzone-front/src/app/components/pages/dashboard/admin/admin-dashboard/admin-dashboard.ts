@@ -104,11 +104,4 @@ export class AdminDashboard implements OnInit {
   get badgeFinanciaciones(): number {
     return this.financiaciones.filter(f => f.estado === 'pendiente').length;
   }
-
-  logout() {
-    this.authService.logout().subscribe({
-      complete: () => this.router.navigate(['/'])
-    });
-    this.toastr.info('Sesión cerrada');
-  }
 }

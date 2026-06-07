@@ -20,6 +20,9 @@ export class Register {
   confirmPassword: string = '';
   cargando: boolean = false;
 
+  mostrarPassword: boolean = false;
+  mostrarConfirmPassword: boolean = false;
+
   // Una vez registrado, mostramos el aviso de verificación en lugar del form
   registroExitoso: boolean = false;
   nombreRegistrado: string = '';

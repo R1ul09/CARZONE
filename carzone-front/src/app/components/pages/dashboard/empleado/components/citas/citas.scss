@@ -26,6 +26,20 @@
 
         .filtros-estado { display: flex; gap: 8px; flex-wrap: wrap; }
 
+        .filtro-fecha {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            color: vars.$text-muted;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover { border-color: rgba(255,255,255,0.3); color: vars.$text-color; }
+            &.active { background: vars.$accent-color; border-color: vars.$accent-color; color: vars.$white; }
+        }
+
         .filtro-btn {
             padding: 8px 14px;
             background: transparent;
@@ -137,7 +151,19 @@
                 &.hora_ocupada { background: rgba(vars.$hora-ocupada, 0.12); color: vars.$hora-ocupada; border: 1px solid rgba(vars.$hora-ocupada, 0.25); }
             }
 
-            select { width: 140px; font-size: 12px; padding: 6px 30px 6px 10px; }
+            select {
+                background: rgba(255,255,255,0.04);
+                border: 1px solid rgba(255,255,255,0.08);
+                border-radius: 6px;
+                padding: 6px 10px;
+                font-size: 11px;
+                color: vars.$text-muted;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &:hover { border-color: rgba(255,255,255,0.2); color: vars.$text-color; }
+                &:focus { border-color: rgba(vars.$accent-color, 0.5); }
+            }
 
             .btn-mensaje {
                 display: flex;
@@ -192,7 +218,22 @@
             }
         }
 
-        textarea { margin-bottom: 10px; }
+        textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: vars.$text-color;
+            resize: vertical;
+            min-height: 80px;
+            max-height: 200px;
+            transition: all 0.2s;
+
+            &:hover { border-color: rgba(255,255,255,0.2); }
+            &:focus { border-color: rgba(vars.$accent-color, 0.5); outline: none; }
+        }
 
         .panel-footer {
             display: flex;

@@ -17,6 +17,7 @@ export class Login implements OnInit {
   email: string = '';
   password: string = '';
   cargando: boolean = false;
+  mostrarPassword: boolean = false;
 
   constructor(
     private authService: Auth,
@@ -37,8 +38,13 @@ export class Login implements OnInit {
     const alreadyVerif = this.route.snapshot.queryParamMap.get('already_verified');
 
     if (verified === '1') {
-      this.toastr.success('¡Email verificado correctamente! Ya puedes iniciar sesión.', 'Verificado correctamente');
+      this.authService.getCsrfCookie().subscribe({
+        next: () => {
+          this.toastr.success('¡Email verificado correctamente! Ya puedes iniciar sesión.', 'Verificado correctamente');
+        }
+      });
     }
+
     if (alreadyVerif === '1') {
       this.toastr.info('Tu email ya estaba verificado. Inicia sesión.', 'Info');
     }
@@ -69,6 +75,7 @@ export class Login implements OnInit {
             this.cargando = false;
 
             if (!res.email_verified) {
+              this.authService.logout().subscribe();
               // Reenviar el correo de verificación automáticamente
               this.authService.reenviarVerificacion().subscribe({
                 next: () => {

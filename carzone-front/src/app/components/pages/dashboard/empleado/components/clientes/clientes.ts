@@ -20,8 +20,8 @@ export class ClientesEmpleado implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<Cliente[]>(`${this.apiUrl}/users`).subscribe({
-      next: data => this.clientes = data.filter(u => u.role_id === 1),
+    this.http.get<Cliente[]>(`${this.apiUrl}/empleado/clientes`).subscribe({
+      next: data => this.clientes = data,
       error: () => console.error('Error al cargar clientes')
     });
   }

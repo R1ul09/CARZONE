@@ -59,6 +59,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('imagenes-vehiculos', [ImagenVehiculoController::class, 'store']);
     Route::delete('imagenes-vehiculos/{id}', [ImagenVehiculoController::class, 'destroy']);
 
+    // Empleado y admin pueden ver clientes
+    Route::get('/empleado/clientes', [UserController::class, 'clientes'])
+        ->middleware('role:empleado,admin');
+
     // Solo admin
     Route::middleware('role:admin')->group(function () {
         Route::post('/users/empleado', [UserController::class, 'crearEmpleado']);

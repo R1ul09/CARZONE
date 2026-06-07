@@ -13,7 +13,6 @@
     </button>
   </div>
 
-  <!-- FILTROS -->
   <div class="filtros">
     <div class="filtros-estado">
       <button class="filtro-btn" [class.active]="filtro === 'todos'" (click)="filtro = 'todos'">Todos</button>
@@ -99,7 +98,6 @@
 
 </div>
 
-<!-- ═══════════════ MODAL CREAR/EDITAR ═══════════════ -->
 @if (modalAbierto) {
   <div class="modal-overlay" (click)="cerrarModal()">
     <div class="modal" (click)="$event.stopPropagation()">
@@ -116,12 +114,12 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>Modelo <span class="required">*</span></label>
-            <input type="text" [(ngModel)]="form.modelo" placeholder="ej. 911 Carrera">
+            <label for="form-modelo">Modelo <span class="required">*</span></label>
+            <input id="form-modelo" type="text" [(ngModel)]="form.modelo" placeholder="ej. 911 Carrera">
           </div>
           <div class="form-group">
-            <label>Marca <span class="required">*</span></label>
-            <select [(ngModel)]="form.marca_id">
+            <label for="form-marca">Marca <span class="required">*</span></label>
+            <select id="form-marca" [(ngModel)]="form.marca_id">
               <option [ngValue]="null" disabled>Seleccionar marca</option>
               @for (marca of marcas; track marca.id) {
                 <option [ngValue]="marca.id">{{ marca.nombre }}</option>
@@ -132,19 +130,19 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>Año <span class="required">*</span></label>
-            <input type="number" [(ngModel)]="form.anio" placeholder="2024">
+            <label for="form-anio">Año <span class="required">*</span></label>
+            <input id="form-anio" type="number" [(ngModel)]="form.anio" placeholder="2024">
           </div>
           <div class="form-group">
-            <label>Precio (€) <span class="required">*</span></label>
-            <input type="number" [(ngModel)]="form.precio" placeholder="75000">
+            <label for="form-precio">Precio (€) <span class="required">*</span></label>
+            <input id="form-precio" type="number" [(ngModel)]="form.precio" placeholder="75000">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Combustible</label>
-            <select [(ngModel)]="form.combustible">
+            <label for="form-combustible">Combustible</label>
+            <select id="form-combustible" [(ngModel)]="form.combustible">
               <option value="">— Seleccionar —</option>
               <option value="Gasolina">Gasolina</option>
               <option value="Diésel">Diésel</option>
@@ -154,8 +152,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Transmisión</label>
-            <select [(ngModel)]="form.transmision">
+            <label for="form-transmision">Transmisión</label>
+            <select id="form-transmision" [(ngModel)]="form.transmision">
               <option value="">— Seleccionar —</option>
               <option value="Manual">Manual</option>
               <option value="Automático">Automático</option>
@@ -167,8 +165,8 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>Tipo carrocería</label>
-            <select [(ngModel)]="form.tipo_carroceria">
+            <label for="form-carroceria">Tipo carrocería</label>
+            <select id="form-carroceria" [(ngModel)]="form.tipo_carroceria">
               <option value="">— Seleccionar —</option>
               <option value="Berlina">Berlina</option>
               <option value="SUV">SUV</option>
@@ -180,38 +178,38 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Color</label>
-            <input type="text" [(ngModel)]="form.color" placeholder="ej. Guards Red">
+            <label for="form-color">Color</label>
+            <input id="form-color" type="text" [(ngModel)]="form.color" placeholder="ej. Guards Red">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Potencia (CV)</label>
-            <input type="number" [(ngModel)]="form.potencia" placeholder="450">
+            <label for="form-potencia">Potencia (CV)</label>
+            <input id="form-potencia" type="number" [(ngModel)]="form.potencia" placeholder="450">
           </div>
           <div class="form-group">
-            <label>Plazas</label>
-            <input type="number" [(ngModel)]="form.num_plazas" placeholder="5">
+            <label for="form-plazas">Plazas</label>
+            <input id="form-plazas" type="number" [(ngModel)]="form.num_plazas" placeholder="5">
           </div>
           <div class="form-group">
-            <label>Puertas</label>
-            <input type="number" [(ngModel)]="form.num_puertas" placeholder="4">
+            <label for="form-puertas">Puertas</label>
+            <input id="form-puertas" type="number" [(ngModel)]="form.num_puertas" placeholder="4">
           </div>
         </div>
 
         <div class="form-group full">
-          <label>Descripción</label>
-          <textarea [(ngModel)]="form.descripcion" rows="3" placeholder="Descripción del vehículo..."></textarea>
+          <label for="form-descripcion">Descripción</label>
+          <textarea id="form-descripcion" [(ngModel)]="form.descripcion" rows="3" placeholder="Descripción del vehículo..."></textarea>
         </div>
 
         <div class="form-checks">
-          <label class="check-item">
-            <input type="checkbox" [(ngModel)]="form.disponible">
+          <label class="check-item" for="form-disponible">
+            <input id="form-disponible" type="checkbox" [(ngModel)]="form.disponible">
             <span>Disponible</span>
           </label>
-          <label class="check-item">
-            <input type="checkbox" [(ngModel)]="form.destacado">
+          <label class="check-item" for="form-destacado">
+            <input id="form-destacado" type="checkbox" [(ngModel)]="form.destacado">
             <span>Destacado en portada</span>
           </label>
         </div>
@@ -228,8 +226,6 @@
   </div>
 }
 
-<!-- ═══════════════ MODAL IMÁGENES ═══════════════ -->
-<!-- ═══════════════ MODAL IMÁGENES (reemplaza el bloque anterior) ═══════════════ -->
 @if (modalImagenesAbierto && cocheImagenes) {
   <div class="modal-overlay" (click)="cerrarImagenes()">
     <div class="modal modal-imagenes" (click)="$event.stopPropagation()">
@@ -244,7 +240,6 @@
 
       <div class="modal-body">
 
-        <!-- Imágenes actuales -->
         @if (cocheImagenes.imagenes && cocheImagenes.imagenes.length > 0) {
           <div class="imagenes-actuales">
             @for (img of cocheImagenes.imagenes; track img.id) {
@@ -266,11 +261,9 @@
           <p class="sin-imagenes">Este vehículo no tiene imágenes todavía.</p>
         }
 
-        <!-- Añadir imagen -->
         <div class="add-imagen-form">
           <p class="add-titulo">AÑADIR IMAGEN</p>
 
-          <!-- Selector de modo -->
           <div class="modo-tabs">
             <button class="modo-tab" [class.active]="modoImagen === 'archivo'"
                     (click)="modoImagen = 'archivo'">
@@ -290,7 +283,6 @@
             </button>
           </div>
 
-          <!-- Subida desde disco -->
           @if (modoImagen === 'archivo') {
             <div class="drop-zone" [class.tiene-archivo]="archivoSeleccionado"
                  (click)="inputArchivoCoche.click()"
@@ -324,18 +316,17 @@
             </div>
           }
 
-          <!-- URL -->
           @if (modoImagen === 'url') {
             <div class="form-group full">
-              <label>URL de la imagen</label>
-              <input type="url" [(ngModel)]="nuevaImagenUrl"
+              <label for="form-url-imagen">URL de la imagen</label>
+              <input id="form-url-imagen" type="url" [(ngModel)]="nuevaImagenUrl"
                      placeholder="https://ejemplo.com/imagen.jpg">
             </div>
           }
 
           <div class="add-btns">
-            <label class="check-principal">
-              <input type="checkbox" [(ngModel)]="nuevaImagenPrincipal">
+            <label class="check-principal" for="form-img-principal">
+              <input id="form-img-principal" type="checkbox" [(ngModel)]="nuevaImagenPrincipal">
               <span>★ Establecer como imagen principal</span>
             </label>
             <button class="btn-add-img" (click)="agregarImagen()" [disabled]="agregandoImagen">
