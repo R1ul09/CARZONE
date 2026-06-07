@@ -99,8 +99,10 @@
 </div>
 
 @if (modalAbierto) {
-  <div class="modal-overlay" (click)="cerrarModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
+  <div class="modal-overlay" (click)="cerrarModal()" 
+    (keydown.enter)="cerrarModal()" role="button" tabindex="0">
+    <div class="modal" (click)="$event.stopPropagation()" 
+      (keydown.enter)="$event.stopPropagation()" role="dialog" tabindex="-1">
       <div class="modal-header">
         <h3>{{ modoEdicion ? 'Editar vehículo' : 'Nuevo vehículo' }}</h3>
         <button class="modal-close" (click)="cerrarModal()">
@@ -227,8 +229,10 @@
 }
 
 @if (modalImagenesAbierto && cocheImagenes) {
-  <div class="modal-overlay" (click)="cerrarImagenes()">
-    <div class="modal modal-imagenes" (click)="$event.stopPropagation()">
+  <div class="modal-overlay" (click)="cerrarImagenes()"
+    (keydown.enter)="cerrarImagenes()" role="button" tabindex="0">
+    <div class="modal modal-imagenes" (click)="$event.stopPropagation()"
+      (keydown.enter)="$event.stopPropagation()" role="dialog" tabindex="-1">
       <div class="modal-header">
         <h3>Imágenes — {{ cocheImagenes.marca.nombre }} {{ cocheImagenes.modelo }}</h3>
         <button class="modal-close" (click)="cerrarImagenes()">
@@ -244,8 +248,8 @@
           <div class="imagenes-actuales">
             @for (img of cocheImagenes.imagenes; track img.id) {
               <div class="img-item" [class.principal]="img.es_principal">
-                <img [src]="img.ruta" alt="Imagen del vehículo"
-                     (error)="$any($event.target).style.display='none'">
+                <img [src]="img.ruta" alt="preview del vehículo"
+                    (error)="$any($event.target).style.display='none'">
                 @if (img.es_principal) {
                   <span class="img-badge">PRINCIPAL</span>
                 }

@@ -84,8 +84,10 @@
 </div>
 
 @if (modalAbierto) {
-  <div class="modal-overlay" (click)="cerrarModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
+  <div class="modal-overlay" (click)="cerrarModal()"
+      (keydown.enter)="cerrarModal()" role="button" tabindex="0">
+    <div class="modal" (click)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()" role="dialog" tabindex="-1">
       <div class="modal-header">
         <h3>{{ modoEdicion ? 'Editar marca' : 'Nueva marca' }}</h3>
         <button class="modal-close" (click)="cerrarModal()">
