@@ -27,8 +27,8 @@
 
           <!-- Selector de MARCA -->
           <div class="calc-field">
-            <label>MARCA</label>
-            <select [(ngModel)]="marcaSeleccionada" (change)="onMarcaChange()">
+            <label for="calc-marca">MARCA</label>
+            <select id="calc-marca" [(ngModel)]="marcaSeleccionada" (change)="onMarcaChange()">
               <option value="">Selecciona una marca</option>
               @for (marca of marcas; track marca) {
                 <option [value]="marca">{{ marca }}</option>
@@ -39,8 +39,8 @@
           <!-- Selector de VEHÍCULO -->
           @if (marcaSeleccionada) {
             <div class="calc-field">
-              <label>VEHÍCULO</label>
-              <select [(ngModel)]="cocheSeleccionadoId" (change)="onCocheChange()">
+              <label for="calc-vehiculo">VEHÍCULO</label>
+              <select id="calc-vehiculo" [(ngModel)]="cocheSeleccionadoId" (change)="onCocheChange()">
                 <option value="">Selecciona un vehículo</option>
                 @for (coche of cochesFiltrados; track coche.id) {
                   <option [value]="coche.id">
@@ -64,10 +64,10 @@
             <!-- Entrada -->
             <div class="calc-field">
               <div class="calc-field-header">
-                <label>ENTRADA</label>
+                <label for="calc-entrada">ENTRADA</label>
                 <span class="calc-valor">{{ entrada | currency:'EUR':'symbol':'1.0-0' }}</span>
               </div>
-              <input type="range" [min]="0" [max]="precioVehiculo * 0.5" [step]="1000"
+              <input id="calc-entrada" type="range" [min]="0" [max]="precioVehiculo * 0.5" [step]="1000"
                     [(ngModel)]="entrada" (input)="calcular()">
             </div>
 
@@ -126,23 +126,23 @@
 
             <div class="form-grid">
               <div class="form-field">
-                <label>NOMBRE COMPLETO</label>
-                <input type="text" placeholder="Juan García" [(ngModel)]="formData.nombre">
+                <label for="form-nombre">NOMBRE COMPLETO</label>
+                <input id="form-nombre" type="text" placeholder="Juan García" [(ngModel)]="formData.nombre">
               </div>
               <div class="form-field">
-                <label>EMAIL</label>
-                <input type="email" placeholder="tu@email.com" [(ngModel)]="formData.email">
+                <label for="form-email">EMAIL</label>
+                <input id="form-email" type="email" placeholder="tu@email.com" [(ngModel)]="formData.email">
               </div>
             </div>
 
             <div class="form-field">
-              <label>TELÉFONO</label>
-              <input type="tel" placeholder="+34 600 000 000" [(ngModel)]="formData.telefono">
+              <label for="form-telefono">TELÉFONO</label>
+              <input id="form-telefono" type="tel" placeholder="+34 600 000 000" [(ngModel)]="formData.telefono">
             </div>
 
             <div class="form-field">
-              <label>MENSAJE (OPCIONAL)</label>
-              <textarea placeholder="Cuéntanos algo más sobre lo que necesitas..."
+              <label for="form-mensaje">MENSAJE (OPCIONAL)</label>
+              <textarea id="form-mensaje" placeholder="Cuéntanos algo más sobre lo que necesitas..."
                         [(ngModel)]="formData.mensaje" rows="3"></textarea>
             </div>
 
