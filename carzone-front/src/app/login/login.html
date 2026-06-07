@@ -5,25 +5,40 @@
     <p class="subheading">Inicia sesión en tu cuenta</p>
 
     <div class="field">
-      <label>Correo electrónico</label>
+      <label for="login-email">Correo electrónico</label>
       <div class="input-wrap">
         <span class="icon">✉</span>
-        <input type="email" placeholder="tu@email.com" [(ngModel)]="email"
-              (keyup.enter)="login()">
+        <input id="login-email" type="email" placeholder="tu@email.com" [(ngModel)]="email"
+               (keyup.enter)="login()">
       </div>
     </div>
 
     <div class="field">
-      <label>Contraseña</label>
+      <label for="login-password">Contraseña</label>
       <div class="input-wrap">
         <span class="icon">🔒︎</span>
-        <input type="password" placeholder="••••••••" [(ngModel)]="password"
-              (keyup.enter)="login()">
+        <input id="login-password" [type]="mostrarPassword ? 'text' : 'password'" 
+               placeholder="••••••••" [(ngModel)]="password"
+               (keyup.enter)="login()">
+        <button class="toggle-password" type="button" (click)="mostrarPassword = !mostrarPassword" aria-label="Mostrar u ocultar contraseña">
+          @if (mostrarPassword) {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          }
+        </button>
       </div>
     </div>
 
     <div class="row">
-      <span></span>
+      <a routerLink="/" class="home-link">Ir al home</a>
       <a routerLink="/forgot-password" class="forgot">¿Olvidaste tu contraseña?</a>
     </div>
 

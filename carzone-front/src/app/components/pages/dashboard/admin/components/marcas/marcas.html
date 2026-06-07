@@ -17,7 +17,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
     </svg>
-    <input type="text" [(ngModel)]="busqueda" placeholder="Buscar marca o país...">
+    <input type="text" [(ngModel)]="busqueda" placeholder="Buscar marca o país..." aria-label="Buscar marca o país">
   </div>
 
   @if (marcasFiltradas.length === 0) {
@@ -83,7 +83,6 @@
 
 </div>
 
-<!-- MODAL -->
 @if (modalAbierto) {
   <div class="modal-overlay" (click)="cerrarModal()">
     <div class="modal" (click)="$event.stopPropagation()">
@@ -99,31 +98,29 @@
       <div class="modal-body">
         <div class="form-row">
           <div class="form-group">
-            <label>Nombre <span class="required">*</span></label>
-            <input type="text" [(ngModel)]="form.nombre" placeholder="ej. Porsche">
+            <label for="marca-nombre">Nombre <span class="required">*</span></label>
+            <input id="marca-nombre" type="text" [(ngModel)]="form.nombre" placeholder="ej. Porsche">
           </div>
           <div class="form-group">
-            <label>País de origen</label>
-            <input type="text" [(ngModel)]="form.pais" placeholder="ej. Alemania">
+            <label for="marca-pais">País de origen</label>
+            <input id="marca-pais" type="text" [(ngModel)]="form.pais" placeholder="ej. Alemania">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Año de fundación</label>
-            <input type="number" [(ngModel)]="form.anio_fundacion" placeholder="1931">
+            <label for="marca-anio">Año de fundación</label>
+            <input id="marca-anio" type="number" [(ngModel)]="form.anio_fundacion" placeholder="1931">
           </div>
           <div class="form-group">
-            <label>Slogan</label>
-            <input type="text" [(ngModel)]="form.slogan" placeholder="ej. There is no substitute">
+            <label for="marca-slogan">Slogan</label>
+            <input id="marca-slogan" type="text" [(ngModel)]="form.slogan" placeholder="ej. There is no substitute">
           </div>
         </div>
 
-        <!-- ── LOGO (Actualizado por Claude) ── -->
         <div class="form-group full imagen-upload-group">
-          <label>Logo de la marca</label>
+          <label for="marca-logo-url">Logo de la marca</label>
 
-          <!-- Preview actual -->
           @if (logoPreview && !logoPreview.startsWith('https://localhost/storage/log')) {
             <div class="imagen-preview logo-preview">
               <img [src]="logoPreview" alt="Logo preview"
@@ -138,9 +135,8 @@
           }
 
           <div class="upload-row">
-            <!-- Subir archivo -->
-            <label class="btn-upload" title="Subir desde ordenador">
-              <input type="file" accept="image/*" style="display:none"
+            <label class="btn-upload" title="Subir desde ordenador" for="marca-logo-file">
+              <input id="marca-logo-file" type="file" accept="image/*" style="display:none"
                      (change)="onLogoSeleccionado($event)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -151,16 +147,14 @@
 
             <span class="upload-or">o</span>
 
-            <!-- URL manual -->
-            <input type="url" [(ngModel)]="form.logo" placeholder="https://... URL del logo"
+            <input id="marca-logo-url" type="url" [(ngModel)]="form.logo" placeholder="https://... URL del logo"
                    class="upload-url-input"
                    (input)="logoFile ? null : (logoPreview = form.logo)">
           </div>
         </div>
 
-        <!-- ── IMAGEN HERO (Actualizado por Claude) ── -->
         <div class="form-group full imagen-upload-group">
-          <label>Imagen hero (portada de marca)</label>
+          <label for="marca-hero-url">Imagen hero (portada de marca)</label>
 
           @if (heroPreview) {
             <div class="imagen-preview hero-preview">
@@ -176,8 +170,8 @@
           }
 
           <div class="upload-row">
-            <label class="btn-upload" title="Subir desde ordenador">
-              <input type="file" accept="image/*" style="display:none"
+            <label class="btn-upload" title="Subir desde ordenador" for="marca-hero-file">
+              <input id="marca-hero-file" type="file" accept="image/*" style="display:none"
                      (change)="onHeroSeleccionado($event)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -188,15 +182,15 @@
 
             <span class="upload-or">o</span>
 
-            <input type="url" [(ngModel)]="form.imagen_hero" placeholder="https://... URL de la imagen hero"
+            <input id="marca-hero-url" type="url" [(ngModel)]="form.imagen_hero" placeholder="https://... URL de la imagen hero"
                    class="upload-url-input"
                    (input)="heroFile ? null : (heroPreview = form.imagen_hero)">
           </div>
         </div>
 
         <div class="form-group full">
-          <label>Descripción</label>
-          <textarea [(ngModel)]="form.descripcion" rows="3" placeholder="Historia y descripción de la marca..."></textarea>
+          <label for="marca-descripcion">Descripción</label>
+          <textarea id="marca-descripcion" [(ngModel)]="form.descripcion" rows="3" placeholder="Historia y descripción de la marca..."></textarea>
         </div>
       </div>
 

@@ -56,11 +56,6 @@ export class Auth {
         withCredentials: true,
         headers: { 'Accept': 'application/json' }
       }
-    ).pipe(
-      tap(res => {
-        this.user.set(res.user);
-        localStorage.setItem('user', JSON.stringify(res.user));
-      })
     );
   }
 
@@ -78,8 +73,10 @@ export class Auth {
         )
       ),
       tap(res => {
-        this.user.set(res.user);
-        localStorage.setItem('user', JSON.stringify(res.user));
+        if (res.email_verified) {
+          this.user.set(res.user);
+          localStorage.setItem('user', JSON.stringify(res.user));
+        }
       })
     );
   }

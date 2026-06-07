@@ -39,10 +39,17 @@ class RegisteredUserController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return response()->json([
-            'user'           => $user,
+        // Enviamos la respuesta
+        $response = response()->json([
+            'user' => $user,
             'email_verified' => false,
-            'message'        => 'Cuenta creada. Revisa tu email para verificar tu cuenta.',
+            'message' => 'Cuenta creada. Revisa tu email para verificar tu cuenta.',
         ], 201);
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return $response;
     }
 }

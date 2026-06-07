@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
+use App\Mail\VerificacionEmailMail;
+use Illuminate\Support\Facades\URL;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -45,6 +47,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
         Mail::to($this->email)->send(
             new RecuperacionPasswordMail($this->name ?? '', $url)
+        );
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $url = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $this->getKey(),
+                'hash' => sha1($this->getEmailForVerification()),
+            ]
+        );
+
+        Mail::to($this->email)->send(
+            new VerificacionEmailMail($this->name, $url)
         );
     }
 

@@ -26,8 +26,7 @@ export class UsuariosAdmin implements OnChanges {
   guardando: boolean = false;
   nuevoEmpleado = { name: '', email: '', password: '' };
 
-  // ID del admin logueado — para ocultarse de su propia lista
-  private miId: number | null = null;
+  protected miId: number | null = null;
 
   constructor(
     private adminService: AdminService,
@@ -44,8 +43,12 @@ export class UsuariosAdmin implements OnChanges {
 
   get usuariosFiltrados(): Cliente[] {
     return this.usuarios.filter(user => {
-      // Nunca mostrarse a sí mismo
-      if (user.id === this.miId) return false;
+      const esYoMismo = user.id === this.miId;
+
+      // Si soy yo, solo aparezco cuando el filtro es 'admins' o 'todos' con rol admin
+      if (esYoMismo) {
+        return this.filtroRol === '2';
+      }
 
       const porRol = this.filtroRol === 'todos' || String(user.role_id) === this.filtroRol;
       const porBusqueda = !this.busqueda ||

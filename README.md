@@ -92,6 +92,10 @@ GOOGLE_CLIENT_ID=      # Tu Client ID de Google OAuth (console.cloud.google.com)
 GOOGLE_CLIENT_SECRET=  # Tu Client Secret de Google OAuth
 ```
 
+> **Nota:** El proyecto está configurado con Mailtrap para entornos de desarrollo.
+> Para entornos de producción, puedes sustituir la configuración de mail por
+> Gmail SMTP usando una App Password de Google.
+
 > El resto de variables ya están configuradas para Docker. No tocar nada más.
 
 ### 4. Levanta la aplicación

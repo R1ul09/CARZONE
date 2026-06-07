@@ -22,14 +22,13 @@
     </button>
   </div>
 
-  <!-- FORMULARIO -->
   @if (mostrarForm) {
     <div class="form-card">
       <p class="form-titulo">NUEVA CITA</p>
       <div class="form-grid">
         <div class="form-field">
-          <label>SERVICIO *</label>
-          <select [(ngModel)]="nuevaCita.servicio_id">
+          <label for="cita-servicio">SERVICIO *</label>
+          <select id="cita-servicio" [(ngModel)]="nuevaCita.servicio_id">
             <option value="">Selecciona un servicio</option>
             @for (s of servicios; track s.id) {
               <option [value]="s.id">{{ s.nombre }}</option>
@@ -37,8 +36,8 @@
           </select>
         </div>
         <div class="form-field">
-          <label>VEHÍCULO (opcional)</label>
-          <select [(ngModel)]="nuevaCita.coche_id">
+          <label for="cita-vehiculo">VEHÍCULO (opcional)</label>
+          <select id="cita-vehiculo" [(ngModel)]="nuevaCita.coche_id">
             <option value="">Sin vehículo específico</option>
             @for (c of coches; track c.id) {
               <option [value]="c.id">{{ c.marca.nombre }} {{ c.modelo }}</option>
@@ -46,12 +45,12 @@
           </select>
         </div>
         <div class="form-field">
-          <label>FECHA *</label>
-          <input type="date" [(ngModel)]="nuevaCita.fecha" [min]="hoy">
+          <label for="cita-fecha">FECHA *</label>
+          <input id="cita-fecha" type="date" [(ngModel)]="nuevaCita.fecha" [min]="hoy">
         </div>
         <div class="form-field">
-          <label>HORA *</label>
-          <select [(ngModel)]="nuevaCita.hora">
+          <label for="cita-hora">HORA *</label>
+          <select id="cita-hora" [(ngModel)]="nuevaCita.hora">
             @for (h of horasDisponibles; track h) {
               <option [value]="h">{{ h }}</option>
             }
@@ -62,7 +61,6 @@
     </div>
   }
 
-  <!-- LISTA VACÍA -->
   @if (citas.length === 0) {
     <div class="empty-state">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -74,7 +72,6 @@
     </div>
   }
 
-  <!-- LISTA DE CITAS -->
   <div class="lista">
     @for (cita of citas; track cita.id) {
       <div class="cita-card" [class.hora-ocupada-card]="cita.estado === 'hora_ocupada'">
@@ -91,7 +88,6 @@
             @if (cita.coche) { · {{ cita.coche.marca?.nombre }} {{ cita.coche.modelo }} }
           </p>
 
-          <!-- Mensaje del empleado cuando hora está ocupada -->
           @if (cita.estado === 'hora_ocupada' && cita.mensaje_empleado) {
             <div class="mensaje-empleado">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">

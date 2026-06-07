@@ -119,7 +119,7 @@ class UserController extends Controller
     }
 
     public function updatePerfil(Request $request)
-{
+    {
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
@@ -134,5 +134,12 @@ class UserController extends Controller
         $user->update($request->only('name', 'email'));
 
         return response()->json($user, 200);
+    }
+
+    public function clientes()
+    {
+        return response()->json(
+            User::where('role_id', 1)->get()
+        );
     }
 }

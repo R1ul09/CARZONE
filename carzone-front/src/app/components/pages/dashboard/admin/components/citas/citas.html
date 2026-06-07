@@ -8,7 +8,6 @@
     <span class="total-badge">{{ citasFiltradas.length }} citas</span>
   </div>
 
-  <!-- FILTROS -->
   <div class="filtros">
     <div class="filtros-estado">
       <button class="filtro-btn" [class.active]="filtroEstado === 'todas'" (click)="filtroEstado = 'todas'">Todas</button>
@@ -22,9 +21,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
         </svg>
-        <input type="text" [(ngModel)]="busqueda" placeholder="Buscar cliente o servicio...">
+        <input type="text" [(ngModel)]="busqueda" placeholder="Buscar cliente o servicio..." aria-label="Buscar cliente o servicio">
       </div>
-      <input type="date" class="filtro-fecha" [(ngModel)]="filtroFecha">
+      <input type="date" class="filtro-fecha" [(ngModel)]="filtroFecha" aria-label="Filtrar por fecha">
     </div>
   </div>
 
@@ -59,7 +58,8 @@
         <div class="cita-acciones">
           <div class="cita-estado" [class]="cita.estado">{{ cita.estado | uppercase }}</div>
           <select class="estado-select" [value]="cita.estado"
-                  (change)="cambiarEstado(cita, $any($event.target).value)">
+                  (change)="cambiarEstado(cita, $any($event.target).value)"
+                  aria-label="Cambiar estado de la cita">
             @for (estado of estados; track estado) {
               <option [value]="estado">{{ estado }}</option>
             }
