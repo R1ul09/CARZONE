@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Rol;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BienvenidaMail;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
@@ -56,6 +59,14 @@ class GoogleController extends Controller
                 'role_id' => $rolCliente?->id ?? 1,
                 'email_verified_at' => now(),
             ]);
+
+            try {
+                // Enviamos un email de bienvenida al nuevo usuario
+                Mail::to($user->email)->send(new BienvenidaMail($user));
+            } catch (\Throwable $e) {
+                // Si el envío del email falla, lo registramos pero no bloqueamos el login
+                Log::error("Error enviando email de bienvenida a {$user->email}: " . $e->getMessage());
+            }
         }
 
         // Iniciamos sesión con cookie (Sanctum SPA)

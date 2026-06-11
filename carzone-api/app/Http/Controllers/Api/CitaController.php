@@ -73,12 +73,12 @@ class CitaController extends Controller
         }
 
         $cita = Cita::create([
-            'user_id'     => Auth::id(),
+            'user_id' => Auth::id(),
             'servicio_id' => $request->servicio_id,
-            'coche_id'    => $request->coche_id,
-            'fecha'       => $request->fecha,
-            'hora'        => $request->hora,
-            'estado'      => 'pendiente',
+            'coche_id' => $request->coche_id,
+            'fecha' => $request->fecha,
+            'hora' => $request->hora,
+            'estado' => 'pendiente',
         ]);
 
         $cita->load(['user', 'servicio', 'coche.marca']);
@@ -102,7 +102,7 @@ class CitaController extends Controller
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
 
-        $user      = Auth::user();
+        $user = Auth::user();
         $rolNombre = $user->rol?->nombre;
 
         if (!in_array($rolNombre, ['admin', 'empleado']) && $cita->user_id !== $user->id) {
@@ -121,8 +121,8 @@ class CitaController extends Controller
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
 
-        $user             = Auth::user();
-        $rolNombre        = $user->rol?->nombre;
+        $user = Auth::user();
+        $rolNombre = $user->rol?->nombre;
         $esAdminOEmpleado = in_array($rolNombre, ['admin', 'empleado']);
 
         if (!$esAdminOEmpleado && $cita->user_id !== $user->id) {

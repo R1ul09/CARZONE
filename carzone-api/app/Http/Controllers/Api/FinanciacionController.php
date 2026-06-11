@@ -33,6 +33,10 @@ class FinanciacionController extends Controller
             'cuota_mensual' => 'required|numeric',
             'entrada' => 'required|numeric',
             'interes' => 'required|numeric',
+            'nombre_contacto' => 'nullable|string|max:255',
+            'email_contacto' => 'nullable|email|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'mensaje' => 'nullable|string',
         ]);
 
         $financiacion = Financiacion::create([
@@ -43,11 +47,16 @@ class FinanciacionController extends Controller
             'entrada' => $request->entrada,
             'interes' => $request->interes,
             'estado' => 'pendiente',
+            'nombre_contacto' => $request->nombre_contacto,
+            'email_contacto' => $request->email_contacto,
+            'telefono' => $request->telefono,
+            'mensaje' => $request->mensaje,
         ]);
 
         $financiacion->load(['user', 'coche.marca']);
 
         try {
+            // Por seguridad el email de confirmación siempre va al correo registrado del usuario
             Mail::to($financiacion->user->email)
                 ->send(new FinanciacionSolicitadaMail($financiacion));
         } catch (\Exception $e) {
@@ -104,7 +113,7 @@ class FinanciacionController extends Controller
         $financiacion = Financiacion::find($id);
         if (!$financiacion) return response()->json(['message' => 'No encontrado'], 404);
 
-        $user      = Auth::user();
+        $user = Auth::user();
         $rolNombre = $user->rol?->nombre;
 
         if ($financiacion->user_id !== $user->id && !in_array($rolNombre, ['admin'])) {

@@ -9,13 +9,8 @@ class Financiacion extends Model
     protected $table = 'financiaciones';
 
     protected $fillable = [
-        'user_id',
-        'coche_id',
-        'meses',
-        'cuota_mensual',
-        'entrada',
-        'interes',
-        'estado',
+        'user_id', 'coche_id', 'meses', 'cuota_mensual', 'entrada', 'interes', 'estado',
+        'nombre_contacto', 'email_contacto', 'telefono', 'mensaje'
     ];
 
     // La financiación pertenece a un coche

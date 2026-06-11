@@ -23,6 +23,11 @@ return new class extends Migration
             $table->decimal('interes', 5, 2)->nullable();
             $table->string('estado')->default('pendiente');
 
+            $table->string('nombre_contacto')->nullable();
+            $table->string('email_contacto')->nullable();
+            $table->string('telefono', 20)->nullable();
+            $table->text('mensaje')->nullable();
+
             $table->timestamps();
         });
     }
