@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/*',
         ]);
 
-        // Añade esto para que no intente encriptar cookies en las pruebas de Postman
+        // para que no intente encriptar cookies en las pruebas de Postman
         $middleware->encryptCookies(except: [
             'XSRF-TOKEN',
         ]);

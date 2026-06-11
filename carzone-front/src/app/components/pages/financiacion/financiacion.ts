@@ -41,7 +41,7 @@ export class Financiacion implements OnInit {
   interes: number = 3.9;
   cuotaMensual: number = 0;
 
-  formData = { nombre: '', email: '', telefono: '', mensaje: '' };
+  formData = { nombre: '', telefono: '', mensaje: '' };
 
   ventajas = [
     { texto: 'Aprobación en 24 horas' },
@@ -134,53 +134,60 @@ export class Financiacion implements OnInit {
   }
 
   solicitar() {
-    // Si no está logueado, guardamos los datos actuales en sessionStorage
-    // y lo mandamos al login. Al volver, ngOnInit los recuperará automáticamente
-    if (!this.authService.estaLogueado()) {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
-        coche_id: Number(this.cocheSeleccionadoId),
-        meses: this.plazoSeleccionado,
-        cuota_mensual: this.cuotaMensual,
-        entrada: this.entrada,
-        interes: this.interes,
-      }));
-      this.router.navigate(['/login']);
+    if (!this.cocheSeleccionadoId || !this.formData.nombre) {
+      this.toastr.error('Por favor selecciona un vehículo y rellena tu nombre');
       return;
     }
-
-    if (!this.cocheSeleccionadoId || !this.formData.nombre || !this.formData.email) {
-      this.toastr.error('Por favor rellena todos los campos obligatorios');
-      return;
-    }
-
-    this.enviarSolicitud({
+    
+    const datosFinanciacion = {
       coche_id: Number(this.cocheSeleccionadoId),
       meses: this.plazoSeleccionado,
       cuota_mensual: this.cuotaMensual,
       entrada: this.entrada,
       interes: this.interes,
-    });
+      nombre_contacto: this.formData.nombre,
+      telefono: this.formData.telefono,
+      mensaje: this.formData.mensaje
+    };
+
+    if (!this.authService.estaLogueado()) {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(datosFinanciacion));
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (!this.cocheSeleccionadoId || !this.formData.nombre || !this.formData.telefono) {
+      this.toastr.error('Por favor rellena todos los campos obligatorios');
+      return;
+    }
+
+    this.enviarSolicitud(datosFinanciacion);
   }
 
-  // Si hay una financiación guardada en sessionStorage (venimos del login),
-  // la enviamos automáticamente sin que el usuario tenga que repetir nada
   private enviarFinanciacionPendienteSiExiste() {
     const guardada = sessionStorage.getItem(STORAGE_KEY);
     if (!guardada || !this.authService.estaLogueado()) return;
 
     const datos = JSON.parse(guardada);
-    // La borramos para que no se reenvíe
     sessionStorage.removeItem(STORAGE_KEY);
 
-    // Restauramos los valores en la calculadora para que el usuario vea lo que se envía
+    // Restauramos los valores en la calculadora y formulario
     this.cocheSeleccionadoId = datos.coche_id;
     this.plazoSeleccionado = datos.meses;
     this.entrada = datos.entrada;
     this.interes = datos.interes;
+    
+    // Restauramos los datos del formulario
+    this.formData.nombre = datos.nombre_contacto || '';
+    this.formData.telefono = datos.telefono || '';
+    this.formData.mensaje = datos.mensaje || '';
+    
     this.aplicarCocheSeleccionado();
 
     this.toastr.info('Enviando tu solicitud de financiación...');
-    this.enviarSolicitud(datos);
+    setTimeout(() => {
+      this.enviarSolicitud(datos);
+    }, 500);
   }
 
   // Método que hace el envío real al backend
@@ -188,9 +195,16 @@ export class Financiacion implements OnInit {
     this.financiacionService.solicitarFinanciacion(datos).subscribe({
       next: () => {
         this.toastr.success('Solicitud enviada. Nos pondremos en contacto contigo pronto.');
+        
+        this.cocheSeleccionadoId = '';
+        this.formData = { nombre: '', telefono: '', mensaje: '' };
+        
         this.router.navigate(['/dashboard'], { queryParams: { section: 'financiaciones' } });
       },
-      error: () => this.toastr.error('Ha ocurrido un error. Inténtalo de nuevo.')
+      error: (err) => {
+        console.error('Error detallado del backend:', err);
+        this.toastr.error('Ha ocurrido un error. Inténtalo de nuevo.');
+      }
     });
   }
 }

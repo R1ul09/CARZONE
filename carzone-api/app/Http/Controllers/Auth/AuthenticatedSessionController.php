@@ -27,9 +27,9 @@ class AuthenticatedSessionController extends Controller
         $user->load('rol');
 
         return response()->json([
-            'user'           => $user,
+            'user' => $user,
             'email_verified' => !is_null($user->email_verified_at),
-            'message'        => "¡Bienvenido de nuevo, {$user->name}!",
+            'message' => "¡Bienvenido de nuevo, {$user->name}!",
         ]);
     }
 
